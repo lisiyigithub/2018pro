@@ -1,0 +1,226 @@
+body {
+    background-color: none;
+}
+
+.yanzheng {
+    width: 100%;
+    height: 100%;
+    header {}
+    .main {
+        .yd-datetime-input {
+            text-align: right;
+            display: block;
+            height: 22px;
+        }
+        .sfz {
+            .yd-cell-left {
+                width: 3.5rem !important;
+            }
+        }
+        .yd-cell {
+            .yd-cell-left {
+                width: 2.3rem;
+            }
+            .yd-cell-right {
+                img {
+                    width: .56rem
+                }
+                .yzmbox {
+                    color: #25A2F2;
+                    p {
+                        &.yzmStyle {
+                            color: #999;
+                            background: #F6F6F8;
+                            padding: 0.2rem 0.1rem;
+                        }
+                    }
+                }
+            }
+            .yd-cell-right input[type=text] {
+                text-align: right;
+            }
+        }
+        .title {
+            font-family: PingFangSC-Light;
+            font-size: 12px;
+            color: #979797;
+            background: #F9F9F9;
+            i {
+                color: #f00;
+            }
+            padding: .266667rem .3rem
+        }
+        .vue-uploader {
+            background: #fff;
+        }
+    }
+    footer {
+        .button {
+            width: 9.2rem;
+            background: #25A2F2;
+            border-radius: 100px;
+            height: 1.173333rem;
+            margin: 20px auto;
+        }
+        .yd-btn-disabled {
+            color: rgba(255, 255, 255, 0.5)
+        }
+    } //修改placeholder颜色
+    input::-webkit-input-placeholder {
+        /* placeholder颜色  */
+        color: #A5A5A5;
+        /* placeholder字体大小  */
+        font-size: 15px;
+        /* placeholder位置  */
+        //text-align: right;
+    }
+    .yd-cell-box {
+        margin-bottom: 0px !important;
+    }
+    .bott {
+        font-size: 12px;
+        margin: 10px 0 0 0.3rem;
+        padding-right: 0px;
+        a {
+            color: #419BF9;
+        }
+        .yd-checkbox-text {
+            font-size: 12px;
+            color: #666666
+        }
+    } // 遮罩层
+    .dialog-t-1 {
+        .yd-popup-show {
+            border-radius: 18px !important;
+            .yd-popup-content {
+                p {
+                    text-align: center;
+                    &:nth-child(1) {
+                        font-size: 18px;
+                    }
+                    &:nth-child(2) {
+                        margin-bottom: .4rem;
+                        margin-top: 1rem
+                    }
+                }
+                .yz-pop {
+                    background: #f8f8f8;
+                    border-radius: 12px;
+                    padding: 10px;
+                    p {
+                        text-align: center;
+                        &:nth-child(1) {
+                            font-size: 16px;
+                        }
+                        &:nth-child(2) {
+                            font-size: 14px;
+                            margin-bottom: .3rem;
+                            margin-top: .2rem
+                        }
+                    }
+                }
+                height: 4.346667rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: center;
+                .yd-btn {
+                    width: 2.5rem;
+                    height: 0.9rem;
+                    &:nth-child(1) {
+                        border-radius: 100px;
+                        border: 1px solid #666;
+                        margin-right: .133333rem;
+                    }
+                    &:nth-child(2) {
+                        margin-left: .133333rem;
+                        background: #419BF9;
+                        box-shadow: 0 2px 13px 0 #419BF9;
+                        border-radius: 100px;
+                    }
+                }
+            }
+        }
+    }
+    .verification-code {
+        .yd-popup-show {
+            border-radius: 5px !important;
+            top: 40% !important;
+            .yd-popup-content {
+                height: 6.333333rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                p {
+                    text-align: center;
+                    &:nth-child(1) {
+                        font-size: 18px;
+                    }
+                    &:nth-child(2) {
+                        margin: 0;
+                        color: #979797;
+                        margin-top: 10px;
+                        margin-bottom: 5px;
+                    }
+                    &:nth-child(3) {
+                        color: #979797;
+                        margin-bottom: 10px;
+                    }
+                }
+                .yd-cell-item {
+                    border: 1px solid #419BF9;
+                    border-radius: 100px;
+                    width: 6.4rem;
+                    height: 1.066667rem;
+                    margin-bottom: .2rem;
+                    .yd-cell-right {
+                        height: 1.066667rem;
+                        min-height: 0px;
+                        input {}
+                        .yzmbox {
+                            color: #25A2F2;
+                            width: 70px;
+                            border-left: 1px solid #A5A5A5;
+                            padding-left: .3rem;
+                            p {
+                                font-size: 14px;
+                                &.yzmStyle {
+                                    color: #999;
+                                    font-size: 14px;
+                                }
+                            }
+                        }
+                    }
+                }
+                .errStyle {
+                    color: #F3304C;
+                }
+                .button {
+                    width: 80%;
+                    background: #25A2F2;
+                    height: 1rem;
+                    margin: 0 auto;
+                    margin-top: .3rem;
+                }
+            } //修改placeholder颜色
+            input::-webkit-input-placeholder {
+                /* placeholder颜色  */
+                color: #A5A5A5 !important;
+                /* placeholder字体大小  */
+                font-size: .2rem !important;
+                /* placeholder位置  */
+                //text-align: right;
+            }
+            .button:focus,
+            .button:hover {
+                color: #fff
+            }
+        }
+    }
+}
+
+.yd-actionsheet {
+    max-height: 10rem !important;
+    overflow: auto !important;
+}
