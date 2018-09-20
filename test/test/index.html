@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<title>Test</title>
+		<link rel="stylesheet" type="text/css" href="mui.min.css"/>
+<!--		<script src="mui.js" type="text/javascript" charset="utf-8"></script>-->
+		<style type="text/css">
+			body{
+				background: #fff;
+			}
+			#kaiguan{
+				width: 100%;
+				height:50px;
+				font-size: 16px;
+			}
+			#box{
+				position: fixed;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background: rgba(0,0,0,.4);
+				z-index: 666;
+				display: none;
+			}
+			.inner{
+				width: 266px;
+				height: 175px; 
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				margin: auto;
+				border-radius: 5px;
+				display: none;
+				background: #fff;
+			}
+			.inner span{
+				display: block;
+				text-align: center;
+				margin: 20px 0 9px;
+				font-size: 18px;
+			}
+			.inner p{
+				padding: 0 20px;
+				color: #000;
+			}
+			.inner_btn{
+				height:44px;
+				margin-top: 18px;
+				border-top: 1px solid #ddd;
+			}
+			.inner_btn div{
+				width: 50%;
+				height: 100%;
+				line-height:44px;
+				text-align: center;
+				background: none;
+				float: left;
+				border: 0;
+				outline: none;
+			}
+			.succ{
+				width: 122px;
+				height: 50px; 
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				margin: auto;
+				padding: 0 16px;
+				text-align: center;
+				line-height: 50px;
+				border-radius: 5px;
+				display: none;
+				background: rgba(0,0,0,.8);
+				color: #fff;
+			}
+			.succ img{
+				float: left;
+				width:24px ;
+				height: 24px;
+				margin: 13px 8px 13px 0;
+			}
+			.succ span{
+				display: inline-block;
+				float: left;
+				font-size: 14px;
+			}
+			.mui-row{
+				padding: 18px 0;
+				font-size: 16px;				
+			}
+			.mui-col-xs-6{
+				width: 33.3%;
+				height: 33px;
+				border-left: 1px solid #CBCCCD;
+				font-size: 16px;
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+			}
+			.mui-col-xs-6 img{
+				margin:-5px auto 3px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="mui-row">
+			<div class="mui-col-xs-6" style="border-left: 0;">
+				<img src="@2xicon_tixian_shuoming.png" width="18px;" style="vertical-align:sub;">
+				<span style="padding-left:3px;">提现说明</span>
+			</div>
+			<div class="mui-col-xs-6">
+				<img src="@2xicon_tixian_mingxi.png" width="17px;" style="vertical-align:sub;">
+					<span style="padding-left:3px;">提现明细</span>
+			</div>
+			<div class="mui-col-xs-6">
+				<!--开关-->
+				<div id="kaiguan">				
+					<div>
+						<div>
+							<div id="mySwitch" class="mui-switch mui-switch-mini" style="width: 30px;height: 18px;margin:-3px auto 5px;border-color: #ddd;background: #E6E6E6;">
+							    <div class="mui-switch-handle" style="width: 16px;height: 16px;"></div>
+							</div>
+						</div>
+					</div>
+					<div>自动提现</div>
+				</div>
+				
+				<!--弹出框-->
+				<div id="box">
+					<div class="inner">
+						<span id="sure">确定开通体现功能吗？</span>
+						<p>自动提现功能可针对当前开通商户下超过2000元的交易金额（不包含交易手续费）自动发起提现。</p>
+						<div class="inner_btn">
+							<div type="button" id="quxiao" style="border-right: 1px solid #ddd;">取消</div>
+							<div type="button" id="queding" style="color:#25A2F2">确定</div>
+						</div>		
+					</div>					
+				</div>			
+			</div>
+			
+			<!--loading图-->
+			<!--<div class="loading">
+				<div class="loading-div">
+					<div id="loading-svg"></div>
+					<p class="loading-p">数据加载中</p>
+				</div>
+			</div>-->
+			
+			<div class="succ">
+				<img src="toast_icon_right@2x.png"/>
+				<span>开通成功</span>
+			</div>
+		</div>
+	</body>
+	<script src="jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script src="mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init();
+		document.getElementById("mySwitch").addEventListener("toggle",function(event){		
+			//启动
+		  if(event.detail.isActive){
+		    console.log("你启动了开关");
+		     var clerkStatus=1;		   				
+			mui(".mui-switch-mini")[0].style.background = "green";	
+			
+			//关闭
+		  }else{
+		    console.log("你关闭了开关"); 
+		    var clerkStatus=0
+			$('#box').hide()
+			mui(".mui-switch-mini")[0].style.background = "#E6E6E6";
+		  }	
+		  console.log(clerkStatus)
+		})
+		
+		$('#mySwitch').click(function(){
+			$('#box').show()
+			$('.inner').show()
+			
+		})
+		
+		$('#queding').click(function(){
+			$('#box').hide()	
+			$('.succ').show()
+			setTimeout(function(){
+				$('.succ').hide()
+			},2000)
+		})
+		$('#quxiao').click(function(){
+			$('#box').hide()
+			mui("#mySwitch").switch().toggle();
+		})
+		
+		$(function(){
+			$.ajax({
+				type:"get",
+				url:"test.json",
+				success:function(data){
+					if(data.d0_flag){
+						mui("#mySwitch").switch().toggle();
+					}
+				}
+			});
+		})
+		
+		
+		
+		  //取消当前操作
+		/*function abrogate(){
+			$('#box').hide()
+			mui("#mySwitch").switch().toggle();
+		}
+		  
+		  
+		//确定自动提现
+		function automatic(){
+			$('#box').hide()
+//			mui(".loading")[0].style.display = "block";
+			
+			$('.succ').show()
+			setTimeout(function(){
+				$('.succ').hide()
+			},2000)
+		}  */
+		
+		
+		
+	</script>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>开通申请</title>
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/wx_ad.css" rel="stylesheet" />
+	<link href="../../css/commonCss.css" rel="stylesheet" />
+	<style>
+		body {
+			margin: 0 auto;
+			padding: 0 auto;
+			background-color: #f9f9f9;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+	</div>
+	<div id='mark-backdrop'></div>
+	<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+		<h1 class="mui-title" style='color:#ffffff;line-height: 64px;font-size: 18px;margin-top: 10px;'>开通申请</h1>
+	</header>
+	<div id='openApply-wxad'>
+		<p id='topText'>请留下您的联系方式，专业的广告顾问会尽快联系您。</p>
+		<form class="mui-input-group" id='formDiv'>
+			<div class="mui-input-row">
+				<label>姓名</label>
+				<input type="text" class="mui-input " id='merName' placeholder="请输入姓名">
+			</div>
+			<div class="gray-solid-line"></div>
+			<div class="mui-input-row">
+				<label>手机号码</label>
+				<input type="text" class="mui-input " id='userTelephone' placeholder="请输入手机号码" maxlength="11">
+			</div>
+		</form>
+
+		<div id='submitDiv'>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary" id='submitBtn'>提交</button>
+			</div>
+			<p>
+				<span id='span1'>您也可以直接拨打人工客服咨询 </span>
+				<!--<a href="wtai:4006-555-666" id='span2'>4006-555-666</a>-->
+				<a href="tel:4006-555-666" id='span2'>4006-555-666</a>
+				<!--<a href="wtai://wp/mc;4006-555-666" mce_href="wtai://wp/mc;4006-555-666">拨打电话</a>-->
+			</p>
+		</div>
+		<div id='submitSucceed'>
+			<div id='img-section'>
+				<img alt="成功" src="../../img/zhifuchenggong_icon_chenggong@2x.png" height="50px" width="50px">
+				<p>
+					<b>&nbsp;&nbsp;&nbsp;提交成功！</b>
+				</p>
+				<p>&nbsp;&nbsp;&nbsp;广告顾问会尽快联系您！</p>
+				<div id='btn-section'>
+					<button type="button" class="mui-btn mui-btn-outlined finish-btn" id='finishBtn'>完成</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/utils.js"></script>
+	<script src="../../js/zepto.min.js"></script>
+	<script src="../../js/storage.js"></script>
+	<script src="../../js/bodymovin.js"></script>
+	<script src="../../js/loadingConfig.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init(); 
+		//获取url中的usr_no参数
+		var user_info = sessionFetch('user_info')
+		var usr_no = user_info.usr_no;
+		var userTelephone = user_info.userTelephone;
+		var token_id = user_info.token_id;
+		var check = false;
+		console.log(userTelephone === "undefined")
+		if(userTelephone===undefined || userTelephone ==="undefined"){
+			document.getElementById('userTelephone').value = '';
+		}else{
+			document.getElementById('userTelephone').value = userTelephone;
+			
+		}
+		
+
+		if (checkParam(usr_no, "usr_no")) {
+			document.getElementById('submitBtn').addEventListener('click',
+				function (e) {
+					callLayPoint("WxadSubmitBtn");
+
+					if (checkName() && checkTel(document.getElementById('userTelephone').value)) {
+						check = true;
+					}
+
+					//校验通过，继续执行业务逻辑
+					console.log(check)
+					if (check) {
+						mui(".loading")[0].style.display = "block";
+						userTelephone = document.getElementById('userTelephone').value
+						console.log('sssss'+userTelephone)
+						mui.ajax(API.SAVEFRIEND + '?userId=' + usr_no + '&userName=' + merName.value + '&userTelephone=' + userTelephone + '&sys_identification=0&token_id=' + token_id, {
+							dataType: 'json', //服务器返回json格式数据
+							contentType: "application/json; charset=utf-8",
+							type: 'get', //HTTP请求类型
+							timeout: 10000, //超时时间设置为10秒；
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							success: function (data) {
+								if (data.errorCode === '0000') {
+									mui(".loading")[0].style.display = "none";
+									document.getElementById('submitSucceed').style.display = 'block'
+									document.getElementById('mark-backdrop').style.display = 'block'
+								} else {
+									//alert(data.message)
+									window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + data.errorCode + "&error_msg=" + data.message;
+								}
+
+							},
+							error: function (xhr, type, errorThrown) {
+								//异常处理；
+								//mui.alert('网络异常,请稍候再试');
+								window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+								console.log(type);
+							}
+						});
+					}
+
+				});
+			//提交成功后，点击确认按钮事件
+			document.getElementById('finishBtn').addEventListener('click',
+				function (e) {
+					document.getElementById('submitSucceed').style.display = 'none'
+					document.getElementById('mark-backdrop').style.display = 'none'
+					mui.openWindow({
+						url: 'index.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&userName=' + user_info.userName + '&userTelephone=' + user_info.userTelephone + '&token_id=' + user_info.token_id,
+					})
+				})
+		}
+
+		function checkName() {
+			console.log('名称' + document.getElementById('merName').value)
+			if (document.getElementById('merName').value.trim() === "") {
+				mui.alert('请输入姓名', " ", "确定");
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		function checkTel(tel) {
+			console.log(tel)
+			if (tel == "") {
+				mui.alert('请输入手机号', " ", "确定");
+				return false;
+			} else {
+				var translatematrixREa = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+				console.log(tel)
+				var matrix = translatematrixREa.test(tel);
+				if (!matrix) {
+					mui.alert("请留下您正确的手机号码哦~", " ", "确定");
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
+		// $('#userTelephone').keyup(function () {
+		// 	var c = $(this);
+		// 	if (/[^\d]/.test(c.val())) {//替换非数字字符  
+		// 		var temp_amount = c.val().replace(/[^\d]/g, '');
+		// 		$(this).val(temp_amount);
+		// 	}
+		// });
+	</script>
+</body>
+
+</html>

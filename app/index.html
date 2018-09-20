@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>  
+    <style type="text/css">
+    	.mui-content{
+    		background: palegoldenrod;
+    		margin-bottom: 50px;
+    	}
+    	.mui-content>.mui-table-view:first-child{
+    		margin-top: 0;
+    	}
+    </style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	    <h1 class="mui-title">标题</h1>
+	</header>
+	
+	<!--mui-content会自动让出一个头部空间-->
+	<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+
+		<div class="mui-scroll">
+		        <!--这里放置真实显示的DOM内容-->
+		   
+
+		
+			<ul class="mui-table-view">
+		        <li class="mui-table-view-cell">
+		            <a class="mui-navigate-right">
+		                Item 1
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell">
+		            <a class="mui-navigate-right">
+		                 Item 2
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell">
+		            <a class="mui-navigate-right">
+		                 Item 
+		            </a>
+		        </li>
+		    </ul>
+		    <ul class="mui-table-view">
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		                <img class="mui-media-object mui-pull-right" src="http://placehold.it/40x30">
+		                <div class="mui-media-body">
+		                    幸福
+		                    <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+		                </div>
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		                <img class="mui-media-object mui-pull-right" src="http://placehold.it/40x30">
+		                <div class="mui-media-body">
+		                    木屋
+		                    <p class="mui-ellipsis">想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+		                </div>
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		                <img class="mui-media-object mui-pull-right" src="http://placehold.it/40x30">
+		                <div class="mui-media-body">
+		                    CBD
+		                    <p class="mui-ellipsis">烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+		                </div>
+		            </a>
+		        </li>
+		    </ul>
+		    <ul class="mui-table-view">
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		                <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+		                <div class="mui-media-body">
+		                    幸福
+		                    <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+		                </div>
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		                <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+		                <div class="mui-media-body">
+		                    木屋
+		                    <p class="mui-ellipsis">想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+		                </div>
+		            </a>
+		        </li>
+		        <li class="mui-table-view-cell mui-media">
+		            <a href="javascript:;">
+		                <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+		                <div class="mui-media-body">
+		                    CBD
+		                    <p class="mui-ellipsis">烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+		                </div>
+		            </a>
+		        </li>
+		    </ul>
+		    <ul class="mui-table-view">
+	            <li class="mui-table-view-cell">
+	                <a class="mui-navigate-right">
+	                    Item 1
+	                </a>
+	            </li>
+	            <li class="mui-table-view-cell">
+	                <a class="mui-navigate-right">
+	                     Item 2
+	                </a>
+	            </li>
+	            <li class="mui-table-view-cell">
+	                <a class="mui-navigate-right">
+	                     Item 3
+	                </a>
+	            </li>
+	        </ul>
+	        
+	    </div>
+        
+	</div>
+	
+	<nav class="mui-bar mui-bar-tab">
+	    <a class="mui-tab-item mui-active">
+	        <span class="mui-icon mui-icon-home"></span>
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a class="mui-tab-item">
+	        <span class="mui-icon mui-icon-phone"></span>
+	        <span class="mui-tab-label">电话</span>
+	    </a>
+	    <a class="mui-tab-item">
+	        <span class="mui-icon mui-icon-email"></span>
+	        <span class="mui-tab-label">邮件</span>
+	    </a>
+	    <a class="mui-tab-item">
+	        <span class="mui-icon mui-icon-gear"></span>
+	        <span class="mui-tab-label">设置</span>
+	    </a>
+	</nav>
+</body>
+ 	<script type="text/javascript" charset="utf-8">
+      	mui.init({
+      		 pullRefresh : {
+			    container:"#refreshContainer",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+			    down : {
+			      height:50,//可选,默认50.触发下拉刷新拖动距离,
+			      auto: false,//可选,默认false.首次加载自动下拉刷新一次
+			      contentdown : "下拉可以刷新",//可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+			      contentover : "释放立即刷新",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+			      contentrefresh : "正在刷新...",//可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+			      callback :function(){
+			      	setTimeout(function() {
+						contentrefresh:'刷新完成'
+					}, 2000);
+			      } //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			    },
+			    up : {
+			      height:50,//可选.默认50.触发上拉加载拖动距离
+			      auto:false,//可选,默认false.自动上拉加载一次
+			      contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+			      contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+			      callback :function(){} ,//必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+			      druction:2000
+			    }
+			  }
+      	});
+      	
+    </script>
+</html>

@@ -1,0 +1,16 @@
+WxadInterstBtn,朋友圈广告我感兴趣按钮,1
+WxadSubmitBtn,朋友圈广告提交信息按钮,0
+InvoiceOpenApply,电子发票首页我要开通按钮,0
+InvoiceNextStep,电子发票开通申请页下一步按钮,0
+InvoiceSaveInfo,电子发票商户提交税盘信息按钮,0
+InvoicePayment,电子发票确认订单页立即支付按钮,0
+OrderOpenApply,订单来了首页我要开通按钮,0
+OrderNextStep,订单来了开通申请页下一步按钮,0
+OrderPayment,订单来了确认订单页立即支付按钮,0
+StarRankShare2wx,星榜单去朋友圈炫单按钮,0
+MemberOpenApply,星POS钱客多首页我要开通按钮,0
+MemberNextStep,星POS钱客多开通申请页下一步按钮,0
+MemberPayment,星POS钱客多确认订单页确认开通按钮,0
+LoanMyLoan,贷款我的贷款按钮,0
+LoanApplyChengZhang,商户成长贷我要贷款按钮,0
+LoanChengZhangIntroduce,商户成长贷说明按钮,0

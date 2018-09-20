@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+		<title>朋友圈广告</title>
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<link href="../../css/wx_ad.css" rel="stylesheet" />
+
+		<style>
+			body {
+				margin: 0 auto;
+				padding: 0 auto;
+				background-image: url(../../img/bg3.jpg);
+				background-attachment: fixed;
+				background-size: cover;
+				background-repeat: no-repeat;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<svg class="icon" aria-hidden="true" id='backBtn'>
+				<use xlink:href="#icon-fanhuijiantou-copy"></use>
+			</svg>
+			<h1 class="mui-title">朋友圈广告</h1>
+		</header>
+		<div id='pyq_section'>
+			<div id='div1'>
+				<p id='p1'>基于星POS，向5公里内的微信用户</p>
+				<p id='p1'>投放广告</p>
+			</div>
+			<div>
+				<p id='p1'>还不满足? !</p>
+				<p id='p2'>商圈、区县、各省市都能投放</p>
+				<p id='p3'>婚庆、汽车、美食、家装等几百个标签精准定向</p>
+			</div>
+			<div id='div2'>
+				<p id='p1'>无死角 无浪费 量身定制</p>
+				<p id='p1'>星POS朋友圈广告</p>
+			</div>
+			<div id='btnDiv'>
+				<button type="button" class="mui-btn mui-btn-primary" id='interstBtn'>我感兴趣</button>
+				<br>
+				<br>
+				<button type="button" class="mui-btn mui-btn-outlined" id='myOrderBtn'>我的订单</button>
+				<br>
+				<p>
+					<span id='span1'>您也可以直接拨打人工客服咨询 </span>
+					<a href="tel:4006-555-666" id='span2'>4006-555-666</a>
+				</p>
+			</div>
+			<div id='submitSucceed'>
+				<div id='img-section'>
+					<img alt="成功" src="../../img/zhifuchenggong_icon_chenggong@2x.png" height="50px" width="50px">
+					<p>
+						<b>&nbsp;&nbsp;&nbsp;提交成功！</b>
+					</p>
+					<p>&nbsp;&nbsp;&nbsp;广告顾问会尽快联系您！</p>
+					<div id='btn-section'>
+						<button type="button" class="mui-btn mui-btn-outlined finish-btn" id='finishBtn'>完成</button>
+					</div>
+				</div>
+			</div>
+			<div id='mark-backdrop'></div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_duxkudu7huf8ncdi.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				gestureConfig: {
+					tap: true, //默认为true
+					doubletap: true, //默认为false
+					longtap: true, //默认为false
+					swipe: true, //默认为true
+					drag: true, //默认为true
+					hold: false, //默认为false，不监听
+					release: false //默认为false，不监听
+				}
+			});
+			//获取url中的usr_typ/usr_no/merName/userTelephone参数
+			//alert(location.href)
+			var usr_typ = getUrlParams('usr_typ');
+			var usr_no = getUrlParams('usr_no');
+			console.log(usr_no)
+			var userName = getUrlParams('userName');
+			var userTelephone = getUrlParams('userTelephone');
+			var token_id = getUrlParams('token_id');
+			var user_info = {
+				usr_no: usr_no,
+				usr_typ: usr_typ,
+				userName: userName,
+				userTelephone: userTelephone,
+				token_id: token_id
+			}
+			sessionSave("user_info", user_info);
+
+			//			$(document).ready(function(e) {
+			//				if(window.history && window.history.pushState) {
+			//					$(window).on('popstate', function() {
+			//						//退出webview
+			//						callCloseWebview();
+			//					});
+			//				}
+			//				window.history.pushState('forward', null, '#');  //在IE中必须得有这两行  
+			//				window.history.forward(1);
+			//			});
+
+			if(checkParam(usr_typ, "usr_typ") || checkParam(usr_no, "usr_no") || checkParam(userName, "userName") || checkParam(userTelephone, "userTelephone") || checkParam(token_id, "token_id")) {
+				//我感兴趣按钮
+				document.getElementById('interstBtn').addEventListener('click',
+					function(e) {
+						//管理员
+						//						if(usr_typ === '0') {
+						//							mui(".loading")[0].style.display = "block";
+						//							mui.ajax(API.SAVEFRIEND + '?usr_no=' + usr_no + '&userName=' + userName + '&userTelephone=' + userTelephone+'&sys_identification=0&token_id='+token_id, {
+						//								dataType: 'json', //服务器返回json格式数据
+						//								contentType: "application/json; charset=utf-8",
+						//								type: 'get', //HTTP请求类型
+						//								timeout: 10000, //超时时间设置为10秒；
+						//								success: function(data) {
+						//									//服务器返回响应，根据响应结果分析
+						//									mui(".loading")[0].style.display = "none";
+						//									console.log('请求成功')
+						//									document.getElementById('submitSucceed').style.display = 'block'
+						//									document.getElementById('mark-backdrop').style.display = 'block'
+						//								},
+						//								error: function(xhr, type, errorThrown) {
+						//									//异常处理；
+						//									mui(".loading")[0].style.display = "none";
+						//									mui.alert('网络异常,请稍候再试');
+						//									//window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+						//									console.log(type);
+						//								}
+						//							});
+						//						} else {
+						//管理员或操作员或者游客
+						callLayPoint("WxadInterstBtn");
+						mui.openWindow({
+							url: 'openApply.html',
+						})
+						//						}
+					});
+			}
+
+			//我的订单按钮
+			document.getElementById('myOrderBtn').addEventListener('click',
+				function(e) {
+					//跳转到订单页面
+					mui.openWindow({
+						url: 'order.html?usr_no=' + usr_no,
+					})
+				});
+			//弹出框确认按钮事件
+			document.getElementById('finishBtn').addEventListener('click',
+				function(e) {
+					document.getElementById('submitSucceed').style.display = 'none'
+					document.getElementById('mark-backdrop').style.display = 'none'
+				})
+			document.getElementById('backBtn').addEventListener('click',
+				function(e) {
+					callCloseWebview()
+				});
+		</script>
+	</body>
+
+</html>

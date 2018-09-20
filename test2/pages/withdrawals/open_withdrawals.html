@@ -1,0 +1,601 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>提现</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+	</head>
+	<style>
+		ul {
+			margin: 0;
+			padding: 0;
+		}
+		
+		ul li {
+			color: #666666;
+			font-family: PingFangSC-Regular;
+			font-size: 13px;
+			line-height: 20px;
+			color: #666666;
+			margin-left: 52.5px;
+		}
+		
+		ul li:before {
+			display: inline-block;
+			content: "";
+			height: 24px;
+			border: 0.5px solid #666666;
+			position: relative;
+			left: -13.25px;
+			top: 28px;
+		}
+		
+		ul li:last-child:before {
+			border: none;
+		}
+		
+		ul li:nth-child(2):before {
+			display: inline-block;
+			content: "";
+			height: 30px;
+			border: 0.5px solid #666666;
+			position: relative;
+			left: -13.25px;
+			top: 35px;
+		}
+		
+		ul li:nth-child(3):before {
+			display: inline-block;
+			content: "";
+			height: 36px;
+			border: 0.5px solid #666666;
+			position: relative;
+			left: -13.25px;
+			top: 40px;
+		}
+		
+		.checkbox {
+			position: relative;
+			padding-top: 14.5px;
+			padding-bottom: 14.5px;
+			margin-bottom: 12.5px;
+		}
+		
+		.checkbox_all {
+			position: relative;
+			float: left;
+			height: 100%;
+			width: 50%;
+		}
+		
+		.checkbox_span {
+			position: absolute;
+			font-family: PingFangSC-Regular;
+			font-size: 14px;
+			color: #666666;
+			/*top:50%;*/
+			left: 19.3%;
+			/*-webkit-transform:translateY(-50%);
+			transform:translateY(-50%);*/
+			text-align: start;
+		}
+		
+		.checkbox_all_span {
+			position: absolute;
+			font-family: PingFangSC-Regular;
+			font-size: 12px;
+			color: #A5A5A5;
+			top: 50%;
+			left: 38.6%;
+			-webkit-transform: translateY(-50%);
+			transform: translateY(-50%);
+			text-align: start;
+		}
+		
+		.sure_button {
+			position: relative;
+			float: right;
+			height: 100%;
+			width: 50%;
+			background: #25A2F2;
+			opacity: 0.4;
+			color: white;
+			font-family: PingFangSC-Regular;
+			padding-top: 5%;
+			border-bottom-right-radius: 8px;
+		}
+		
+		input[type="checkbox"] {
+			opacity: 0;
+		}
+		
+		label {
+			position: absolute;
+			left: 9.6%;
+			top: 50%;
+			margin-top: -7.5px;
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			border: 1px solid #A5A5A5;
+		}
+		/*设置选中的input的样式*/
+		/* + 是兄弟选择器,获取选中后的label元素*/
+		
+		input:checked+label {
+			position: absolute;
+			content: url(../../img/@2xicon_pop_sel.png);
+			width: 17px;
+			height: 17px;
+			border: 0px
+		}
+		
+		.mui-scrollbar-indicator {
+			background: #DCB700;
+		}
+	</style>
+
+	<body style="height: 100%;">
+		<div class="loading">
+			<div class="loading-div">
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<span onclick="callCloseWebview()"> 
+		            <svg class="icon" aria-hidden="true">
+		                <use xlink:href="#icon-fanhuijiantou-copy"></use>
+		            </svg>
+       			</span>
+			<h1 class="mui-title">提现</h1>
+		</header>
+		<img class="banner_img" src="../../img/@2xtixian_img_banner.png" />
+		<div class="open_withdrawals_card1">
+			<div style="padding-top: 17.5px;">
+				<img src="../../img/@2xtixian_icon_shuoming.png" />
+				<span>提现服务说明</span>
+				<div class="withdrawals_explan_crite">
+					<span></span>
+				</div>
+				<div class="withdrawals_explan_text" style="margin-bottom: 10px;">
+					提供当日划款服务，收单交易款项当日到账
+				</div>
+				<div class="withdrawals_explan_crite">
+					<span></span>
+				</div>
+				<div class="withdrawals_explan_text" style="margin-bottom: 10px;">
+					开通成功后立即可使用该服务
+				</div>
+				<div class="withdrawals_explan_crite">
+					<span></span>
+				</div>
+				<div class="withdrawals_explan_text" style="margin-bottom: 10px;">
+					免费开通，发起提现时产生提现手续费
+				</div>
+				<div class="withdrawals_explan_crite">
+					<span></span>
+				</div>
+				<div class="withdrawals_explan_text" style="padding-bottom: 15px; margin-bottom: 0px;">
+					<null class="text_gradient_color">撤销及退货等反向交易功能将被关闭</null>
+				</div>
+			</div>
+		</div>
+		<div class="open_withdrawals_card2">
+			<!--内容区-->
+			<div class="open_withdrawals_item">
+				<img src="../../img/@2xtixian_icon_shanghuzizhi.png" />
+				<span>商户资质</span>
+				<p>商户已开通并审核通过，且已提供营业执照</p>
+			</div>
+			<hr style="margin-left: 31.5px; padding: 0px;margin-top: 0px; margin-bottom: 0px; border-top:1px solid #BFBEBF;" />
+			<div class="open_withdrawals_item">
+				<img src="../../img/@2xtixian_icon_ruwang.png" />
+				<span>入网时长</span>
+				<p>入网满90日，且正常交易满30日</p>
+			</div>
+			<hr style="margin-left: 31.5px; padding: 0px;margin-top: 0px; margin-bottom: 0px;border-top:1px solid #BFBEBF;" />
+			<div class="open_withdrawals_item">
+				<img src="../../img/@2xtixian_icon_jiesuanzhanghu.png" />
+				<span>结算账户</span>
+				<p>结算账户为对私账户且为法人名下</p>
+			</div>
+			<hr style="margin-left: 31.5px; padding: 0px;margin-top: 0px; margin-bottom: 0px;border:none;border-top:1px solid #BFBEBF;" />
+			<div class="open_withdrawals_item" style="padding-bottom: 15px;">
+				<img src="../../img/@2xtixian_icon_huakuan.png" />
+				<span>划款服务</span>
+				<p>结算账户需支持当日划款服务</p>
+			</div>
+		</div>
+		<div id='btn-section'>
+			<button type="button" abled class="mui-btn mui-btn-outlined my-btn open_button" onclick="queryMerchant()">申请开通</button>
+		</div>
+		<div class="screen-mask">
+			<div class="screen-dialog">
+				<p class="screen-title">选择您需要开通的商户</p>
+				<div class="mui-scroll-wrapper" style="width: auto;height: 170px; position: relative; padding-bottom: 30px;">
+					<div class="mui-scroll" id="screen_scroll">
+						<!--<div class="checkbox" onclick="funSelOne()">
+							<input id="item1" type="checkbox" name="item" value="选项一 " checked>
+							<label for="item"></label>
+							<span class="checkbox_span" for="item">选项一</span>
+						</div>-->
+					</div>
+				</div>
+
+				<div style="width: 100%;height: 49px; border-top: 1px solid #CBCBCB; ">
+					<div class="checkbox_all" style="float: left;height: 100% ;width: 50%;" onclick="swapCheck()">
+						<input id="all_select" type="checkbox" name="all_select" value="全选 ">
+						<label for="all_select" style="left: 19.4%;"></label>
+						<span class="checkbox_all_span">全选</span>
+					</div>
+					<div class="sure_button" id="sure" onclick="closeWdDialog() ">
+						确认
+					</div>
+				</div>
+				<div class="screen-img2">
+					<img src="../../img/btn_cancel@2x.png" onclick="colse()" />
+				</div>
+			</div>
+			<div class=" screen-img ">
+				<img src="../../img/@2ximg_pop_shop.png " />
+			</div>
+
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js "></script>
+	<script src="../../js/utils.js "></script>
+	<script src="../../js/api.js "></script>
+	<script src="../../js/storage.js "></script>
+	<script src="../../js/bodymovin.js"></script>
+	<script src="../../js/loadingConfig.js"></script>
+	<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript ">
+		mui.init()
+
+		mui('.mui-scroll-wrapper').scroll({
+			scrollY: true, //是否竖向滚动
+			scrollX: false, //是否横向滚动
+			startX: 0, //初始化时滚动至x
+			startY: 0, //初始化时滚动至y
+			indicators: true, //是否显示滚动条
+			deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+			bounce: true //是否启用回弹
+		});
+		var stoeList = [];
+		var user_info;
+		var mercList;
+		var nums = 5; //重置时间
+		var is_open = true;
+		var btn = mui(".open_button")[0];
+		//mui.confirm("11111 ", "选择您需要开通的商户 ");
+		//检查参数
+		if(checkParam(getUrlParams("usr_no"), "usr_no") && checkParam(getUrlParams("usr_typ"), "usr_typ") && checkParam(getUrlParams("token_id"), "token_id") && checkParam(getUrlParams("version"), "version") && checkParam(getUrlParams("opSys"), "opSys")) {
+			user_info = {
+				"usr_no": getUrlParams("usr_no"),
+				"usr_typ": getUrlParams("usr_typ"),
+				"token_id": getUrlParams("token_id"),
+				"version": getUrlParams("version"),
+				"opSys": getUrlParams("opSys")
+			}
+			sessionSave("user_info", user_info);
+			//获取用户余额信息
+			// getWithdrawalsInfo();
+		}
+		//查询商户列表
+		function queryMerchant() {
+			mui(".loading ")[0].style.display = "block ";
+			btn.disabled = true;
+			btn.innerText = '(' + nums + ')重新点击';
+			clock = setInterval(doLoop, 1000); //一秒执行一次
+			is_open = false;
+			var data2 = {
+				"contentTyp": "application/json",
+				"characterSet": "GBK",
+				"sys_cnl": "app",
+				"version": user_info.version,
+				"opSys": user_info.opSys,
+				"token_id": user_info.token_id,
+				"usr_no": user_info.usr_no,
+				"usr_typ": user_info.usr_typ,
+				"opr_flg": "2"
+			};
+			mui.ajax(API.GETENCHASHAUTH, {
+				data: data2,
+				dataType: 'json',
+				type: 'post',
+				contentType: "application/json; charset=utf-8 ",
+				success: function(res) {
+					mui(".loading ")[0].style.display = "none ";
+					console.log(res);
+					if(res.repCode === "000000") {
+						mercList = res.mercList;
+						if(res.mercList != null && res.mercList.length != 0) {
+							var oldMerc_id = "";
+							var doc = document;
+							var oldYearAndmonth = 0;
+							myDate = new Date();
+							fragment = doc.createDocumentFragment();
+							container = doc.getElementById("screen_scroll")
+							mui.each(res.mercList, function(key, value) {
+								if(value.merc_id != oldMerc_id) {
+									div = doc.createElement("div");
+									input = doc.createElement("input");
+									label = doc.createElement("label");
+									span = doc.createElement("span");
+									div.setAttribute("class", "checkbox");
+									div.setAttribute("onclick", "funSelOne()");
+									input.setAttribute("type", "checkbox");
+									input.setAttribute("name", "merc");
+									input.setAttribute("value", value.merc_id + "&" + value.stoe_id);
+									label.setAttribute("for", "merc");
+									span.setAttribute("class", "checkbox_span");
+									span.innerText = value.merc_nm;
+									div.appendChild(input)
+									div.appendChild(label)
+									div.appendChild(span)
+									fragment.appendChild(div)
+									oldMerc_id = value.merc_id
+								} else {
+									input.setAttribute("value", input.getAttribute("value") + "&" + value.stoe_id);
+								}
+							});
+							if(fragment.childElementCount != 1) {
+								container.appendChild(fragment);
+								openWdDialog();
+							} else {
+								//var one = fragment.getElementsByName("merc")
+								var value = input.value;
+								var item1 = value.split("&");
+								for(var i2 = 1; i2 < item1.length; i2++) {
+									stoeList.push({
+										"merc_id": item1[0],
+										"stoe_id": item1[i2]
+									})
+								}
+								toOpen();
+							}
+							return;
+						}
+					} else {
+						mui.alert(res.repMsg);
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui(".loading")[0].style.display = "none";
+					console.log(type);
+					console.log(xhr);
+					mui.alert("服务器开小差啦，请稍后再试 ");
+				}
+			});
+		}
+
+		//开通
+		function toOpen() {
+			if(mercList.length === 0) {
+				mui.alert("请先添加商户");
+			} else {
+				var open_withdrawals = getUrlParams("open_withdrawals ") //筛选开通的商户
+				if(stoeList == "[]" || stoeList.length == 0) {
+					var data = {
+						"contentTyp": "application/json",
+						"characterSet": "GBK",
+						"sys_cnl": "app",
+						"version": user_info.version,
+						"opSys": user_info.opSys,
+						"token_id": user_info.token_id,
+						"usr_no": user_info.usr_no,
+						"usr_typ": user_info.usr_typ,
+						"opr_flg": "0"
+					};
+				} else {
+					var data = {
+						"contentTyp": "application/json",
+						"characterSet": "GBK",
+						"sys_cnl": "app",
+						"version": user_info.version,
+						"opSys": user_info.opSys,
+						"token_id": user_info.token_id,
+						"usr_no": user_info.usr_no,
+						"usr_typ": user_info.usr_typ,
+						"opr_flg": "1",
+						"stoeList": stoeList,
+						"tot_cnt": stoeList.length + ""
+					};
+				}
+				var sts;
+				mui(".loading ")[0].style.display = "block ";
+				mui.ajax(API.GETENCHASHAUTH, {
+					data: data,
+					dataType: 'json',
+					type: 'post',
+					contentType: "application/json; charset=utf-8",
+					success: function(res) {
+						mui(".loading ")[0].style.display = "none";
+						console.log(res);
+						if(res.repCode === "000000") {
+							console.log(res.repMsg.mercList);
+							if(res.mercList != null && res.mercList.length != 0) {
+								var old_id;
+								var map = {},
+									dest = [];
+								for(var i = 0; i < res.mercList.length; i++) {
+									var merc = res.mercList[i];
+									if(!map[merc.merc_id]) {
+										dest.push({
+											"merc_id": merc.merc_id,
+											"merc_nm": merc.merc_nm,
+											"sts": merc.sts
+										});
+										map[merc.merc_id] = merc;
+									} else {
+										for(var j = 0; j < dest.length; j++) {
+											var dj = dest[j];
+											if(dj.merc_id == merc.merc_id && dj.sts != merc.sts && dj.sts == 1) {
+												dj.sts = merc.sts
+												break;
+											}
+										}
+									}
+								}
+								for(var i = 0; i < dest.length; i++) {
+									if(sts != null && sts != dest[i].sts) {
+										sts = 2;
+										break;
+									}
+									sts = dest[i].sts;
+								}
+								if(sts != null && sts == 0) {
+									mui.openWindow({
+										url: 'open_success.html'
+									});
+								} else if(sts != null && sts == 2) {
+									mui.openWindow({
+										url: 'open_success.html?res=' + JSON.stringify(dest)
+									});
+								} else if(sts != null && sts == 1) {
+									mui.openWindow({
+										url: 'open_fail.html'
+									});
+								}
+
+							} else {
+								mui.openWindow({
+									url: 'open_fail.html'
+								});
+							}
+						} else {
+							mui.alert(res.repMsg);
+							mui.openWindow({
+								url: 'open_fail.html'
+							});
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui(".loading ")[0].style.display = "none ";
+						console.log(type);
+						console.log(xhr);
+						mui.alert("服务器开小差啦，请稍后再试 ");
+					}
+				});
+			}
+
+		};
+
+		function doLoop() {
+			nums--;
+			if(nums > 0) {
+				btn.innerText = '(' + nums + ')秒重新点击';
+			} else {
+				clearInterval(clock); //清除js定时器
+				btn.innerText = '申请开通';
+				nums = 5; //重置时间
+				btn.disabled = false;
+			}
+		}
+
+		//打开弹框 
+		function openWdDialog() {
+			mui(".screen-mask")[0].style.display = "block ";
+			mui("body")[0].style.position = "fixed ";
+		};
+
+		function colse() {
+			mui(".screen-mask")[0].style.display = "none";
+			mui("body")[0].style.position = "static";
+			var screen_scroll = document.getElementById("screen_scroll");
+			var childs = screen_scroll.childNodes;
+			for(var i = childs.length - 1; i >= 0; i--) {
+				screen_scroll.removeChild(childs[i]);
+			}
+
+		}
+
+		//关闭弹框
+		function closeWdDialog() {
+			var one = document.getElementsByName("merc");
+
+			var selCount = 0;
+			for(var i = 0; i < one.length; i++) {
+				if(one[i].checked == true) {
+					selCount++;
+				}
+			}
+			if(selCount != 0) {
+				mui(".screen-mask")[0].style.display = "none";
+				mui("body")[0].style.position = "static";
+				var one = document.getElementsByName("merc");
+				for(var i = 0; i < one.length; i++) {
+					if(one[i].checked == true) {
+						var value = one[i].value;
+						var item1 = value.split("&");
+						for(var i2 = 1; i2 < item1.length; i2++) {
+							stoeList.push({
+								"merc_id": item1[0],
+								"stoe_id": item1[i2]
+							})
+						}
+
+					}
+				}
+				var all = document.getElementsByName("all_select")[0];
+				all.checked = false;
+				toOpen();
+			} else {
+				mui.toast("请先选择开通商户")
+			}
+
+		};
+		var is_all = false;
+		//全选
+		function swapCheck() {
+			var sureButton = document.getElementById("sure")
+			if(is_all) {
+				mui("input[type='checkbox']").each(function() {
+					this.checked = false;
+				});
+				is_all = false;
+				sureButton.setAttribute("style", "opacity:0.4;")
+			} else {
+				mui("input[type='checkbox']").each(function() {
+					this.checked = true;
+				});
+				is_all = true;
+				sureButton.setAttribute("style", "opacity:1;")
+			}
+		}
+		//当所有的复选框被选中时，全选按钮被选中，当其中任意一个或者多个没被选中时，全选按钮不被选中
+		function funSelOne() {
+			var one = document.getElementsByName("merc");
+			var all = document.getElementsByName("all_select")[0];
+			var sureButton = document.getElementById("sure")
+			var selCount = 0;
+			var unSelCount = 0;
+			for(var i = 0; i < one.length; i++) {
+				if(one[i].checked == true) {
+					selCount++;
+				}
+				if(one[i].checked == false) {
+					unSelCount++;
+				}
+				if(selCount == one.length) {
+					all.checked = true;
+				}
+				if(unSelCount > 0) {
+					all.checked = false;
+				}
+			}
+			if(selCount == 0) {
+				sureButton.setAttribute("style", "opacity:0.4;")
+			} else {
+				sureButton.setAttribute("style", "opacity:1;")
+			}
+		}
+	</script>
+
+</html>

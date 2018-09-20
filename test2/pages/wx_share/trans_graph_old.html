@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <meta name="description" content="星管家星管家星管家" />
+    <title>星榜单</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../../css/transCss.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container_share">
+        <img src="../../img/banner.png" width="100%" />
+        <img src="../../img/yemian_pic_yuansu.png" style="position:absolute;top:26%;left:-17px;" />
+        <div class="m-select">
+            <p class="m-select-text" onclick="drowDown()">
+                <span id="merc-id">暂无商户</span>
+                <span id="triangle-up"></span>
+            </p>
+            <ul id="merc-list">
+                <li style="visibility:hidden;">占位符</li>
+                <!-- 加载商户名 -->
+            </ul>
+        </div>
+        <!-- echarts图表 -->
+        <div class="moudle1">
+            <p style="padding-top:20px;" id="date1">/ 年 / 月 / 日的交易额 (%)</p>
+            <p style="font-size:10px;visibility:hidden;">Transaction amount</p>
+            <!-- 在同一地区和行业  -->
+            <span id="hasRecord">
+                <div id="main1" style="width: 120px;height:120px;"></div>
+                <div id="main2" style="width: 120px;height:120px;"></div>
+                <p style="margin-top:125px;position:relative;top:-20px;text-align:center;">
+                    <span style="display:block; width:115px;float:left;" id="city">上海</span>
+                    <span style="display:block; width:172px;float:left;" id="industry">餐饮业</span>
+                </p>
+                <p style="padding-top:10px;position:relative;top:-10px;text-align:center;margin-left:0;">
+                    <span class="yel-squ">■ </span>
+                    <span style="font-size:10px;padding-right:10px;">该商户</span>
+                    <span class="white-squ">■ </span>
+                    <span style="font-size:10px;">其他商户</span>
+                </p>
+            </span>
+            <!-- 不在同一地区和行业  -->
+            <div id="hasNoRecord">
+                <img src="../../img/no-record.png" width="60px">
+                <p id="no-text1">抱歉，该商户下门店不在同一地区</p>
+                <p>暂时无法统计</p>
+            </div>
+            <!-- 无绑定商户时 -->
+            <div id="hasNoStore">
+                <img src="../../img/no-record.png" width="60px">
+                <p>暂无商户绑定</p>
+            </div>
+        </div>
+
+        <div class="moudle2">
+            <p style="padding-top:20px;margin-left:20px;" id="date2">/ 年 / 月 / 日的交易笔数 (%)</p>
+            <p style="font-size:10px;margin-left:20px;visibility:hidden;">Number of transactions</p>
+            <!-- 在同一地区和行业  -->
+            <span id="hasRecord2">
+                <div id="main3" style="width: 260px;height:110px;"></div>
+                <p style="text-align:center;padding-top:10px;">
+                    <span class="yel-squ">■ </span>
+                    <span style="font-size:10px;padding-right:10px;">该商户</span>
+                    <span class="white-squ">■ </span>
+                    <span style="font-size:10px;">其他商户</span>
+                </p>
+            </span>
+            <!-- 不在同一地区和行业  -->
+            <div id="hasNoRecord2">
+                <img src="../../img/no-record.png" width="60px">
+                <p id="no-text2">抱歉，该商户下门店不在同一行业</p>
+                <p>暂时无法统计</p>
+            </div>
+            <!-- 无绑定商户时 -->
+            <div id="hasNoStore2">
+                <img src="../../img/no-record.png" width="60px">
+                <p>暂无商户绑定</p>
+            </div>
+        </div>
+        <button id="app_page" onclick="share2wx()" style="display:block;">去朋友圈炫单</button>
+        <button id="wx_page" onclick="downloadApp()" style="display:none;">我也要上榜</button>
+        <p style="visibility:hidden;height:30px;"></p>
+        <!-- <img src="../../img/yemian_pic_yuansuyouxia.png" width="71px" style="position:absolute;bottom:0;right:0;"> -->
+    </div>
+    <div class="wjy">
+        <div>
+            <img src="../../img/@2xtankuang_pic_weijiaoyi.png">
+            <img src="../../img/@2xtankuang_icon_guanbi.png" onclick="closeeWjy()">
+            <p>商户当日未产生交易</p>
+            <button onclick="closeeWjy()">确定</button>
+        </div>
+    </div>
+
+
+    <script src="../../js/echarts.simple.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/utils.js"></script>
+    <!-- 初始化表单 -->
+    <script type="text/javascript">
+        function drawCharts() {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart1 = echarts.init(document.getElementById('main1'));
+            var myChart2 = echarts.init(document.getElementById('main2'));
+            var myChart3 = echarts.init(document.getElementById('main3'));
+
+            // 指定图表的配置项和数据
+            var option1 = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                grid: {
+                    left: '0',
+                    right: '0',
+                    bottom: '0',
+                    top: '0',
+                    containLabel: true
+                },
+                series: [
+                    {
+                        name: '交易额占比',
+                        type: 'pie',
+                        silent: true,
+                        radius: ['60%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'center',
+                                fontSize: '15',
+                            },
+                        },
+                        data: [
+                            { value: op1_v1, name: '' },
+                            { value: op1_v2, name: op1_n2 },
+                        ]
+                    }
+                ],
+                color: ['#FFFFFF', '#FFDC62'],
+            };
+            var option2 = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                series: [
+                    {
+                        name: '交易额占比',
+                        type: 'pie',
+                        radius: ['60%', '70%'],
+                        avoidLabelOverlap: false,
+                        silent: true,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'center',
+                                fontSize: '15',
+                            },
+                        },
+                        data: [
+                            { value: op2_v1, name: '' },
+                            { value: op2_v2, name: op2_n2 },
+                        ]
+                    }
+                ],
+                color: ['#FFFFFF', '#FFDC62'],
+            };
+            var option3 = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                grid: {
+                    left: '0',
+                    right: '0',
+                    bottom: '0',
+                    top: '0',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: [
+                            {
+                                value: op3_city,
+                                textStyle: {
+                                    fontSize: 12,
+                                    color: '#FFFFFF'
+                                }
+                            }, {
+                                value: op3_industry,
+                                textStyle: {
+                                    fontSize: 12,
+                                    color: '#FFFFFF'
+                                }
+                            }
+                        ],
+                        axisLine: {
+                            lineStyle: {
+                                color: '#FFFFFF'
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        splitLine: { show: false },
+                    },
+
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: { show: false },
+                        max: 130,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#FFFFFF'
+                            }
+                        },
+                        axisLabel: {
+                            show: false
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                    }
+                ],
+                series: [
+                    {
+                        name: '上海',
+                        type: 'bar',
+                        data: [op3_v1, op3_v2],
+                        silent: true,
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: true,//是否展示  
+                                    textStyle: {
+                                        fontSize: '14',
+                                        fontFamily: '微软雅黑',
+                                        color: '#FFFFFF'
+
+                                    },
+                                    position: 'top',
+                                    formatter: '{c}',
+                                }
+                            }
+                        },
+                        barWidth: 35,
+                    },
+                    {
+                        name: '其他行业',
+                        type: 'bar',
+                        stack: '广告',
+                        data: [op3_v3, op3_v4],
+                        barWidth: 35,
+                    },
+                ],
+                color: ['#FFDC62', '#FFFFFF'],
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart1.setOption(option1);
+            myChart2.setOption(option2);
+            myChart3.setOption(option3);
+        }
+    </script>
+    <!-- 页面初始化 -->
+    <script>
+        mui.init();
+        is_weixin();
+        $(".container_share").css("minHeight", document.documentElement.clientHeight + "px");
+
+        //获取url信息
+        var usr_no = getUrlParams("usr_no");
+        var usr_typ = getUrlParams("usr_typ");
+        var version = getUrlParams("version");
+        var opSys = getUrlParams("opSys");
+        var token_id = getUrlParams("token_id");
+        var mercIdList = [];
+        var mercIdList2 = [];
+        var op1_n1, op1_n2, op1_v1, op1_v2;
+        var op2_n1, op2_n2, op2_v1, op2_v2;
+        var op3_v1, op3_v2, op3_v3, op3_v4;
+        var op3_city, op3_industry;
+
+        console.log("usr_no: " + usr_no + " usr_typ:" + usr_typ + " version:" + version + " opSys:" + opSys + " token_id:" + token_id);
+        getInfo();
+
+        function closeeWjy() {
+            $(".wjy").css("display", "none");
+        };
+
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                $("#app_page").css("display", "none");
+                $("#wx_page").css("display", "block");
+                console.log("是微信浏览器");
+            } else {
+                $("#app_page").css("display", "block");
+                $("#wx_page").css("display", "none");
+                console.log("不是微信浏览器");
+            }
+        };
+
+        function drowDown() {
+            $(".m-select ul").slideToggle();
+            $("#triangle-up").toggleClass("rotate-tri");
+        };
+
+        function getInfo() {
+            //查询绑定商户
+            var data = {
+                "contentTyp": "application/json",
+                "characterSet": "GBK",
+                "sys_cnl": "app",
+                "version": version,
+                "opSys": opSys,
+                "token_id": token_id,
+                "usr_no": usr_no,
+                "usr_typ": usr_typ
+            };
+            console.log(data);
+
+            // mui.ajax("http://101.227.81.8:8302/estmapp/checkmer1.json", {
+            mui.ajax(API.CHECKMER, {
+                data: JSON.stringify(data),
+                dataType: 'json',
+                type: 'post',
+                success: function (res) {
+                    if (res.repCode === "000000") {
+                        //下拉列表内容
+                        for (var i = 0; i < res.mercList.length; i++) {
+                            if (res.mercList[i].merc_auth_sts == "0" || res.mercList[i].merc_auth_sts == "3" || res.mercList[i].merc_auth_sts == "6" || res.mercList[i].merc_auth_sts == "7") {
+                                mercIdList2[i] = {
+                                    "merc_nm": res.mercList[i].merc_nm,
+                                    "merc_id": res.mercList[i].merc_id
+                                }
+                            }
+                        }
+                        console.log(mercIdList2);
+
+                        for (var i = 0; i < mercIdList2.length; i++) {
+                            if (mercIdList2[i] != undefined) {
+                                mercIdList.push(mercIdList2[i]);
+                            }
+                        }
+                        console.log(mercIdList);
+
+                        //下拉列表首选项
+                        $("#merc-id").text(addEllipsis(mercIdList[0]['merc_nm'], 6));
+                        for (var i = 0; i < mercIdList.length; i++) {
+                            $("#merc-list").append(
+                                '<li class="select-on" onclick="liClick(' + i + ')" >' + mercIdList[i].merc_nm + "</li>"
+                            );
+                        }
+                        queryRank(0);
+
+                    } else if (res.repCode === "STM001") {
+                        $("#merc-id").text("无绑定商户");
+                        $("#hasRecord").css("display", "none");
+                        $("#hasRecord2").css("display", "none");
+                        $("#hasNoStore").css("display", "block");
+                        $("#hasNoStore2").css("display", "block");
+
+                    } else if (res.repCode === "SRM302") {
+                        alert(res.repMsg+" 请重新登录");
+                        callLogOutApp();
+                    } else {
+                        alert('错误代号：' + res.repCode + ' 错误原因：' + res.repMsg);
+                    }
+                },
+                error: function (xhr, type, errorThrown) {
+                    console.log(type);
+                    console.log(xhr);
+                    console.log(errorThrown);
+                    alert("服务器开小差啦，请稍后再试");
+                }
+            });
+        };
+
+        function queryRank(index) {
+            console.log("index: " + index);
+            //查询排名
+            var data = {
+                "contentTyp": "application/json",
+                "characterSet": "GBK",
+                "sys_cnl": "app",
+                "version": version,
+                "opSys": opSys,
+                "token_id": token_id,
+                "usr_no": usr_no,
+                "usr_typ": usr_typ,
+                "merc_id": mercIdList[index]['merc_id']
+            };
+            console.log(data);
+            
+            // mui.ajax("http://101.227.81.8:8302/estmapp/qry_tran_rank.json", {
+            mui.ajax(API.QRYTRANRANK, {
+                data: JSON.stringify(data),
+                dataType: 'json',
+                type: 'post',
+                success: function (res) {
+                    console.log(res);
+                    if (res.repCode === "000000" || res.repCode === "100016") {
+                        if (res.repCode === "100016") {
+                            //商户当日未产生交易
+                            $("#date1").text(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2) + "月" + res.ac_dt.substr(6, 2)  + "日的交易额 (%)");
+                            $("#date2").text(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2) + "月" + res.ac_dt.substr(6, 2)  + "日的交易笔数 (%)");
+                            $(".wjy p").text("商户当日未产生交易");
+                            $(".wjy").css("display", "block");
+                        }
+                        if (res.muti_ind_flg === "0") {
+                            // 初始化模块显隐
+                            $("#hasRecord").css("display", "initial");
+                            $("#hasRecord2").css("display", "initial");
+                            $("#hasNoRecord").css("display", "none");
+                            $("#hasNoRecord2").css("display", "none");
+                            $("#hasNoStore").css("display", "none");
+                            $("#hasNoStore2").css("display", "none");
+
+                            //获取日期、行业、城市
+                            $("#date1").text(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2) + "月" + res.ac_dt.substr(6, 2) + "日的交易额 (%)");
+                            $("#date2").text(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2) + "月" + res.ac_dt.substr(6, 2) + "日的交易笔数 (%)");
+                            $("#city").text(res.city);
+                            $("#industry").text(res.industry);
+                            op3_city = res.city;
+                            op3_industry = res.industry;
+
+                            // 交易额城市领先率
+                            op1_n1 = 100 - Number(res.amt_city_pri);
+                            op1_n2 = Number(res.amt_city_pri).toFixed(2);
+                            op1_v1 = 100 - Number(res.amt_city_pri);
+                            op1_v2 = Number(res.amt_city_pri);
+
+                            // 交易额行业领先率
+                            op2_n1 = 100 - Number(res.amt_ind_pri);
+                            op2_n2 = Number(res.amt_ind_pri).toFixed(2);
+                            op2_v1 = 100 - Number(res.amt_ind_pri);
+                            op2_v2 = Number(res.amt_ind_pri);
+
+                            // 交易笔数城市领先率
+                            op3_v1 = Number(res.cnt_city_pri).toFixed(2);
+                            // 交易笔数行业领先率
+                            op3_v2 = Number(res.cnt_ind_pri).toFixed(2);
+
+                            op3_v3 = 100 - Number(res.cnt_city_pri);
+                            op3_v4 = 100 - Number(res.cnt_ind_pri);
+                            drawCharts();
+                        } else {
+                            // 跨行业时无法统计
+                            $("#hasRecord").css("display", "none");
+                            $("#hasRecord2").css("display", "none");
+                            $("#hasNoRecord").css("display", "block");
+                            $("#hasNoRecord2").css("display", "block");
+                            $("#no-text1").text("抱歉，该商户下门店不在同一行业");
+                            $("#no-text2").text("抱歉，该商户下门店不在同一行业");
+                        }
+                    } else if (res.repCode === "100021") {
+                        // 商户当日未产生交易
+                        $("#date1").text(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2)  + "月" + res.ac_dt.substr(6, 2)  + "日的交易额 (%)");
+                        $("#date2").text(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2)  + "月" + res.ac_dt.substr(6, 2) + "日的交易笔数 (%)");
+
+                        $(".wjy p").text("商户当日未产生交易");
+                        $(".wjy").css("display", "block");
+
+                        $("#hasRecord").css("display", "none");
+                        $("#hasRecord2").css("display", "none");
+                        $("#hasNoRecord").css("display", "block");
+                        $("#hasNoRecord2").css("display", "block");
+                        $("#no-text1").text("抱歉，该商户当日未产生交易");
+                        $("#no-text2").text("抱歉，该商户当日未产生交易");
+
+                    } else {
+                        alert('错误代号：' + res.repCode + ' 错误原因：' + res.repMsg);
+                    }
+                },
+                error: function (xhr, type, errorThrown) {
+                    console.log(type);
+                    console.log(xhr);
+                    console.log(errorThrown);
+                    alert("服务器开小差啦，请稍后再试");
+                }
+            });
+        };
+
+        //li点击事件
+        function liClick(index) {
+            $("#triangle-up").toggleClass("rotate-tri");
+            $(".m-select ul").slideUp();
+            $("#merc-id").text(addEllipsis(mercIdList[index].merc_nm, 6));
+            queryRank(index);
+            drawCharts();
+        };
+
+        function share2wx() {
+            callLayPoint("StarRankShare2wx");
+
+            //调用ios/Android分享方法
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isAndroid) {
+                window.android.callWeChatShare();
+            } else if (isiOS) {
+                window.WebViewJavascriptBridge.callWeChatShare(
+                    "callWeChatShare",
+                    function responseCallback(responseData) {
+                        console.log("JS received response:", responseData);
+                    }
+                );
+            }
+        };
+
+        function downloadApp() {
+            //在微信中打开显示该按钮 点击后下载星管家
+            window.location.href = "skip.html";
+        };
+    </script>
+
+</body>
+
+</html>

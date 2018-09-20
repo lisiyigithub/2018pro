@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新手引导</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<link href="../../css/novice.css" rel="stylesheet" />
+		<link href="../../css/lexible_css.css" rel="stylesheet" />
+		<style>
+			.text {
+				padding-top: 64px;
+			}		
+			@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+				.text {
+					padding-top: 88px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<span onclick="javascript :history.back(-1);">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fanhuijiantou-copy"></use>
+            </svg>
+        </span>
+			<h1 class="mui-title">新手引导</h1>
+		</header>
+		<p class="text">选择你的了解类型</p>
+		<div style="background: white;">
+			<div class="novice_item" onclick="openWdDialog('如何添加成为星管家app管理员？',1)">
+				<span>如何添加成为星管家app管理员？</span>
+			</div>
+			<hr class="novice_hr" />
+			<div class="novice_item" onclick="openWdDialog('如何添加成为星管家APP操作员？',2)">
+				<span>如何添加成为星管家APP操作员？</span>
+			</div>
+			<hr class="novice_hr" />
+			<div class="novice_item" onclick="openWdDialog('如何通过星管家自主申请签约星码？',3)">
+				<span>如何通过星管家自主申请签约星码？</span>
+			</div>
+			<hr class="novice_hr" />
+			<div class="novice_item" onclick="openWdDialog('如何操作退款？',4)">
+				<span>如何操作退款？</span>
+			</div>
+			<hr class="novice_hr" />
+			<div class="novice_item" onclick="openWdDialog('如何查询交易信息？',5)">
+				<span>如何查询交易信息？</span>
+			</div>
+			<hr class="novice_hr" />
+			<div class="novice_item" onclick="openWdDialog('如何查询划款信息？',6)">
+				<span>如何查询划款信息？</span>
+			</div>
+			<hr class="novice_hr" />
+			<div class="novice_item" onclick="openWdDialog('怎样开通提现，开通后该怎样提现到银行卡？',7)">
+				<span>怎样开通提现，开通后该怎样提现到银行卡？</span>
+			</div>
+		</div>
+		<div class="screen-mask">
+			<div class="problem-dialog">
+				<div class="dialog_title">
+					<span id="title_text"></span>
+					<img src="../../img/@2xxinshopuyindao_icon_close.png" onclick="closeWdDialog()" />
+					<div style="position: absolute; width: 100%;height: 1px;z-index: 100;" class="hr">
+						<hr class="dialog_hr" />
+					</div>
+				</div>
+				<div class="mui-scroll-wrapper dialog_text">
+					<div class="mui-scroll" id="screen_scroll">
+
+					</div>
+				</div>
+				<div class="dialog_button">
+					<div class="line">
+						<span>解答对您有帮助吗</span>
+					</div>
+					<div class="div_button_resolved">
+						<input id="resolved" type="checkbox" name="item" value="已解决 " onclick="onRadio(1)">
+						<label for="item"></label>
+						<span id="span_resolved">已解决</span>
+					</div>
+					<div class="div_button_unsolved">
+						<input id="unsolved" type="checkbox" name="item" value="未解决 " onclick="onRadio(2)">
+						<label for="item"></label>
+						<span id="span_unsolved">未解决</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/novice.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/flexible.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			mui('.mui-scroll-wrapper').scroll({
+				scrollY: true, //是否竖向滚动
+				scrollX: false, //是否横向滚动
+				startX: 0, //初始化时滚动至x
+				startY: 0, //初始化时滚动至y
+				indicators: true, //是否显示滚动条
+				deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+				bounce: true //是否启用回弹
+			});
+			var resolved = document.getElementById("resolved");
+			var unsolved = document.getElementById("unsolved");
+			var span_resolved = document.getElementById("span_resolved");
+			var span_unsolved = document.getElementById("span_unsolved");
+			var user_info = sessionFetch("user_info");
+			var title_web = "";
+			var id = "";
+			
+			//mui(".dialog_text").top = mui(".dialog_title").height;
+			//打开弹框 
+			function openWdDialog(title, index) {
+				mui(".screen-mask")[0].style.display = "block ";
+				mui("body")[0].style.position = "fixed ";
+				var title_text = document.getElementById("title_text");
+				var screen_scroll = document.getElementById("screen_scroll");
+				title_text.innerText = title;
+				screen_scroll.innerHTML = eval('novice_' + index);
+				title_web = title;
+				id = index;
+				console.log(mui(".dialog_text")[0].offsetTop);
+				console.log(mui(".dialog_title")[0].offsetHeight+"px");
+				mui(".dialog_text")[0].style.top = mui(".dialog_title")[0].offsetHeight+"px"
+				mui(".hr")[0].style.top = (mui(".dialog_title")[0].offsetHeight-1)+"px"
+			};
+
+			//关闭弹框
+			function closeWdDialog() {
+				mui(".screen-mask")[0].style.display = "none";
+				mui("body")[0].style.position = "static";
+				var resolved = document.getElementById("resolved");
+				var unsolved = document.getElementById("unsolved");
+				if(resolved.checked) {
+					feedback(true);
+				} else if(unsolved.checked) {
+					feedback(false);
+				}
+				resolved.checked = false;
+				unsolved.checked = false;
+				span_resolved.setAttribute("style", "color: #999999;")
+				span_unsolved.setAttribute("style", "color: #999999;")
+				mui('.dialog_text').scroll().scrollTo(0, 0);
+			}
+
+			function onRadio(num) {
+
+				if(resolved.checked || unsolved.checked) {
+					if(num == "1") {
+						span_resolved.setAttribute("style", "color: #5691F5;")
+						span_unsolved.setAttribute("style", "color: #999999;")
+					} else {
+						span_resolved.setAttribute("style", "color: #999999;")
+						span_unsolved.setAttribute("style", "color: #5691F5;")
+					}
+				}
+				if(!resolved.checked) {
+					span_resolved.setAttribute("style", "color: #999999;")
+				}
+				if(!unsolved.checked) {
+					span_unsolved.setAttribute("style", "color: #999999;")
+				}
+				if(resolved.checked && unsolved.checked) {
+					if(num == "1") {
+						unsolved.checked = false;
+					} else {
+						resolved.checked = false;
+					}
+				}
+			}
+
+			function feedback(isSolve) {
+				if(isSolve) {
+					var data = {
+						"contentTyp": "application/json",
+						"characterSet": "GBK",
+						"sys_cnl": "app",
+						"version": user_info.version,
+						"opSys": user_info.opSys,
+						"token_id": user_info.token_id,
+						"usr_no": user_info.usr_no,
+						"usr_typ": user_info.usr_typ,
+						"id": id+"",
+						"flag":"0",
+						"title":title_web
+					};
+				}else{
+					var data = {
+						"contentTyp": "application/json",
+						"characterSet": "GBK",
+						"sys_cnl": "app",
+						"version": user_info.version,
+						"opSys": user_info.opSys,
+						"token_id": user_info.token_id,
+						"usr_no": user_info.usr_no,
+						"usr_typ": user_info.usr_typ,
+						"id": id+"",
+						"flag":"1",
+						"title":title_web
+					};
+				}
+				console.log(data)
+				mui.ajax(API.INSERTHUGPAGES, {
+					data: data,
+					dataType: 'json',
+					type: 'post',
+					contentType: "application/json; charset=utf-8",
+					success: function(res) {
+						console.log(res);
+						id="";
+						title_web="";
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(type);
+						console.log(xhr);
+						mui.alert("服务器开小差啦，请稍后再试");
+						id="";
+						title_web="";
+						// window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

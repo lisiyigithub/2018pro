@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>我的订单</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="no-order">
+			<img src="../../img/wodedingdan_kongbai@2x.png">
+			<p>亲，您还没有订单记录哦...</p>
+		</div>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">我的订单</h1>
+		</header>
+		<ul id="qt" class="mui-table-view"></ul>
+		<script type="text/template" id="tpl">
+			<%_.each(obj,function(e,i){%>
+			<form class="mui-input-group myorder-form">
+				<div class="mui-input-row">
+					<label>订单编号</label>
+					<input type="text" class="mui-input-clear" style="font-size:13px;" value=<%=e.payNumber%> disabled>
+				</div>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row order-input">
+					<label>服务名称</label>
+					<input type="text" class="mui-input-clear" value=<%=e.appName%> disabled>
+				</div>
+				<div class="mui-input-row order-input">
+					<label>终端数量</label>
+					<input type="text" class="mui-input-clear" value="1台" disabled>
+				</div>
+				<div class="mui-input-row order-input">
+					<label>终端号</label>
+					<input type="text" class="mui-input-clear" value=<%=e.trmNo%> disabled>
+				</div>
+				<div class="mui-input-row order-input">
+					<label>有限期限</label>
+					<% if(e.validTerm ==  '0'  ){ %>
+					<input type="text" class="mui-input-clear" value='不限月' disabled>
+					<% }else{ %>
+					<input type="text" class="mui-input-clear" value=<%=e.operationMoney%>+'个月' disabled>
+					<% } %>
+
+				</div><br>
+				<div class="gray-solid-line"></div>
+				<div class="order-count">
+					<span class="total-count2" style="text-align:left;">
+                    合计：<span class="money-count"><%=Number(e.paymentTotal).toFixed(2)%></span>
+					</span>
+					<!-- 判断支付状态-->
+					<% if(e.isPay ==  '0'  ){ %>
+					<button type="button" class="mui-btn mui-btn-primary my-btn2" onclick="callAliPay('<%=e.paymentTotal%>','<%=e.appName%>'+'开通费','<%=e.payNumber%>')">去支付</button>
+					<% } %>
+					<% if(e.isPay ==  '1'){ %>
+					<span class="payed">已支付</span>
+					<% } %>
+				</div>
+
+			</form>
+			<%})%>
+		</script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="../../js/underscore-min.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var tplRender = _.template($("#tpl").html());
+
+			var user_info = sessionFetch('user_info');
+			var orderAppInfo = sessionFetch('orderAppInfo');
+
+			var data = {
+				"contentTyp": "application/json",
+				"characterSet": "GBK",
+				"sys_cnl": "app",
+				"version": user_info.version,
+				"opSys": user_info.opSys,
+				"token_id": user_info.token_id,
+				"usr_no": user_info.usr_no,
+				"usr_typ": user_info.usr_typ
+			}
+			//查询usr_no下对应的终端
+			mui(".loading")[0].style.display = "block";
+			mui.ajax(API.QRYTERMINFO, {
+				dataType: 'json', //服务器返回json格式数据
+				contentType: "application/json; charset=utf-8",
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				data: data,
+				success: function(data) {
+					console.log('请求成功')
+					console.log(data)
+					if(data.repCode === '000000') {
+						mui(".loading")[0].style.display = "none";
+						if(data.termlist !== undefined) {
+							var terminalNos = [];
+							for(var i = 0; i < data.termlist.length; i++) {
+								terminalNos.push(data.termlist[i].merc_id);
+							}
+							var params = {
+								appId: "com.nld.takeout",
+								terminalNos: terminalNos,
+								token_id: user_info.token_id,
+								sys_identification: "0",
+								userId: user_info.usr_no
+							}
+							mui.ajax(API.ORDERUSERANDAPPLIST, {
+								dataType: 'json', //服务器返回json格式数据
+								contentType: "application/json; charset=utf-8",
+								type: 'post', //HTTP请求类型
+								data: params,
+								timeout: 10000, //超时时间设置为10秒；
+								success: function(data) {
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									console.log('请求成功')
+									if(data.errorCode === '0000') {
+										if(data.appreciateOrderListResps.length === 0) {
+											mui(".no-order")[0].style.display = "block";
+										} else {
+											mui(".no-order")[0].style.display = "none";
+											var datas = data.appreciateOrderListResps;
+											$("#qt").append(tplRender(datas));
+										}
+									} else if(data.errorCode === "4621") {
+										mui(".no-order")[0].style.display = "block";
+									} else {
+										mui(".no-order")[0].style.display = "block";
+										//mui.alert("返回异常，errorCode:" + data.errorCode + ",message:" + data.message, " ", "确定");
+										window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + data.errorCode + "&error_msg=" + data.message;
+									}
+								},
+								error: function(xhr, type, errorThrown) {
+									//异常处理；
+									mui.alert('网络异常,请稍候再试', " ", "确定");
+									console.log(type);
+								}
+							});
+						} else {
+							mui(".no-order")[0].style.display = "block";
+						}
+
+					} else {
+						mui(".loading")[0].style.display = "none";
+						mui.alert("返回异常，repCode:" + data.repCode + ",repMsg:" + data.repMsg, " ", "确定", function() {
+							callLogOutApp();
+						});
+					}
+
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					mui(".loading")[0].style.display = "none";
+					//mui.alert('网络异常,请稍候再试', " ", "确定");
+					window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					console.log(type);
+				}
+			});
+		</script>
+	</body>
+
+</html>

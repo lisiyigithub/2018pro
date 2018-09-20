@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>开通申请</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<style>
+			#csn {
+				padding-right: 28px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn' >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"   id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">开通申请</h1>
+		</header>
+		<div class="open-apply">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>服务名称</label>
+					<input type="text" id='appName' value="" disabled>
+				</div>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row">
+					<label>开通范围</label>
+					<input type="text" id="csn" placeholder="请选择终端" readonly onclick="callSelect()">
+					<span class="mui-icon mui-icon-arrowright" style="position: relative;top:-28px;left:-8px;float:right;color:#A5A5A5;"></span>
+				</div>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row">
+					<label>开通费用</label>
+					<input type="text" id='priceTotal' value="" disabled>
+				</div>
+			</form>
+			<p style="font-size:12px;margin:0 15px;">本次申请的服务，仅可在选中的终端上使用。</p>
+			<div class="mui-input-row mui-checkbox mui-left" style="font-size:13px;">
+				<label>已阅读并同意<span class="blue-text">《订单来了》</span></label>
+				<input name="checkbox1" value="c1" type="checkbox">
+			</div>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary my-btn" onclick="next_step()" style="margin-top:55%;">下一步</button>
+			</div>
+		</div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var user_info = sessionFetch('user_info');
+			var orderAppInfo = sessionFetch('orderAppInfo');
+
+//			//监听浏览器返回事件
+//			$(document).ready(function(e)  {
+//				if (window.history  &&  window.history.pushState)  {
+//					$(window).on('popstate',  function ()  {
+//						//带参数返回首页
+//						window.location.href = "index.html?usr_no=" + user_info.userId + "&usr_typ=" + user_info.usr_typ + "&version=" + user_info.version + "&opSys=" + user_info.opSys + "&token_id=" + user_info.token_id;
+//					});
+//				}
+//				window.history.pushState('forward',  null,  '#');  //在IE中必须得有这两行  
+//				window.history.forward(1);
+//			});
+			document.getElementById('appName').value = orderAppInfo.appName;
+			document.getElementById('priceTotal').value = Number(orderAppInfo.ocFixedAmount).toFixed(2) + ' 元 / 终端';
+
+			var selected = getUrlParams('selected');
+			if(selected === "y") {
+				mui('#csn')[0].value = "已选择";
+			}
+			//点击下拉列表事件
+			function callSelect() {
+				window.location.href = "csn_selection.html";
+			};
+
+			//验证表单信息
+			function next_step() {
+				callLayPoint("OrderNextStep");
+
+				var status = mui("[name=checkbox1]")[0]['checked'];
+				var val = mui('#csn')[0]['value'];
+
+				if(val == "") {
+					mui.alert("请选择终端", " ", "确定");
+					return;
+				}
+				if(!status) {
+					mui.alert("请阅读并同意《订单来了》", " ", "确定");
+					return;
+				}
+
+				mui.openWindow({
+					url: 'confirm_order.html'
+				});
+			};
+		</script>
+	</body>
+
+</html>

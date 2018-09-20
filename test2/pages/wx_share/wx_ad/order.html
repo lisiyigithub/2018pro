@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>我的订单</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<style>
+			.mui-input-row label {
+				width: 40%
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 60%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="no-order">
+			<img src="../../img/wodedingdan_kongbai@2x.png">
+			<p>亲，您还没有订单记录哦...</p>
+		</div>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn' >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"   id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">我的订单</h1>
+		</header>
+		<ul id="qt" class="mui-table-view"></ul>
+		<script type="text/template" id="tpl">
+			<%_.each(obj,function(e,i){%>
+			<form class="mui-input-group myorder-form">
+				<div class="mui-input-row">
+					<label>订单编号</label>
+					<input type="text" class="mui-input-clear" style="font-size:13px;" value=<%=e.advertisementOrderNo%> disabled>
+				</div>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row order-input">
+					<label>商户</label>
+					<input type="text" class="mui-input-clear" value=<%=e.merName%> disabled>
+				</div>
+				<div class="mui-input-row order-input">
+					<label>代理</label>
+					<input type="text" class="mui-input-clear" value=<%=e.agentName%> disabled>
+				</div>
+				<div class="mui-input-row order-input">
+					<label>联系人</label>
+					<input type="text" class="mui-input-clear" value=<%=e.userName%> disabled>
+				</div>
+				<div class="mui-input-row order-input">
+					<label>联系方式</label>
+					<input type="text" class="mui-input-clear" value=<%=e.userTelephone%> disabled>
+				</div><br>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row order-input">
+					<label>推广服务费</label>
+					<input type="text" class="mui-input-clear" value=<%=Number(e.serviceMoney).toFixed(2)%> disabled>
+				</div>
+				<div class="mui-input-row order-input">
+					<label>运营费</label>
+					<input type="text" class="mui-input-clear" value=<%=Number(e.operationMoney).toFixed(2)%> disabled>
+				</div><br>
+				<div class="gray-solid-line"></div> 
+				<div class="order-count">
+					<span class="total-count2" style="text-align:left;">
+            合计：<span class="money-count">￥<%=Number(e.serviceMoney+e.operationMoney).toFixed(2)%></span>
+					</span>
+					<!-- 判断支付状态-->
+					<% if(e.payStatus ==  '2'  ){ %>
+					<button type="button" class="mui-btn mui-btn-primary my-btn2" onclick="callAliPay('<%=Number(e.serviceMoney+e.operationMoney).toFixed(2)%>','朋友圈开通费用','<%=e.advertisementOrderId%>')">去支付</button>
+					<% } %>
+					<% if(e.payStatus ==  '1'){ %>
+					<span class="payed">已支付</span>
+					<% } %>
+					<% if(e.payStatus ==  '0' ){ %>
+					<button type="button" class="mui-btn mui-btn-primary my-btn2" onclick="callAliPay('<%=Number(e.serviceMoney+e.operationMoney).toFixed(2)%>','朋友圈开通费用','<%=e.advertisementOrderId%>')">去支付</button>
+					<% } %>
+
+				</div>
+
+			</form>
+			<%})%>
+		</script>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="../../js/underscore-min.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			var tplRender = _.template($("#tpl").html());
+			mui.init();
+			//获取url中的usr_no参数
+			var user_info = sessionFetch('user_info');
+			var usr_no = user_info.usr_no;
+//			alert(usr_no)
+			if(checkParam(usr_no, "usr_no")) {
+				//查询订单列表
+				mui(".loading")[0].style.display = "block";
+				mui(".no-order")[0].style.display = "none";
+				mui.ajax(API.QUERYFRIEND + '?userId=' + usr_no + '&sys_identification=0&token_id=' + user_info.token_id, {
+					dataType: 'json', //服务器返回json格式数据
+					contentType: "application/json; charset=utf-8",
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+						console.log('请求成功')
+						if(data.errorCode === '0000') {
+							if(data.cirCleFriendList.length === 0) {
+								//mui.alert("暂未查到您的订单！");
+								mui(".loading")[0].style.display = "none";
+								mui(".no-order")[0].style.display = "block";
+							} else {
+								mui(".loading")[0].style.display = "none";
+								var cirCleFriendList = data.cirCleFriendList;
+								$("#qt").append(tplRender(cirCleFriendList));
+							}
+						} else if(data.errorCode === '0001') {
+							mui(".loading")[0].style.display = "none";
+							mui(".no-order")[0].style.display = "block";
+						} else {
+							mui(".loading")[0].style.display = "none";
+							//mui.alert("返回异常，errorCode:" + data.errorCode + ",message:" + data.message);
+							window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + data.errorCode + "&error_msg=" + data.message;
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						//mui.alert('请求错误')
+						window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+						mui(".loading")[0].style.display = "none";
+						console.log(type);
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

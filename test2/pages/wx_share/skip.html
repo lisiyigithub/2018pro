@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>星榜单</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .test {
+            height: 600px;
+            max-width: 600px;
+            font-size: 40px;
+        }
+
+        #advertising {
+            display: none;
+        }
+
+        #weixinTip_android {
+            display: none;
+            background-color: rgba(0, 0, 0, .8);
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        #weixinTip_ios {
+            display: none;
+            background-color: rgba(0, 0, 0, .8);
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        #weixinTip_android p {
+            color: #FFFFFF;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        #weixinTip_ios p {
+            color: #FFFFFF;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .people {
+            margin-top: 90px;
+        }
+
+        .line {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='skip-panel'>
+        <div id="weixinTip_android">
+            <img src="../../img/people.png" width="80px" class="people" />
+            <img src="../../img/line.png" width="150px" class="line" />
+            <img src="../../img/android_zi.png" width="280px" class="zi">
+        </div>
+        <div id="weixinTip_ios">
+            <img src="../../img/people.png" width="80px" class="people" />
+            <img src="../../img/line.png" width="150px" class="line" />
+            <img src="../../img/ios_zi.png" width="280px" class="zi">
+        </div>
+        <div id='advertising'>
+            <img src="../../img/skip-bg.jpg">
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        briageInit();
+
+        function briageInit() {
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+            function is_weixin() {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function is_mobileQQ() {
+                var ua = navigator.userAgent.toLowerCase();
+                if (ua.match(/\sQQ/i) == " qq") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            var isWeixin = is_weixin();
+            var isMobileQQ = is_mobileQQ();
+
+            var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight;
+            var winWidth = typeof window.innerWidth != 'undefined' ? window.innerWidth : document.documentElement.clientWidth;
+
+
+            if (isWeixin || isMobileQQ) {
+                if (isiOS) {
+                    $("#weixinTip_ios").show();
+                }
+                if (isAndroid) {
+                    $("#weixinTip_android").show();
+                }
+            } else {
+                if (isiOS) {
+                    $("#advertising").show();
+                    // window.location.href = "Starpos://";//ios app协议
+                    // window.setTimeout(function() {
+                    //     window.location.href = "https://itunes.apple.com/app/id1259662141";
+                    // }, 20000)
+                    window.location = "Starpos://";//ios协议
+                    var loadDateTime = new Date();
+                    window.setTimeout(function () {
+                        var timeOutDateTime = new Date();
+                        if (timeOutDateTime - loadDateTime < 5000) {
+                            window.location = "https://itunes.apple.com/app/id1259662141";//ios下载地址
+                        } else {
+                            window.close();
+                        }
+                    }, 25);
+
+                }
+                if (isAndroid) {
+                    $("#advertising").show();
+                    window.location = "starpos://jump/welcome";//android app协议
+                    window.setTimeout(function () {
+                        window.location.href = "https://starpos.com.cn:8280/download/org/starposmanager.apk";//android 下载地址
+                    }, 20000)
+                }
+
+            }
+            $("#weixinTip").css("height", winHeight);
+            $(".people").css({
+                "margin-left": (winWidth - 80) / 2 + "px"
+            });
+            $(".zi").css({
+                "margin-left": (winWidth - 280) / 2 + "px"
+            });
+        };
+    </script>
+</body>
+
+</html>

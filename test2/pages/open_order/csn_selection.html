@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>选择终端</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<meta name="format-detection" content="telephone=no" />
+	</head>
+
+	<body>
+		<!--<div class="mn-head"></div>-->
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">选择终端</h1>
+		</header>
+		<div id="csn-select">
+			<div class="my-search-div">
+				<div class="mui-input-row mui-search my-search">
+					<input type="search" class="mui-input-clear" placeholder="搜索CSN号">
+					<span class="ss-span" onclick="onSearch()">搜索</span>
+				</div>
+			</div>
+			<div class='no-terminal'>暂无可选终端</div>
+			<ul id="qt" class="mui-table-view" style="margin-top:15px !important;"></ul>
+			<script type="text/template" id="tpl">
+				<%_.each(obj,function(e,i){%>
+				<div class="sn-nm">
+					<p>终端号：
+						<span class="zd-text"><%=e.trm_no%></span>
+					</p>
+					<p>CSN号：
+						<span class="csn-text"><%=e.sn_no%></span>
+					</p>
+					<p style='display: none;'>
+						<span class="merc_id"><%=e.merc_id%></span>
+					</p>
+					<p style='display: none;'>
+						<span class="stoe_id"><%=e.stoe_id%></span>
+					</p>
+					<p style='display: none;'>
+						<span class="merc_nm"><%=e.merc_nm%></span>
+					</p>
+					<span class="gray-circle">
+                <span class="not-select status"></span>
+					</span>
+				</div>
+				<%})%>
+			</script>
+
+		</div>
+		<button class="my-btn3" onclick="onSubmit()">确定</button>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="../../js/underscore-min.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script>
+			mui.init();
+			var tplRender = _.template($("#tpl").html());
+			var user_info = sessionFetch('user_info');
+			console.log(user_info)
+			var orderAppInfo = sessionFetch('orderAppInfo');
+			console.log(orderAppInfo)
+			var data = {
+				"contentTyp": "application/json",
+				"characterSet": "GBK",
+				"sys_cnl": "app",
+				"version": user_info.version,
+				"opSys": user_info.opSys,
+				"token_id": user_info.token_id,
+				"usr_no": user_info.usr_no,
+				"usr_typ": user_info.usr_typ
+			}
+			//查询userId下对应的终端
+			mui(".loading")[0].style.display = "block";
+			mui.ajax(API.QRYTERMINFO, {
+				dataType: 'json', //服务器返回json格式数据
+				contentType: "application/json; charset=utf-8",
+				type: 'post', //HTTP请求类型
+				timeout: 10000, //超时时间设置为10秒；
+				data: data,
+				success: function(data) {
+					console.log('请求成功')
+					if(data.repCode === '000000') {
+						mui(".loading")[0].style.display = "none";
+						//若查出终端数为0
+						console.log(data)
+						if(data.termlist === undefined) {
+							mui(".no-terminal")[0].style.display = "block";
+						} else {
+							if(data.termlist.length === 0 || data.termlist.length === undefined) {
+								mui(".no-terminal")[0].style.display = "block";
+							} else {
+								//若查出终端数不为0
+								var params = {
+									ocType: orderAppInfo.ocType,
+									applicationId: orderAppInfo.applicationId,
+									merchLists: data.termlist,
+									userId: user_info.usr_no,
+									token_id: user_info.token_id,
+									sys_identification: "0"
+								}
+								//查询usr_no下对应未开通的终端
+								mui(".loading")[0].style.display = "block";
+								mui.ajax(API.USABLEMERCHANT, {
+									dataType: 'json', //服务器返回json格式数据
+									contentType: "application/json; charset=utf-8",
+									type: 'post', //HTTP请求类型
+									timeout: 10000, //超时时间设置为10秒；
+									data: params,
+									success: function(data) {
+										console.log('请求成功')
+										console.log(data)
+										if(data.errorCode === '0000') {
+											mui(".loading")[0].style.display = "none";
+											//若查出终端数为0
+											console.log(data.appreciateUsableMerchantResps)
+											if(data.appreciateUsableMerchantResps.length === 0 || data.appreciateUsableMerchantResps.length === undefined) {
+												mui(".no-terminal")[0].style.display = "block";
+											} else {
+												//若查出终端数不为0
+												var appreciateUsableMerchantResps = data.appreciateUsableMerchantResps;
+												$("#qt").append(tplRender(appreciateUsableMerchantResps));
+											}
+										}
+									},
+									error: function(xhr, type, errorThrown) {
+										//异常处理；
+										mui(".loading")[0].style.display = "none";
+										mui.alert('网络异常,请稍候再试', " ", "确定");
+										//window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+										console.log(type);
+									}
+								});
+							}
+						}
+
+					} else {
+						mui(".loading")[0].style.display = "none";
+						//						mui.alert("返回异常，repCode:" + data.repCode + ",repMsg:" + data.repMsg, " ", "确定", function() {
+						//							mui.alert('退出回到初始页面')
+						//						});
+						window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + data.repCode + "&error_msg=" + data.repMsg;
+					}
+
+				},
+				error: function(xhr, type, errorThrown) {
+					//异常处理；
+					mui(".loading")[0].style.display = "none";
+					//mui.alert('网络异常,请稍候再试', " ", "确定");
+					console.log(type);
+					window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+				}
+			});
+			var zd_text = "";
+			var csn_text = "";
+
+			mui("#csn-select").on('tap', '.sn-nm', function() {
+				//获取商户名与商户号
+				zd_text = this.getElementsByClassName('zd-text')[0].innerText;
+				csn_text = this.getElementsByClassName('csn-text')[0].innerText;
+				stoe_id = this.getElementsByClassName('stoe_id')[0].innerText;
+				merc_id = this.getElementsByClassName('merc_id')[0].innerText;
+				merc_nm = this.getElementsByClassName('merc_nm')[0].innerText;
+
+				var zdInfo = {
+					trmNo: zd_text,
+					sn: csn_text,
+					stoe_id: stoe_id,
+					merc_id: merc_id,
+					merc_nm: merc_nm
+				}
+				sessionSave('zdInfo', zdInfo);
+				console.log(zdInfo)
+				//激活选择框
+				var cl_nm = this.getElementsByClassName('status')[0].className;
+				if(cl_nm.indexOf("not-select") != "-1") {
+					//去除后添加
+					for(var i = 0; i < mui('.status').length; i++) {
+						mui('.status')[i].className = "not-select status";
+					}
+					this.getElementsByClassName('status')[0].className = "is-select status";
+				}
+			});
+			//判断用户是否选择
+			function onSubmit() {
+				if(zd_text === "" || csn_text === "") {
+					window.location.href = "open_apply.html?&selected=n";
+				} else {
+					window.location.href = "open_apply.html?" + "zd_text=" + zd_text + "&csn_text=" + csn_text + "&selected=y";
+				}
+			};
+
+			function onSearch() {
+				var ss_value = mui('[type=search]')[0].value;
+				for(var i = 0; i < mui('.csn-text').length; i++) {
+					if(mui('.csn-text')[i].innerText.indexOf(ss_value) != -1) {
+						mui('.sn-nm')[i].style.display = "block";
+						console.log("匹配：" + i);
+					} else {
+						mui('.sn-nm')[i].style.display = "none";
+						console.log("不匹配：" + i)
+					}
+
+				}
+				console.log(ss_value);
+			};
+			//重置搜索
+			mui("body").on('tap', '.mui-icon-clear', function() {
+				for(var i = 0; i < mui('.sn-nm').length; i++) {
+					mui('.sn-nm')[i].style.display = "block";
+				}
+			});
+
+		</script>
+	</body>
+
+</html>

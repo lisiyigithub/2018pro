@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>开通成功</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<style>
+			body {
+				background: #FFFFFF;
+			}
+			/* 开通成功/失败页面 */
+			
+			#img-section1 {
+				margin-top: 120px;
+				text-align: center;
+			}
+			
+			#img-section1 img {
+				height: 62px;
+			}
+			
+			#img-section1 h4 {
+				font-family: PingFangSC-Regular;
+				font-size: 18px;
+				color: #333333;
+				line-height: 25px;
+				margin-bottom: 10px;
+			}
+			
+			#img-section1 h6 {
+				font-family: PingFangSC-Regular;
+				font-size: 14px;
+				color: #666666;
+				line-height: 20px;
+			}
+			
+			#part-open h5 {
+				font-family: PingFangSC-Regular;
+				font-size: 14px;
+				color: #666666;
+			}
+			
+			#part-open div p {
+				padding: 0px;
+				margin-bottom: 11px;
+			}
+			
+			#part-open div p span {
+				font-family: PingFangSC-Regular;
+				font-size: 16px;
+				color: #999999;
+				margin-right: 15px;
+				text-align: center;
+			}
+			
+			#part-open div p img {
+				height: 11.55px;
+			}
+			
+			#open_success_list {
+				margin-top: 17px;
+				margin-bottom: 34px;
+			}
+			
+			#open_fail_list {
+				margin-top: 22px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<span onclick="javascript :history.back(-1);">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fanhuijiantou-copy"></use>
+            </svg>
+        </span>
+			<h1 class="mui-title">申请开通</h1>
+		</header>
+
+		<div id='img-section1'>
+			<img alt="成功" src="../../img/@2ximg_success.png">
+			<h4 id="open-text">&nbsp;&nbsp;&nbsp;恭喜您，开通成功！</h4>
+			<h6 id="open-text2">&nbsp;&nbsp;&nbsp;请点击完成进入提现页面</h6>
+			<div id="part-open">
+				<div id="open_success_list">
+				</div>
+				<!--<span>出账金额</span>
+				<img src="../../img/@2xicon_success.png">-->
+				<h5>以下商户不符合开通资格，暂不可开通提现功能：</h5>
+				<div id="open_fail_list">
+				</div>
+			</div>
+		</div>
+		<div id='btn-section'>
+			<button id="finish" type="button" class="mui-btn mui-btn-outlined my-btn" onclick="toWithdrawShop()" style="margin-top: 242.5px;">完成</button>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(initSuccess());
+			//前往提现页面
+			function toWithdrawShop() {
+				var user_info = sessionFetch("user_info");
+				mui.openWindow({
+					url: 'index.html?usr_no='+user_info.usr_no+'&usr_typ='+user_info.usr_typ+'&token_id='+user_info.token_id+'&version='+user_info.version+'&opSys='+user_info.opSys
+				});
+			};
+
+			//初始化页面
+			function initSuccess() {
+				var res = getUrlParams("res");
+				var button = document.getElementById("finish");
+				open_success_list = document.getElementById("open_success_list");
+				open_fail_list = document.getElementById("open_fail_list");
+				if(res == null) {
+					document.getElementById("part-open").style.display = "none"
+				} else {
+					document.getElementById("open-text").innerHTML = "恭喜您，以下商户开通成功:";
+					document.getElementById("open-text2").style.display = "none"
+					var merc_list_json = JSON.parse(res);
+					mui.each(merc_list_json, function(key, value) {
+						fragment = document.createDocumentFragment();
+						p = document.createElement("p");
+						span = document.createElement("span");
+						img = document.createElement("img");
+						span.innerHTML = value.merc_nm;
+						p.appendChild(span);
+						if(value.sts == 0) {
+							img.setAttribute("src", "../../img/@2xicon_success.png");
+							fragment.appendChild(p)
+							open_success_list.appendChild(fragment)
+						} else {
+							img.setAttribute("src", "../../img/@2xicon_fail.png");
+							fragment.appendChild(p);
+							open_fail_list.appendChild(fragment);
+						}
+						button.setAttribute("style", "margin-top: 101px;")
+						p.appendChild(img);
+					});
+				}
+				/*var self = plus.webview.currentWebview();
+				var merc_list = self.merc_list;
+				console.log("当前页面URL："+merc_list);
+				mui.toast(merc_list)*/
+				/*mui.toast()*/
+			};
+		</script>
+	</body>
+
+</html>

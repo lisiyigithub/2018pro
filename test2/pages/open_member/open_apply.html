@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<title>开通申请</title>
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/commonCss.css" rel="stylesheet" />
+</head>
+<style>
+	body {
+		background: #F9F9F9;
+	}
+
+	#merc_nm {
+		padding-right: 28px;
+	}
+
+	.mui-checkbox label {
+		font-size: 14px;
+	}
+
+	.mui-button-row button {
+		background: #25A2F2;
+		box-shadow: 0 2px 4px 0 #25A2F2;
+		border-radius: 50px !important;
+		width: 90%;
+		margin: 55% auto 0 auto;
+		font-size: 17px;
+		letter-spacing: 1px;
+		border: none;
+		padding: 9px 12px;
+	}
+
+	#merc_selection {
+		display: none;
+	}
+
+	#open_apply {
+		/* display: none; */
+	}
+	.mui-checkbox input[type=checkbox]:before, .mui-radio input[type=radio]:before{
+		font-size: 27px;
+	}
+	.mui-checkbox label, .mui-radio label{
+		width: 50px;
+		padding-right: 0 !important;
+	}
+</style>
+
+<body>
+	<div class="loading">
+		<div class="loading-div">
+			<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+			<!-- <span id="loading-svg"></span> -->
+			<div id="loading-svg"></div>
+			<p class="loading-p">数据加载中</p>
+		</div>
+	</div>
+	<!-- 开通申请 -->
+	<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+		<h1 class="mui-title">开通申请</h1>
+	</header>
+	<span id="open_apply">
+		<form class="mui-input-group">
+			<div class="mui-input-row">
+				<label>服务名称</label>
+				<input type="text" value="星POS钱客多" disabled>
+			</div>
+			<div class="mui-input-row">
+				<label>开通范围</label>
+				<input type="text" id="merc_nm" placeholder="请选择商户" readonly onclick="callSelect()">
+				<span class="mui-icon mui-icon-arrowright" style="position: relative;top:-28px;left:-8px;float:right;color:#A5A5A5;"></span>
+				<div class="gray-solid-line"></div>
+			</div>
+			<div class="mui-input-row">
+				<label>开通费用</label>
+				<input id="ocFixedAmount" type="text" value="" disabled>
+				<div class="gray-solid-line"></div>
+			</div>
+		</form>
+		<p style="color: #999999;margin:0 0 0 17px;font-size:12px;">本次申请的服务，仅可在选中的商户下使用。</p>
+		<div class="mui-input-row mui-checkbox mui-left">
+			<label></label>
+			<span style="font-size:13px;">已阅读并同意
+				<a href="../doc/qkd_XY.html">
+					<span style="color: #25A2F2;">《星POS钱客多》</span>
+				</a>
+			</span>
+			<input name="checkbox1" value="c1" type="checkbox">
+		</div>
+		<div class="mui-button-row">
+			<button type="button" class="mui-btn mui-btn-primary" onclick="next_step()">下一步</button>
+		</div>
+	</span>
+
+	<!-- 选择商户 -->
+	<span id="merc_selection">
+		<div class='no-terminal'>暂无可选商户</div>
+		<div id="store-select">
+			<script type="text/template" id="tpl">
+            <%_.each(obj,function(e,i){%>
+            <div class="store-nm">
+                <p class="merc-nm-text"><%=e.merNam%></p>
+                <p>商户号：
+                    <span class="merc-id-text"><%=addEllipsis(e.terminalNo,25)%></span>
+		</p>
+		<span class="gray-circle">
+                    <span class="not-select status"></span>
+		</span>
+		</div>
+		<%})%>
+		</script>
+		</div>
+		<button class="my-btn3" onclick="onSubmit()">确定</button>
+	</span>
+
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/utils.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/storage.js"></script>
+	<script src="../../js/zepto.min.js"></script>
+	<script src="../../js/underscore-min.js"></script>
+	<script src="../../js/bodymovin.js"></script>
+    <script src="../../js/loadingConfig.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		var tplRender = _.template($("#tpl").html());
+		mui.init();
+		var user_info = sessionFetch("user_info");
+
+		var merc_nm = "";
+		var merc_id = "";
+		var merc_list = [];
+		var merc_list2 = [];
+		var usable_merc_list = [];
+		var user_info = sessionFetch("user_info"); //商户信息
+		var appr_info = sessionFetch("appr_info"); //应用信息
+
+		console.log(user_info);
+
+		//mui("#ocFixedAmount")[0].value = Number(sessionFetch("appr_info").ocFixedAmount).toFixed(2) + "元 / 商户";
+		mui("#ocFixedAmount")[0].value = 0.00 + "元 / 商户";
+		//mui('#merc_nm')[0].value = sessionFetch("merc_info").merc_nm || "";
+		var selected = getUrlParams('selected');
+			if(selected === "y") {
+				mui('#merc_nm')[0].value = sessionFetch("merc_info").merc_nm;
+			}
+		//点击下拉列表事件
+		function callSelect() {
+			// mui("#merc_selection")[0].style.display = "block";
+			// mui("#open_apply")[0].style.display = "none";
+			window.location.href = "merc_selection.html"
+		};
+
+		//验证表单信息
+		function next_step() {
+			callLayPoint("MemberNextStep");
+			
+			var status = mui("[name=checkbox1]")[0]['checked'];
+			var val = mui('#merc_nm')[0]['value'];
+
+			if (val == "") {
+				mui.alert("请选择商户", " ", "确定");
+				return;
+			}
+			if (!status) {
+				mui.alert("请阅读并同意《星POS钱客多》", " ", "确定");
+				return;
+			}
+			
+			mui.openWindow({
+					url: 'confirm_order.html'
+				});
+		};
+
+		mui("#store-select").on('tap', '.store-nm', function () {
+			//获取商户名与商户号
+			merc_nm = this.getElementsByClassName('merc-nm-text')[0].innerText;
+			merc_id = this.getElementsByClassName('merc-id-text')[0].innerText;
+
+			console.log("merc_nm: " + merc_nm);
+			console.log("merc_id: " + merc_id);
+			//激活选择框
+			var cl_nm = this.getElementsByClassName('status')[0].className;
+			if (cl_nm.indexOf("not-select") !== "-1") {
+				//去除后添加
+				for (var i = 0; i < mui('.status').length; i++) {
+					mui('.status')[i].className = "not-select status";
+				}
+				this.getElementsByClassName('status')[0].className = "is-select status";
+			}
+		});
+	</script>
+</body>
+
+</html>
