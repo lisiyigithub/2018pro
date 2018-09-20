@@ -1,0 +1,75 @@
+.login {
+  width: 100%;
+  height: 100%;
+  header {
+    padding: 1.333333rem 0;
+    img {
+      display: block;
+      margin: 0 auto;
+      width: 2.68rem;
+    }
+  }
+  .main {
+    .yd-cell-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-bottom: none !important;
+      .yd-cell {
+        background: #F6F6F8;
+        &:after {
+          border-bottom: none;
+        }
+        .yd-cell-item {
+          width: 8rem;
+          border: 1px solid #A5A5A5;
+          border-radius: 100px;
+          background: #ffffff;
+          margin-bottom: .666667rem;
+          .left_Style {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+              width: .48rem;
+              height: auto;
+              margin-left: .2rem;
+            }
+            p {
+              width: 1px;
+              height: .613333rem;
+              background: #A5A5A5;
+              margin: 0 .553333rem;
+            }
+          }
+          input {
+           height: 1.173333rem;
+          }
+        }
+        .button {
+          background: #25A2F2;
+          border-radius: 100px;
+          height: 1.173333rem;
+          margin-top: .9rem;
+        }
+        p{
+            padding-top: .5rem;
+            a{
+                float: right;
+                color: #A5A5A5;
+            }
+        }
+      }
+    }
+  }
+  footer {}
+  //修改placeholder颜色
+  input::-webkit-input-placeholder {
+    /* placeholder颜色  */
+    color: #A5A5A5;
+    /* placeholder字体大小  */
+    font-size: 15px;
+    /* placeholder位置  */
+    //text-align: right;
+  }
+}

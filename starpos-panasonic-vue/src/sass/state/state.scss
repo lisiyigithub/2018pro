@@ -1,0 +1,80 @@
+.state {
+  width: 100%;
+  height: 100%;
+  header {
+    height: 1.173333rem;
+    padding: 0 .4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    span {
+      font-size: 16px;
+      &:nth-child(1) {
+        color: #A5A5A5;
+      }
+      &:nth-child(2) {
+        color: #419BF9;
+        border: 1px solid #419BF9;
+        border-radius: 100px;
+        padding: 2px 5px;
+      }
+    }
+  }
+  .main {
+    ul {
+      padding-top: .4rem;
+      li {
+        width: 9.2rem;
+        height: 2.64rem;
+        background: #FFFFFF;
+        box-shadow: 0 2px 19px 0 rgba(0, 0, 0, 0.12);
+        border-radius: 4px;
+        margin: .266667rem auto;
+        display: flex;
+        img {
+          &:nth-child(1) {
+            width: 1.333333rem;
+            height: 1.333333rem;
+            margin: 0 .4rem;
+          }
+          
+        }
+        div {
+          flex: 1;
+          text-align: left;
+          h1 {
+            font-size: 18px;
+            margin-bottom: .2rem;
+          }
+          h2 {
+            color: #A5A5A5;
+            font-size: 14px;
+          }
+        }
+        p {
+          width: .773333rem;
+          height: 100%;
+          background: #F9F9F9;
+          writing-mode: vertical-lr;
+          /*从左向右 从右向左是 writing-mode: vertical-rl;*/
+          writing-mode: tb-lr;
+          /*IE浏览器的从左向右 从右向左是 writing-mode: tb-rl；*/
+          text-align: center;
+          line-height: .773333rem;
+          font-size: 14px;
+          letter-spacing: 5px;
+          
+        }
+        justify-content: space-between;
+        align-items: center;
+        .you {
+          display: block;
+         width: .2rem;
+          margin-right: .3rem;
+        }
+      }
+    }
+  }
+  footer {}
+}

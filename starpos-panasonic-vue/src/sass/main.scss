@@ -1,0 +1,56 @@
+@import './index.scss';
+@import './index1.scss';
+@import './index2.scss';
+@import './uploader3.scss';
+//星管家登陆注册
+@import './login/login.scss';
+@import './login/register.scss';
+//台盘进件
+@import './add/yanzheng.scss';
+@import './add/newyanzheng.scss';
+@import './add/tijiao.scss';
+@import './add/saoma.scss';
+//进件状态
+@import './state/state.scss';
+@import './state/showCode.scss';
+html {
+    width: 100%;
+    height: 100%;
+    body {
+        width: 100%;
+        height: 100%;
+        background: none;
+        #app {
+            width: 100%;
+            height: 100%;
+            background: #F6F6F8;
+        }
+    }
+}
+
+.yd-actionsheet-active {
+    overflow: scroll !important;
+}
+
+.yd-actionsheet {
+    text-align: center;
+    position: fixed;
+    // bottom: 10px !important;
+    // left: 10px !important;
+    //width: 50% !important;
+    // z-index: 9999 !important;
+    overflow: scroll !important;
+}
+
+.mu-picker-item {
+    font-size: 14px !important;
+}
+
+.mu-picker-slot {
+    font-size: 14px !important;
+}
+
+//yd-toast
+.yd-toast-none-icon .yd-toast-content {
+    padding: 20px 36px 30px!important;
+}

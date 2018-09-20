@@ -1,0 +1,106 @@
+.vue-uploader3 {
+    border: 1px solid #e5e5e5;
+    min-height: 3.2rem;
+    .file-list {
+        padding: 10px 0px;
+    }
+    .file-list:after {
+        content: "";
+        display: block;
+        clear: both;
+        visibility: hidden;
+        line-height: 0;
+        height: 0;
+        font-size: 0;
+    }
+    .file-list .file-item {
+        float: left;
+        position: relative;
+        width: 100px;
+        text-align: center;
+    }
+    .file-list .file-item img {
+        width: 80px;
+        height: 80px;
+        border: 1px solid #ececec;
+    }
+    .file-list .file-item .file-remove {
+        position: absolute;
+        right: 12px;
+        display: none;
+        top: 4px;
+        width: 14px;
+        height: 14px;
+        color: white;
+        cursor: pointer;
+        line-height: 12px;
+        border-radius: 100%;
+        transform: rotate(45deg);
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .file-list .file-item:hover .file-remove {
+        display: inline;
+    }
+    .file-list .file-item .file-name {
+        margin: 0;
+        height: 40px;
+        word-break: break-all;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .add {
+        width: 80px;
+        height: 80px;
+        margin-left: 10px;
+        margin-top: 10px;
+        float: left;
+        text-align: center;
+        line-height: 80px;
+        border: 1px dashed #ececec;
+        font-size: 30px;
+        cursor: pointer;
+    }
+    .upload-func {
+        display: flex;
+        padding: 10px;
+        margin: 0px;
+        background: #f8f8f8;
+        border-top: 1px solid #ececec;
+    }
+    .upload-func .progress-bar {
+        flex-grow: 1;
+    }
+    .upload-func .progress-bar section {
+        margin-top: 5px;
+        background: #00b4aa;
+        border-radius: 3px;
+        text-align: center;
+        color: #fff;
+        font-size: 12px;
+        transition: all 0.5s ease;
+    }
+    .upload-func .operation-box {
+        flex-grow: 0;
+        padding-left: 10px;
+    }
+    .upload-func .operation-box button {
+        padding: 4px 12px;
+        color: #fff;
+        background: #007acc;
+        border: none;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    >input[type="file"] {
+        display: none;
+    }
+}
+
+.add span {
+    position: relative;
+    top: -5px;
+}
