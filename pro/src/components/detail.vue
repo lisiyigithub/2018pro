@@ -8,63 +8,54 @@
                 <yd-cell-item>
                     <span slot="left">
                         身份证号
-                        <i>*</i>
                     </span>
                     <yd-input slot="right" placeholder="请输入身份证号码"></yd-input>
                 </yd-cell-item>
                 <yd-cell-item arrow>
                     <span slot="left">
                         身份证有效期
-                        <i>*</i>
                     </span>
                     <yd-datetime type="time" slot="right" v-model="datetime"></yd-datetime>
                 </yd-cell-item>
                 <yd-cell-item>
                     <span slot="left">
                         结算账号
-                        <i>*</i>
                     </span>
                     <yd-input slot="right" placeholder="只支持储蓄卡"></yd-input>
                 </yd-cell-item>
                  <yd-cell-item>
                     <span slot="left">
                         账户户名
-                        <i>*</i>
                     </span>
                     <yd-input slot="right" placeholder="请输入账户户名"></yd-input>
                 </yd-cell-item>
                 <yd-cell-item arrow>
                     <span slot="left">
                         开户支行
-                        <i>*</i>
                     </span>
                     <span slot="right"></span>
                 </yd-cell-item>
                 <yd-cell-item>
                     <span slot="left">
                         商户名称
-                        <i>*</i>
                     </span>
                     <yd-input slot="right" placeholder="请输入商户名称"></yd-input>
                 </yd-cell-item>
                 <yd-cell-item>
                     <span slot="left">
                         联系人
-                        <i>*</i>
                     </span>
                     <yd-input slot="right" placeholder="请输入联系人"></yd-input>
                 </yd-cell-item>
                 <yd-cell-item>
                     <span slot="left">
                         手机号码
-                        <i>*</i>
                     </span>
                     <span slot="right">12345678</span>
                 </yd-cell-item>
                 <yd-cell-item arrow>
                     <span slot="left">
                         商户类型
-                        <i>*</i>
                     </span>
                     <span slot="right">右边内容一</span>
                 </yd-cell-item>
@@ -81,7 +72,6 @@
             <div class="tit">
                 <span>
                     银行卡上传
-                    <i>*</i>
                 </span>
             </div>
             <!-- <label>照相机</label>
@@ -118,7 +108,6 @@
             <div class="tit">
                 <span>
                     证件上传
-                    <i>*</i>
                 </span>
             </div>
             <label>摄像机</label>

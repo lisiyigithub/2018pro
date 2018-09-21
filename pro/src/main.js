@@ -3,10 +3,16 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import YDUI from 'vue-ydui';
-import 'vue-ydui/dist/ydui.rem.css';
+// import YDUI from 'vue-ydui';
+// import 'vue-ydui/dist/ydui.rem.css';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import Mint from 'mint-ui'
 
-Vue.use(YDUI)
+
+Vue.use(ElementUI)
+Vue.use(Mint)
+// Vue.use(YDUI)
 
 Vue.config.productionTip = false
 

@@ -7,6 +7,8 @@ import About from '../components/about'
 import Other from '../components/other'
 import Mine from '../components/mine'
 import Detail from '../components/detail'
+import Detail2 from '../components/detail2'
+
 Vue.use(Router)
 
 export default new Router({
@@ -37,6 +39,10 @@ export default new Router({
 		{
 			path:'/detail',
 			component:Detail
+		},
+		{
+			path:'/detail2',
+			component:Detail2
 		}
 	]
 })

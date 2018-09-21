@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="lib/react.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="lib/react-dom.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="lib/browser.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="out"></div>
+	</body>
+	<script type="text/babel">
+		var arr = [1,2,3,4,5]
+		var Demo = React.createClass({
+			render(){
+				return(
+					<div>
+						{
+							arr.map(function(i){
+								return <form type="text" value={'你好'+i+'再见'}/>
+							})
+						}
+					</div>
+				)
+			}
+		})
+		
+		ReactDOM.render(<Demo/>,document.getElementById('out'))
+	</script>
+</html>

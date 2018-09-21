@@ -1,5 +1,6 @@
 <template>
 	<div id="home">
+		<router-link to="/detail2">跳转到detail2页面</router-link>
 		<router-link to="/detail">跳转到detail页面</router-link>
 	</div>
 </template>
