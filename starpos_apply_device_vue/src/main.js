@@ -5,6 +5,11 @@ import App from './App'
 import router from './router'
 
 import 'vue-ydui/dist/ydui.base.css';
+import YDUI from 'vue-ydui'; /* 相当于import YDUI from 'vue-ydui/ydui.rem.js' */
+import 'vue-ydui/dist/ydui.rem.css';
+/* 使用px：import 'vue-ydui/dist/ydui.px.css'; */
+
+Vue.use(YDUI);
 import './sass/main.scss';
 import {
     Button,
@@ -66,10 +71,9 @@ import { CheckBox, CheckBoxGroup } from 'vue-ydui/dist/lib.px/checkbox';
 Vue.component(CheckBox.name, CheckBox);
 Vue.component(CheckBoxGroup.name, CheckBoxGroup);
 Vue.config.productionTip = false
+
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
-
-
 Vue.use(MuseUI)
     /* eslint-disable no-new */
 new Vue({
