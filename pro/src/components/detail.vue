@@ -80,23 +80,23 @@
             <div>
                 <input id="upload_file" type="file" style="display: none;" accept='image/*' name="file"  @change="fileChange($event)"/>
                 <div class="image-item space" @click="showActionSheet()">
-                <div class="image-up"></div>
+                    <div class="image-up"></div>
                 </div>
             
                 <div class="upload_warp">
-                <div class="upload_warp_img">
-                    <div class="upload_warp_img_div" v-for="(item,index) in imgList">
-                    <div class="upload_warp_img_div_top">
-                        <img src="http://114.115.162.39/static/image/x.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+                    <div class="upload_warp_img">
+                        <div class="upload_warp_img_div" v-for="(item,index) in imgList">
+                            <div class="upload_warp_img_div_top">
+                                <img src="http://114.115.162.39/static/image/x.png" class="upload_warp_img_div_del" @click="fileDel(index)">
+                            </div>
+                            <img :src="item.file.src" style="display: inline-block;">
+                        </div>
+                        <div class="upload_warp_left" id="upload_warp_left" @click="fileClick()" v-if="this.imgList.length < 6">
+                        <!--<img src="../assets/upload.png">-->
+                        <!-- <img src="../assets/images/添加图片.png" class="imgs"/> -->
+                            <div>+</div>
+                        </div>
                     </div>
-                    <img :src="item.file.src" style="display: inline-block;">
-                    </div>
-                    <div class="upload_warp_left" id="upload_warp_left" @click="fileClick()" v-if="this.imgList.length < 6">
-                    <!--<img src="../assets/upload.png">-->
-                    <!-- <img src="../assets/images/添加图片.png" class="imgs"/> -->
-                    <div>+</div>
-                    </div>
-                </div>
             
                 </div>
             
