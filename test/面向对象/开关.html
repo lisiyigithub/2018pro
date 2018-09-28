@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>开关</title>
+		<style type="text/css">
+			#box{
+				width: 50px;
+				height: 20px;
+				border: 1px solid #DDDDDD;
+				border-radius: 20px;
+				background: #E9E9E9;
+			}
+			.inner{
+				width: 20px;
+				height: 20px;
+				border-radius:50%;
+				background:#fff ;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div class="inner"></div>
+		</div>
+	</body>
+	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//面向对象
+		window.onload = function(){
+			var flag = 0
+			var Box = document.getElementById('box')
+			var Inner = document.getElementsByClassName('inner')
+			Inner[0].onclick = function(){
+				console.log('aaa')
+				if(flag == 0){
+					
+					Inner[0].style.float = "right";
+					Box.style.background = "green";
+					flag = 1;
+				}else{
+					Inner[0].style.float = "left";
+					Box.style.background = "#E9E9E9";
+					flag = 0;
+				}
+			}
+		}
+		
+		//jquery
+		/*$('.inner').click(function(){
+			if(flag == 0){
+				$('.inner').css('float','right')
+				$('#box').css('background','green')
+				flag = 1;
+			}else{
+				$('.inner').css('float','left')
+				$('#box').css('background','#E9E9E9')
+				flag = 0;
+			}
+		})*/
+		
+		
+	</script>
+</html>

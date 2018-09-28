@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>选项卡</title>
+		<style type="text/css">
+			#box div{
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<button class="active">游戏</button>
+			<button>旅行</button>
+			<button>音乐</button>
+			<div style="display: block;">真心话、大冒险</div>
+			<div>韩国、日本</div>
+			<div>目不转睛、消愁</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		window.onload = function(){
+			var Box = document.getElementById('box')
+			var Btn = Box.getElementsByTagName('button')
+			var Div = Box.getElementsByTagName('div')
+			for(var i = 0; i<Btn.length;i++){
+				Btn[i].index = i;
+				Btn[i].onclick = function(){
+					for(var j = 0; j<Btn.length; j++){
+						Btn[j].className = ''
+						Div[j].style.display = 'none';
+					}
+					this.className = 'active';
+					Div[this.index].style.display = 'block'
+				}
+			}
+		}
+	</script>
+</html>

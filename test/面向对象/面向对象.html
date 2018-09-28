@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		/*function show(){
+			console.log(this)
+		}
+		show();
+		var arr = [1,2,3,4]
+		arr.sure = function(){
+			alert(this)
+		}
+		arr.sure();*/
+		
+		//工厂模式；构造函数
+		//构造函数：工厂
+		function createPerson(name,age){
+			var person = new Object();
+			//原料
+			person.name = name;
+			person.age = age;
+			//加工
+			person.showName = function(){
+				alert('姓名：'+this.name)
+			}
+			person.showAge = function(){
+				alert('年龄：'+this.age)
+			}
+			//出厂
+			return person;
+		}
+		//创建两个对象
+		var p1 = createPerson('lisiyi',24)
+		var p2 = createPerson('chenpengfei',24)
+		//调用对象方法
+		p1.showName()
+		p1.showAge()
+		
+	</script>
+</html>

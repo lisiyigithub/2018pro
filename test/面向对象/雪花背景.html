@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>雪花背景面向对象版</title>
+		<style type="text/css">
+			html,body{
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+			body{			
+				background: url(../img/efa6f75133a86abac2b3091e35a41c8d.jpg) no-repeat;
+				background-size: cover;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		//面向对象版
+		let flySnow = (function() {
+			function Fn() {
+				this.snow = function(d) {
+					let vw = $(document).innerWidth(),
+						vh = $(window).height();
+					d = d || 5000 + 6000 * Math.random();
+					d = d === "fast" ? 4000 + 4000 * Math.random() : d === "slow" ? 7000 + 8000 * Math.random() : d;
+					this.element = document.createElement("div");
+					this.startLeft = vw * Math.random();
+					this.endLeft = vw * Math.random();
+					this.endTop = vh;
+					this.startOpa = 0.8 + 0.2 * Math.random();
+					this.endOpa = 0.2 + 0.2 * Math.random();
+					this.startSize = 6 + 25 * Math.random();
+					this.endSize = 5 + 18 * Math.random();
+					this.duration = d;
+					this.style = (function() {
+						let arr = ['❄', '❉', '❅', '❆', '✻', '✼', '❇', '❈', '❊', '✥', '✺'];
+						return arr[Math.floor(Math.random() * arr.length)];
+					})();
+				}
+				this.fly = function(s, d) {
+					setInterval(() => {
+						let snow = new this.snow(d);
+						snow.element.innerText = snow.style;
+						snow.element.style.cssText = 
+						`
+							position: absolute;
+							color: #fff;
+							left: ${snow.startLeft}px;
+							top: -22px;
+							opacity: ${snow.startOpa};
+							font-size: ${snow.startSize}px;
+							transition: ${snow.duration}ms;
+						`;
+						$("body").append(snow.element);
+						setTimeout(() => {
+							snow.element.style.cssText += `
+							left: ${snow.endLeft}px;
+							top: ${snow.endTop - 20}px;
+							opacity: ${snow.endOpa};
+							font-size: ${snow.endSize}px;
+							transform: rotate(720deg);`;
+							setTimeout(() => {
+								snow.element.remove() 
+								snow = null;
+							}, snow.duration)
+						}, 0)
+					}, s)
+				}
+			}
+			return new Fn();
+		}());
+		flySnow.fly(10, "slow");
+	</script>
+</html>

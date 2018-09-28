@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>雪花背景原生版</title>
+		<style type="text/css">
+			html,body {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}			
+			body {
+				background: url(../img/efa6f75133a86abac2b3091e35a41c8d.jpg) no-repeat;
+				background-size: cover;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+	</body>
+	<script>
+		// 纯原生js版
+		function flySnow() {
+			var snow = document.createElement("div");
+			snow.style.cssText = 'position:absolute;color:#fff;';
+			//视宽/高
+			var vw = document.documentElement.clientWidth - 20,
+				vh = document.documentElement.clientHeight - 5;
+			setInterval(function() {
+				var cloneSnow = snow.cloneNode();
+				var arr = ['❄', '❉', '❅', '❆', '✻', '✼', '❇', '❈', '❊', '✥', '✺'],
+					style = arr[Math.floor(Math.random() * 11)];
+				cloneSnow.innerHTML = style;
+				var startLeft = vw * Math.random(),
+					endLeft = vw * Math.random();
+				var startOpa = 0.8 + 0.2 * Math.random(),
+					endOpa = 0.2 + 0.2 * Math.random();
+				var startSize = 6 + 25 * Math.random(),
+					endSize = 5 + 18 * Math.random();
+				var duration = 5000 + 6000 * Math.random();
+				cloneSnow.style.cssText += 'left:' + startLeft + 'px;' + 'top:' + -22 + 'px;' + 'opacity:' + startOpa + ";" + 'font-size:' + startSize + 'px;' + 'transition:' + duration + 'ms;';
+				document.body.appendChild(cloneSnow);
+				setTimeout(function() {
+					cloneSnow.style.cssText += 'left:' + endLeft + 'px;' + 'top:' + (vh - endSize) + 'px;' + 'opacity:' + endOpa + ';' + 'font-size:' + endSize + 'px;' + 'transform:' + 'rotateZ(720deg);';
+					setTimeout(function() {
+						cloneSnow.remove();
+					}, duration)
+				}, 0)
+			}, 10)
+		}
+		flySnow();
+	</script>
+</html>
