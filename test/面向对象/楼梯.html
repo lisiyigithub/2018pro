@@ -3,7 +3,47 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>楼梯效果</title>
+		<style type="text/css">
+			body,html{
+				margin: 0;
+				padding: 0;
+			}
+			div{
+				width: 500px;
+				height: 200px;
+				text-align: center;
+				margin: 0 auto;
+				margin-bottom: 10px;
+			}
+		</style>
 	</head>
 	<body>
+		<div>1</div>
+		<div>2</div>
+		<div>3</div>
+		<div>4</div>
+		<div>5</div>
+		<div>6</div>
+		<div>7</div>
+		<div>8</div>
+		<div>9</div>
+		<div>10</div>
+		<ul>
+		</ul>
 	</body>
+	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+			var arr = [1,2,3,4,5,6,7,8,9,10]
+			var Ul = document.getElementsByTagName('ul')
+			var Div = document.getElementsByTagName('div')
+			var Li = document.createElement('li')
+			for(var i = 0; i<Div.length; i++){
+				Div[i].style.background ="red";
+				
+			}
+			for(var j = 0; j<arr.length; j++){
+				
+			}
+		Ul.appendChild("li");
+	</script>
 </html>
