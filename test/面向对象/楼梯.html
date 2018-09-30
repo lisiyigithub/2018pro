@@ -4,46 +4,134 @@
 		<meta charset="UTF-8">
 		<title>楼梯效果</title>
 		<style type="text/css">
-			body,html{
+			body,ul,li{
 				margin: 0;
 				padding: 0;
 			}
-			div{
-				width: 500px;
-				height: 200px;
+			li{
+				list-style: none;
+			}
+			#floorNav{
+				display: none;
+				position: fixed;
+				top: 100px;
+				left: 50px;
+				width: 50px;
+				border: 1px solid #CECECE;
+			}
+			#floorNav li{
+				position: relative;
+				width: 50px;
+				height: 50px;
+				border-bottom: 1px solid #CECECE;
 				text-align: center;
+				line-height: 50px;
+				font-size: 12px;
+			}
+			#floorNav span{
+				display: none;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 50px;
+				height: 50px;
+				background: red;
+				color: #fff;
+			}
+			#floorNav li:hover span,#floorNav li.hover span{
+				display: block;
+			}
+			#floorNav li:last-child{
+				background: red;
+				color: #fff;
+				border-bottom: none;
+			}
+			#header,#footer{
+				width: 1000px;
+				height: 1000px;
+				background:darkgoldenrod ;
 				margin: 0 auto;
-				margin-bottom: 10px;
+			}
+			#content li{
+				width: 1000px;
+				height: 600px;
+				margin: 0 auto;
+				font-size: 40px;
+				text-align: center;
+				line-height: 600px;
+				color: #fff;
 			}
 		</style>
 	</head>
 	<body>
-		<div>1</div>
-		<div>2</div>
-		<div>3</div>
-		<div>4</div>
-		<div>5</div>
-		<div>6</div>
-		<div>7</div>
-		<div>8</div>
-		<div>9</div>
-		<div>10</div>
-		<ul>
-		</ul>
+		<div id="floorNav">
+			<ul>
+				<li>1F<span>我</span></li>
+				<li>2F<span>是</span></li>
+				<li>3F<span>你</span></li>
+				<li>4F<span>的</span></li>
+				<li>5F<span>前</span></li>
+				<li>6F<span>女</span></li>
+				<li>7F<span>友</span></li>
+				<li>8F<span>曾经</span></li>
+				<li>9F<span>也</span></li>
+				<li>10F<span>拯救过</span></li>
+				<li>11F<span>地球</span></li>
+				<li>TOP</li>
+			</ul>
+		</div>
+		<div id="header"></div>
+		<div id="content">
+			<ul>
+				<li style="background: #8B0000;">我是你的前女友</li>
+				<li style="background: #123;">曾经也拯救过地球</li>
+				<li style="background: #667;">身高刚好166</li>
+				<li style="background: #558;">优点除了可爱什么都没有</li>
+				<li style="background: #900;">我是你的前女友</li>
+				<li style="background: #456;">Boy都会为我挤破头</li>
+				<li style="background: #789;">记得分手的时候</li>
+				<li style="background: #234;">说我以后一定是单身狗</li>
+				<li style="background: #567;">我是你的前女友</li>
+				<li style="background: #887;">曾经也拯救过地球</li>
+				<li style="background: #980;">身高刚好166</li>
+			</ul>
+		</div>
+		<div id="footer"></div>
 	</body>
 	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript">
-			var arr = [1,2,3,4,5,6,7,8,9,10]
-			var Ul = document.getElementsByTagName('ul')
-			var Div = document.getElementsByTagName('div')
-			var Li = document.createElement('li')
-			for(var i = 0; i<Div.length; i++){
-				Div[i].style.background ="red";
-				
+	<script type="text/javascript">		
+		var flag = true
+		$(window).scroll(function(){
+			if(flag){
+				var scrollTop = $(this).scrollTop()
+				if(scrollTop > 400){//控制左边导航的渐隐渐现
+					$('#floorNav').fadeIn()
+				}else{
+					$('#floorNav').fadeOut()
+				}
+				$('#content li').each(function(){//通过获取content的scrollTop的值来控制导航的li
+					if(scrollTop >= $(this).offset().top - $(this).outerHeight()/2){
+						var index = $(this).index()
+						$('#floorNav li').eq(index).addClass("hover").siblings().removeClass("hover")
+					}
+				})
 			}
-			for(var j = 0; j<arr.length; j++){
-				
-			}
-		Ul.appendChild("li");
+		})
+		
+		$('#floorNav li:not(:last)').click(function(){//点击导航的li来控制content中对应索引的li
+			flag = false;
+			var index = $(this).index()
+			$(this).addClass("hover").siblings().removeClass("hover")
+			$("html,body").animate({"scrollTop":$('#content li').eq(index).offset().top},500,function(){
+				flag = true
+			})
+		})
+		
+		$('#floorNav li:last').click(function(){//导航最后的TOP的点击返回顶部事件
+			flag = false
+			$('html,body').animate({"scrollTop":0},500,function(){
+				flag = true
+			})
+		})
 	</script>
 </html>
