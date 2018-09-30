@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新手引导</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<link href="../../css/novice.css" rel="stylesheet" />
+		<style>
+			.text {
+				padding-top: 64px;
+			}
+			
+			@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+				.text {
+					padding-top: 88px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<span onclick="callCloseWebview()">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fanhuijiantou-copy"></use>
+            </svg>
+        </span>
+			<h1 class="mui-title">新手引导</h1>
+		</header>
+		
+		<p class="text">选择你的了解类型</p>
+		<div style="background: white;">
+			<div class="index_item" onclick="goToNoviceGuidance()">
+				<img src="../../img/@2xxinshouyindao_icon_xinshouzhuanqu.png" />
+				<span>星管家使用专区</span>
+				<span id="text2">前往新手引导</span>
+				<img class="arrow" src="../../img/@2xxinshouyindao_icon_xiayibu.png" />
+			</div>
+			<hr />
+			<div class="index_item" onclick="goToProblemCollection()">
+				<img src="../../img/@2xxinshouyindao_icon_wentijijin.png" />
+				<span>星管家常用问题集锦</span>
+				<span id="text2">前往问题集锦</span>
+				<img class="arrow" src="../../img/@2xxinshouyindao_icon_xiayibu.png" />
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			//检查参数
+
+			var user_info = {
+				"usr_no": getUrlParams("usr_no"),
+				"usr_typ": getUrlParams("usr_typ"),
+				"token_id": getUrlParams("token_id"),
+				"version": getUrlParams("version"),
+				"opSys": getUrlParams("opSys")
+			}
+			sessionSave("user_info", user_info);
+
+			function goToNoviceGuidance() {
+				mui.openWindow({
+					url: 'novice_guidance.html'
+				})
+			}
+
+			function goToProblemCollection() {
+				mui.openWindow({
+					url: 'problem_collection.html'
+				})
+			}
+		</script>
+	</body>
+
+</html>

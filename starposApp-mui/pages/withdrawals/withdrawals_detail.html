@@ -1,0 +1,478 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-table-view-cell {
+			background: #FFFFFF;
+			padding: 0px;
+		}
+		
+		.mui-content {
+			margin-top: 20px;
+		}
+		
+		.mui-table-view-cell:after {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 15px;
+			height: 1px;
+			content: '';
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			background-color: #CECECE;
+			left: 0px
+		}
+		/*点击变蓝色高亮*/
+		
+		.mui-table-view-cell.mui-active {
+			background-color: #FFFFFF;
+		}
+		
+		@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+			.mui-content {
+				margin-top: 44px;
+			}
+		}
+		
+		.edge {
+			margin-bottom: 10px;
+		}
+		
+		#table-cell {
+			border-bottom: solid 0.5px #F9F9F9;
+		}
+		/* 订单 */
+		
+		.allow-span {
+			font-size: 14px;
+			font-family: PingFangSC-Regular;
+			color: rgba(51, 51, 51, 1);
+			line-height: 28px;
+		}
+		
+		.allow_p {
+			margin-left: 38px;
+			margin-right: 15px;
+			margin-bottom: 6px !important;
+			margin-top: 6px !important;
+		}
+		/* 状态 */
+		
+		.stand_shengqin {
+			float: right;
+			/*width: 54px;
+			height: 20px;*/
+			background: #E6F7FD;
+			border-radius: 18px 15px 18px 15px;
+			font-size: 12px;
+			font-family: PingFangSC-Regular;
+			color: rgba(7, 176, 236, 1);
+			line-height: 24px;
+			padding: 0px 9px;
+		}
+		.stand_success {
+			float: right;
+			
+			font-size: 12px;
+			font-family: PingFangSC-Regular;
+			color: #07EDB4;
+			line-height: 24px;
+
+		}
+		.stand_fail {
+			float: right;
+			font-size: 12px;
+			font-family: PingFangSC-Regular;
+			color: #ED1A07;
+			line-height: 24px;			
+		}
+		
+		#test {
+			height: 25px;
+			font-size: 12px;
+			margin-left: 38px;
+			color: #ED1A07;
+		}
+		/* 图片 */
+		
+		.assets {
+			float: left;
+			width: 18px;
+			height: 18px;
+			margin-left: 15px;
+		}
+		/* 文字 */
+		
+		.assetss {
+			line-height: 17px;
+			float: left;
+			margin-top: 6.5px;
+			margin-left: 6px;
+		}
+		
+		.left {
+			float: left;
+			font-family: PingFangSC-Regular;
+			font-size: 14px;
+			color: #999999;
+			font-style: normal;
+			font-weight: normal;
+		}
+		
+		.right {
+			float: right;
+			font-family: PingFangSC-Regular;
+			font-size: 14px;
+			color: #333333;
+			font-style: normal;
+			font-weight: normal;
+		}
+		
+		.table_amount {
+			margin-top: 8px;
+		}
+		
+		.table-fire {
+			margin-left: 38px;
+			margin-right: 15px;
+			margin-bottom: 6px !important;
+		}
+		
+		.table_bottom {
+			margin-bottom: 10px !important;
+		}
+		
+		.float {
+			float: right;
+		}
+		
+		.line {
+			background: #ccc;
+			height: 1px;
+			margin-right: 15px;
+			margin-left: 38px;
+			border: none;
+		}
+		
+		
+		.channel{
+			font-size: 14px;
+			margin: 16px 15px 0 38px;
+			line-height: 18px;
+		}
+		
+		.warning{
+			display: block;
+			background:#ED1A07 ;
+			color: #fff;
+			text-align: center;
+			width: 14px;
+			height: 14px;
+			line-height: 14px;
+			float: left;
+			border-radius: 50%;
+			margin-top: 2px;
+			margin-right: 6px;
+			font-style: normal;
+		}
+		
+		em{
+			font-style: normal;
+		}
+	</style>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">明细</h1>
+		</header>
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<ul class="mui-table-view" id="detail_list">
+				</ul>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/api.js"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+				mui.init({
+					pullRefresh: {
+						container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+						down: {
+							auto: true, //可选,默认false.首次加载自动上拉刷新一次
+							callback: function() {
+								getCdataList();
+								/*setTimeout(function() {
+									notifiULList(cdataList);
+									mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+									//mui.toast("为你推荐了5篇文章");*/
+								//},100);
+							}
+						}
+					}
+				});
+				/*mui.ready(function() {
+					//console.log("当前页面URL：" + plus.webview.currentWebview().getURL());
+					console.info(cdataList);
+					notifiULList(cdataList);
+				})*/
+				//console.info("123");
+				//mui.plusReady();	
+			}
+
+			function getCdataList() {
+				var user_info = sessionFetch("user_info");
+				if(user_info != '[]') {
+					//var user_info_json = JSON.parse(user_info);
+					getUrlParams("usr_no")
+					var data = {
+						"contentTyp": "application/json",
+						"characterSet": "GBK",
+						"sys_cnl": "app",
+						"version": user_info.version,
+						"opSys": user_info.opSys,
+						"token_id": user_info.token_id,
+						"usr_no": user_info.usr_no,
+						"usr_typ": user_info.usr_typ,
+						"merc_id": getUrlParams("wd_mercid")
+					};
+					//mui(".loading")[0].style.display = "block";
+					mui.ajax(API.GETENCHASHLIST, {
+						data: data,
+						dataType: 'json',
+						type: 'post',
+						contentType: "application/json; charset=utf-8",
+						success: function(res) {
+							console.log(res);
+							if(res.repCode === "000000") {
+								mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+								notifiULList(res.mercList);
+							} else if(res.repCode === "100002") {
+								mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+								mui.toast("未找到相关记录")
+							} else {
+								mui.alert(res.repMsg);
+								mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+								// window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+							}
+							
+							
+						},
+						error: function(xhr, type, errorThrown) {
+							console.log(type);
+							console.log(xhr);
+							mui.alert("服务器开小差啦，请稍后再试");
+							mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+						}
+					});
+				} else {
+					mui.alert("开通数据为空，请重新登录");
+				}
+			}
+
+			function notifiULList(cdataList) {
+				//plus.nativeUI.closeWaiting();
+				var doc = document;
+				var oldYearAndmonth = 0;
+				myDate = new Date();
+				fragment = doc.createDocumentFragment();
+				container = doc.getElementById("detail_list");
+				for(var i = container.childNodes.length - 1; i >= 0; i--) {
+					//alert(childs[i].nodeName);
+
+					container.removeChild(container.childNodes[i]);
+				}
+				mui.each(cdataList, function(key, value) {
+					var month = myDate.getMonth() + 1;
+					var year = myDate.getFullYear();
+					month = (month < 10 ? "0" + month : month);
+					if(oldYearAndmonth != value.ord_tm.substring(0, 6)) {
+						if(year + month == value.ord_tm.substring(0, 6)) {
+							div = doc.createElement("div");
+							div.setAttribute("style", "margin-left: 15px;margin-top: 10px;margin-bottom: 5px;font-size: 12px;color:#666666")
+							div.innerHTML = "本月";
+							fragment.appendChild(div);
+						} else {
+							div = doc.createElement("div");
+							div.setAttribute("style", "margin-left: 15px;margin-top: 10px;margin-bottom: 5px;font-size: 12px;color:#666666")
+							div.innerHTML = (value.ord_tm.substring(4, 6) < 10 ? value.ord_tm.substring(5, 6) : value.ord_tm.substring(4, 6)) + "月";
+							fragment.appendChild(div);
+						}
+					}
+					oldYearAndmonth = value.ord_tm.substring(0, 6);
+					console.info(value.id)
+					notifiAndSetLiDetail(fragment, value);
+				});
+				container.appendChild(fragment);
+				//mui.addEventListenerBySelector("a.aEvent", "tap", showDetail);  
+			}
+
+			function notifiAndSetLiDetail(fragment, value) {
+				var doc = document;
+				li = doc.createElement("li");
+				div = doc.createElement("div");
+				imgDiv = doc.createElement("div");
+
+				status_p = doc.createElement("p");
+				text_span = doc.createElement("span");
+				status_em = doc.createElement("em");
+				hr = doc.createElement("hr");
+
+				status_em_All = doc.createElement("em");
+				testDiv = doc.createElement("div");
+				img = doc.createElement("img");
+				span = doc.createElement("span");
+				//textP = doc.createElement("p");
+				
+				//提现状态
+				h3 = doc.createElement("h3")
+				i = doc.createElement("i")
+				
+				account_amount_p = doc.createElement("p");
+				account_amount_span = doc.createElement("span");
+				account_amount_em = doc.createElement("em");
+				arrival_amount_p = doc.createElement("p");
+				arrival_amount_span = doc.createElement("span");
+				arrival_amount_em = doc.createElement("em");
+				service_charge_p = doc.createElement("p");
+				service_charge_span = doc.createElement("span");
+				service_charge_em = doc.createElement("em");
+				bank_cash_p = doc.createElement("p");
+				bank_cash_span = doc.createElement("span");
+				bank_cash_em = doc.createElement("em");
+				cash_number_p = doc.createElement("p");
+				cash_number_span = doc.createElement("span");
+				cash_number_em = doc.createElement("em");
+				
+				//提现状态
+				h3.setAttribute("class","channel")
+				i.setAttribute("class","warning")
+				
+				hr.setAttribute("class", "line");
+				li.setAttribute("class", "mui-table-view-cell mui-media edge");
+				div.setAttribute("id", "detail-id-wrapper table-cell ");
+				div.setAttribute("margin-bottom", "10px");
+				//imgDiv.setAttribute("id", "detail-id-wrapper2");
+				text_span.setAttribute("class", "allow-span");
+				status_p.setAttribute("class", "clearfix allow_p");
+				testDiv.setAttribute("id", "test");
+//				img.setAttribute("src", "../../img/icon_warn.png");
+//				img.setAttribute("style", "display:none");
+				img.setAttribute("class", "assets");
+				span.setAttribute("class", "assetss");
+				account_amount_p.setAttribute("class", "clearfix table_amount table-fire");
+				arrival_amount_p.setAttribute("class", "clearfix table-fire ");
+				service_charge_p.setAttribute("class", "clearfix table-fire");
+				bank_cash_p.setAttribute("class", "clearfix table-fire");
+				cash_number_p.setAttribute("class", "clearfix table-fire table_bottom");
+				account_amount_span.setAttribute("class", "left");
+				account_amount_em.setAttribute("class", "right");
+				arrival_amount_span.setAttribute("class", "left");
+				arrival_amount_em.setAttribute("class", "right");
+				service_charge_span.setAttribute("class", "left");
+				service_charge_em.setAttribute("class", "right");
+
+				bank_cash_span.setAttribute("class", "left");
+				bank_cash_em.setAttribute("class", "right");
+
+				cash_number_span.setAttribute("class", "left");
+				cash_number_em.setAttribute("class", "right");
+				account_amount_span.innerHTML = "出账金额";
+				account_amount_em.innerHTML = value.txn_amt;
+				arrival_amount_span.innerHTML = "到账金额";
+				arrival_amount_em.innerHTML = value.transfer_amt;
+				service_charge_span.innerHTML = "手续费";
+				service_charge_em.innerHTML = value.corg_fee;
+				bank_cash_span.innerHTML = "到账银行";
+				bank_cash_em.innerHTML = value.opn_bnk_desc + "(" + value.stl_crp_no.substring(value.stl_crp_no.length - 4, value.stl_crp_no.length) + ")";
+				cash_number_span.innerHTML = "提交时间";
+
+				//时间值
+				cash_number_em.innerHTML = getData(value.ord_tm);
+
+				//text_span.innerHTML = "111111111";
+				if(value.ord_no != null && value.ord_no != ""){
+					text_span.innerHTML = "订单:"+value.ord_no;					
+				}
+
+				if(value.sts == "U" || value.sts == "T" || value.sts == "P" || value.sts == "X") {
+					status_em_All.innerHTML = "申请中";
+					status_em_All.setAttribute("color", "#07B0EC");
+					status_em_All.setAttribute("class", "stand_shengqin");
+					testDiv.setAttribute("style", "display: none;")
+				} else if(value.sts == "S") {
+					status_em_All.innerHTML = "成功";
+					status_em_All.setAttribute("class", "stand_success");
+					testDiv.setAttribute("style", "display: none;")
+				} else if(value.sts == "F") {
+					status_em_All.innerHTML = "失败";
+					testDiv.innerHTML = value.err_msg;
+					i.innerHTML = "i";
+					img.setAttribute("display", "inline_block;")
+					status_em_All.setAttribute("class", "stand_fail");
+					status_em_All.setAttribute("style", "color:#ED1A07");
+				} else if(value.sts == "B") {
+					status_em_All.innerHTML = "失败";
+					testDiv.innerHTML = value.err_msg;
+					i.innerHTML = "i";
+					img.setAttribute("display", "inline_block");
+					status_em_All.setAttribute("class", "stand_fail");
+					status_em_All.setAttribute("style", "color:#ED1A07");
+				}
+				
+				//判断提现状态
+				if(value.sys_cnl!="svr"){
+					h3.innerHTML="手动提现"
+					img.src="../../img/icon_manual@2x.png"
+				}else{
+					h3.innerHTML = "自动提现"
+					img.src="../../img/icon_auto@2x.png"
+				}
+
+				li.appendChild(div);
+				div.appendChild(img);
+				div.appendChild(h3)
+				div.appendChild(status_p);
+				div.appendChild(testDiv);
+				testDiv.appendChild(i)
+				div.appendChild(hr);				
+				status_p.appendChild(text_span);
+				status_p.appendChild(status_em_All);
+				div.appendChild(account_amount_p);
+				div.appendChild(arrival_amount_p);
+				div.appendChild(service_charge_p);
+				div.appendChild(bank_cash_p);
+				div.appendChild(cash_number_p);
+				account_amount_p.appendChild(account_amount_span);
+				account_amount_p.appendChild(account_amount_em);
+				arrival_amount_p.appendChild(arrival_amount_span);
+				arrival_amount_p.appendChild(arrival_amount_em);
+				service_charge_p.appendChild(service_charge_span);
+				service_charge_p.appendChild(service_charge_em);
+				bank_cash_p.appendChild(bank_cash_span);
+				bank_cash_p.appendChild(bank_cash_em);
+				cash_number_p.appendChild(cash_number_span);
+				cash_number_p.appendChild(cash_number_em);
+				fragment.appendChild(li);
+			}
+
+			function getData(data) {
+				return data.substring(0, 4) + "-" + data.substring(4, 6) + "-" + data.substring(6, 8) + " " + data.substring(8, 10) + ":" + data.substring(10, 12)
+			}
+			
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+	<title>确认订单</title>
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/commonCss.css" rel="stylesheet" />
+</head>
+
+<body>
+	<div class="loading">
+		<div class="loading-div">
+			<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+			<!-- <span id="loading-svg"></span> -->
+			<div id="loading-svg"></div>
+			<p class="loading-p">数据加载中</p>
+		</div>
+	</div>
+	<header class="mui-bar mui-bar-nav mn-head" id='backBtn' >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"   id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">确认订单</h1>
+		</header>
+	<div class="confirm-order">
+		<form class="mui-input-group">
+			<div class="mui-input-row">
+				<label>服务名称</label>
+				<input type="text" class="mui-input-clear" id="appName" value="" disabled>
+			</div>
+			<div class="mui-input-row">
+				<label>开通费用</label>
+				<input type="text" class="mui-input-clear" id="ocFixedAmount" value="" disabled>
+				<div class="gray-solid-line"></div>
+			</div>
+			<div class="mui-input-row">
+				<label>终端数量</label>
+				<input type="text" class="mui-input-clear" value="不限台" disabled>
+				<div class="gray-solid-line"></div>
+			</div>
+			<div class="mui-input-row">
+				<label>有限期限</label>
+				<input type="text" class="mui-input-clear" id="validTerm" value="不限月" disabled>
+				<div class="gray-solid-line"></div>
+			</div>
+			<div class="gray-solid-line"></div>
+			<p class="total-count">合计：
+				<span class="money-count"></span>
+			</p>
+		</form>
+		<p style="font-size:12px;color:#999;margin:0 15px;">
+			注：1.由于资质审核不通过导致的开通失败，收取的开通费用请您通过终端进行退款申请；2.其他情况开通费用不予退回，服务内购买项目视具体项目而定；3.有效期为自开通成功之日起开始计算。
+		</p>
+
+		<div class="mui-button-row" style="margin-top:15%;">
+			<button type="button" class="mui-btn mui-btn-primary my-btn" onclick="submitOpening()">确认开通</button>
+		</div>
+	</div>
+
+
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/utils.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/zepto.min.js"></script>
+	<script src="../../js/storage.js"></script>
+	<script src="../../js/bodymovin.js"></script>
+    <script src="../../js/loadingConfig.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+
+		var user_info = sessionFetch("user_info");                  //商户信息
+		var appr_info = sessionFetch("appr_info");                  //应用信息
+		var merc_info = sessionFetch("merc_info");            		//用户选择商户信息
+		var payNumber;
+
+		//mui("#appName")[0].value = appr_info.appName;	
+		//mui("#ocFixedAmount")[0].value = Number(appr_info.ocFixedAmount).toFixed(2) + "元 / 商户";		   //开通费用
+		mui(".money-count")[0].innerText = "￥" + Number(appr_info.ocFixedAmount).toFixed(2);			//总计金额
+		mui("#appName")[0].value = '星POS钱客多';	//服务名称
+		mui("#ocFixedAmount")[0].value = 0 + "元 / 商户";		   //开通费用
+		mui(".money-count")[0].innerText = "￥" + 0;			//总计金额
+		if (appr_info.validTerm != "0") {
+			mui("#validTerm")[0].value = appr_info.validTerm + "个月";						   //有效期  0不限月
+		}
+
+
+		function submitOpening() {
+			//提交会员信息
+			callLayPoint("MemberPayment");
+
+			mui(".loading")[0].style.display = "block";
+			var data = {
+					"applicationId":appr_info.applicationId,
+					"openNo":merc_info.merc_id,
+					"ocType":"0",
+					"userId":user_info.usr_no,
+					"token_id":user_info.token_id,
+					"sys_identification":"0"
+			}
+			mui.ajax(API.OPENMEMBER, {
+				data: JSON.stringify(data),
+				dataType: 'json',
+				contentType: "application/json; charset=utf-8",
+				type: 'post',
+				success: function (res) {
+					mui(".loading")[0].style.display = "none";
+					if (res.errorCode === "0000") {
+						console.log("星POS钱客多信息开通成功");
+						window.location.href="../common_pages/open_succeed.html"
+						
+					} else {
+						console.log("星POS钱客多信息开通失败");
+						mui.alert('错误代号：' + res.errorCode + '<br>错误原因：' + res.message);
+						//window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + data.errorCode + "&error_msg=" + data.message;
+					}
+
+				},
+				error: function (xhr, type, errorThrown) {
+					mui(".loading")[0].style.display = "none";
+					console.log(type);
+					console.log(xhr);
+					mui.alert("服务器开小差啦，请稍后再试");
+					//window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+				}
+			});
+
+		};
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+.wrap {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0,0,0,.4);
+	z-index: 9999;
+	display: none;
+}
+
+.faceId_dialog {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	background: #fff;
+	text-align: center;
+	width: 80%;
+	height: 192px;
+	border-radius: 2px;
+	z-index: 20;
+}
+
+.faceId_dialog_tit {
+	margin: 15px 0 9px 0;
+	font-size: 18px;
+	color: rgba(34, 34, 34, 1);
+}
+
+.faceId_dialog p {
+	width: 220px;
+	margin: 0 auto;
+	color: #666666;
+	font-size: 14px;
+	margin-bottom: 24px;
+}
+
+.faceId_dialog_btn {
+	height: 44px;
+	border-top: 1px solid #ddd;
+}
+
+.faceId_dialog_btn div {
+	width: 50%;
+	height: 100%;
+	float: left;
+	line-height: 44px;
+	border: none;
+	margin: 0;
+	padding: 0;
+	outline: none;
+	font-size: 16px;
+	color: #666666;
+}
+
+.agreement_p {
+	font-size: 12px!important;
+	font-family: PingFangSC-Regular;
+	font-weight: 400;
+	color: rgba(182, 179, 179, 1) !important;
+	margin-bottom: 16px !important;
+}
+
+.agreement_span {
+	font-size: 12px;
+	font-family: PingFangSC-Regular;
+	font-weight: 400;
+	color: #15A0F5;
+}
+
+body {
+	background: #ffffff;
+}
+
+p {
+	margin: 0;
+}
+
+.withdrawals-index-m0 {
+	background-image: linear-gradient(0deg, #EDEFF2 0%, #E5E9EF 100%);
+	padding-top: 84px;
+}
+
+.withdrawals-index-m1 {
+	background: #25A2F2;
+	margin: 0 15px 0 15px;
+	color: #ffffff;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	text-align: center;
+	padding: 31px 0 25px 0;
+}
+
+#mercUnsettled {
+	color: #fff;
+	font-size: 34px;
+	margin-bottom: 15px;
+}
+
+.withdrawals-index-m1 p:nth-child(2) {
+	color: #fff;
+	font-size: 13px;
+	opacity: 0.7;
+	margin-bottom: 0;
+}
+
+.withdrawals-shop-con {
+	background: #ffffff;
+}
+
+.withdrawals-shop-con .icon,
+withdrawals-index-m2 .icon {
+	margin-top: 0 !important;
+}
+
+.withdrawals-index-m2 {
+	margin: 0 15px 20px 15px;
+	background: #FFFFFF;
+	box-shadow: 5px 5px 20px 0 rgba(176, 176, 176, 0.52);
+	border-radius: 5px;
+}
+
+.mendianmingcg {
+	border-left: 3px solid #25A2F2;
+}
+
+.mendianmingsb {
+	border-left: 3px solid #999;
+}
+
+#ketxje {
+	color: #25A2F2;
+	font-size: 28px;
+}
+
+#bketxje {
+	font-size: 17px;
+	color: #999999;
+}
+
+.withdrawals-gray-text {
+	color: #999999;
+	font-size: 12px;
+	padding-top: 5px;
+}
+
+.blue-btn {
+	color: #25A2F2;
+	border-color: #25A2F2;
+}
+
+.mui-toast-container {
+	bottom: 50% !important;
+}
+
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+	.withdrawals-index-m0 {
+		padding-top: 108px;
+	}
+}

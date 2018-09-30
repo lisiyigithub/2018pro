@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>订单来了</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<style>
+			body {
+				margin: 0 auto;
+				padding: 0 auto;
+				background-image: url(../../img/bg2.jpg);
+				background-attachment: fixed;
+				background-size: cover;
+				background-repeat: no-repeat;
+			}
+			
+			#order_section {
+				padding: 15px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<svg class="icon" aria-hidden="true" id='backBtn'>
+				<use xlink:href="#icon-fanhuijiantou-copy"></use>
+			</svg>
+			<h1 class="mui-title">订单来了</h1>
+		</header>
+		<div id="order_section">
+			<div class='paragraph1'>
+				<p id='p1'>自动接单</p>
+				<p id='p2'>多平台自动接单，提升接单效率。</p>
+			</div>
+			<div>
+				<p id='p1'>一键同步</p>
+				<p id='p2'>一次商品修改，同步到所有平台。</p>
+			</div>
+			<div class="paragraph2">
+				<p id='p1'>经营对账</p>
+				<p id='p2'>多平台多维度经营对账数据一目了然。</p>
+			</div>
+
+			<div class="btn-group">
+				<!--<button type="button" id="openApply" style="visibility: hidden;">我要开通</button>-->
+				<!--<button type="button" id="myOrder" style="visibility: hidden;">我的订单</button>-->
+				<p class='openTxt1'>请在POS终端上开通此服务</p>
+				<p>一&nbsp;&nbsp;<span class="openTxt2">详情咨询客服电话:</span>
+					<a href="tel:4006-555-666" style="color:#00BCFF ;">&nbsp;4006-555-666</a>&nbsp;&nbsp;一</p>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_duxkudu7huf8ncdi.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			//alert(window.location);
+			var usr_no = getUrlParams('usr_no');
+			var version = getUrlParams('version');
+			var token_id = getUrlParams('token_id');
+			var usr_typ = getUrlParams('usr_typ');
+			var opSys = getUrlParams('opSys');
+
+			//			$(document).ready(function(e) {
+			//				if(window.history && window.history.pushState) {
+			//					$(window).on('popstate', function() {
+			//						//退出webview
+			//						callCloseWebview();
+			//					});
+			//				}
+			//				window.history.pushState('forward', null, '#');  //在IE中必须得有这两行  
+			//				window.history.forward(1);
+			//			});
+
+			if(checkParam(usr_no, "usr_no") || checkParam(version, "version") || checkParam(token_id, "token_id") || checkParam(usr_typ, "usr_typ")) {
+				//订单来了appId
+				var appId = 'com.nld.takeout'
+				mui(".loading")[0].style.display = "block";
+				mui.ajax(API.GETAPPRECIATIONS + '?appId=' + appId + '&sys_identification=0&token_id=' + token_id + '&userId=' + usr_no, {
+					contentType: "application/json; charset=utf-8",
+					type: 'get', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					success: function(data) {
+						if(data.errorCode === '0000') {
+							//服务器返回响应，根据响应结果，分析是否登录成功；
+							mui(".loading")[0].style.display = "none";
+							console.log(data.appreciateApplicationResps[0].appName)
+							console.log('请求成功')
+							var user_info = {
+								usr_no: usr_no,
+								version: version,
+								token_id: token_id,
+								usr_typ: usr_typ,
+								opSys: opSys
+							};
+							sessionSave('user_info', user_info);
+							var orderAppInfo = data.appreciateApplicationResps[0];
+							sessionSave('orderAppInfo', orderAppInfo);
+							//类型
+							sessionSave("ap", "order");
+
+						} else {
+							mui(".loading")[0].style.display = "none";
+							//mui.alert("返回异常，errorCode:" + data.errorCode + ",message:" + data.message, " ", "确定");
+							window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + data.errorCode + "&error_msg=" + data.message;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						mui(".loading")[0].style.display = "none";
+						// mui.alert('网络异常,请稍候再试', " ", "确定");
+						window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+						console.log(type);
+					}
+				});
+			}
+			mui(".btn-group").on('tap', '#myOrder', function() {
+				mui.openWindow({
+					url: 'my_order.html'
+				});
+			});
+			mui(".btn-group").on('tap', '#openApply', function() {
+				callLayPoint("OrderOpenApply");
+				mui.openWindow({
+					url: 'open_apply.html'
+				});
+				//callSendPayResult("000000", "成功");
+			});
+			document.getElementById('backBtn').addEventListener('click',
+				function(e) {
+					callCloseWebview()
+				});
+		</script>
+	</body>
+
+</html>

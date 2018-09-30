@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>已开通商户</title>
+    <link href="../../css/mui.min.css" rel="stylesheet" />
+    <link href="../../css/commonCss.css" rel="stylesheet" />
+    <meta name="format-detection" content="telephone=no" />
+</head>
+
+<body>
+    <div class="loading">
+        <div class="loading-div">
+            <!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+            <!-- <span id="loading-svg"></span> -->
+            <div id="loading-svg"></div>
+            <p class="loading-p">数据加载中</p>
+        </div>
+    </div>
+    <header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+        <h1 class="mui-title">选择商户</h1>
+    </header>
+    <div class='no-terminal'>暂无已开通商户</div>
+    <div id="store-select">
+        <script type="text/template" id="tpl">
+            <%_.each(obj,function(e,i){%>
+                <div class="store-nm">
+                    <p class="merc-nm-text">
+                        <%=e.merNam%>
+                    </p>
+                    <p>商户号：
+                        <span class="merc-id-text"><%=addEllipsis(e.terminalNo,25)%></span>
+                    </p>
+                    <span class="gray-circle">
+                    <span class="not-select status"></span>
+                    </span>
+                </div>
+                <%})%>
+        </script>
+    </div>
+    <button class="my-btn3" onclick="onSubmit()">确定</button>
+
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/utils.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/zepto.min.js"></script>
+    <script src="../../js/underscore-min.js"></script>
+    <script src="../../js/bodymovin.js"></script>
+    <script src="../../js/loadingConfig.js"></script>
+    <script src="../../js/md5.js"></script>
+    <!-- <script src=https://cdn.bootcss.com/eruda/1.4.3/eruda.min.js></script> -->
+    <script>
+        var tplRender = _.template($("#tpl").html());
+        mui.init();
+        //eruda.init();
+        var merc_nm = "";
+        var merc_id = "";
+        var merc_list = [];
+        var merc_list2 = [];
+        var usable_merc_list = [];
+        var user_info = sessionFetch("user_info"); //商户信息
+        var appr_info = sessionFetch("appr_info"); //应用信息
+        var session_merc_list = sessionFetch("merc_list"); //应用信息
+        var mercOpenId = "";
+        var userAccount = "";
+        var mercSecret = "";
+        var timeStamp = Date.parse(new Date())
+
+        //checkmer();
+        console.log(user_info);
+
+        mui("#store-select").on('tap', '.store-nm', function() {
+            //获取商户名与商户号
+            merc_nm = this.getElementsByClassName('merc-nm-text')[0].innerText;
+            merc_id = this.getElementsByClassName('merc-id-text')[0].innerText;
+
+            console.log("merc_nm: " + merc_nm);
+            console.log("merc_id: " + merc_id);
+            //激活选择框
+            var cl_nm = this.getElementsByClassName('status')[0].className;
+            if (cl_nm.indexOf("not-select") !== "-1") {
+                //去除后添加
+                for (var i = 0; i < mui('.status').length; i++) {
+                    mui('.status')[i].className = "not-select status";
+                }
+                this.getElementsByClassName('status')[0].className = "is-select status";
+            }
+        });
+        $("#store-select").append(tplRender(session_merc_list));
+
+        //获取商户信息
+        function checkmer() {
+            var data = {
+                "contentTyp": "application/json",
+                "characterSet": "GBK",
+                "sys_cnl": "app",
+                "version": user_info.version,
+                "opSys": user_info.opSys,
+                "token_id": user_info.token_id,
+                "usr_no": user_info.usr_no,
+                "usr_typ": user_info.usr_typ
+            };
+            console.log(data);
+
+            mui(".loading")[0].style.display = "block";
+            mui.ajax(API.CHECKMER1, {
+                data: JSON.stringify(data),
+                dataType: 'json',
+                type: 'post',
+                success: function(res) {
+                    mui(".loading")[0].style.display = "none";
+                    console.log(res);
+                    if (res.repCode === "000000") {
+                        //获取商户号与商户名
+                        for (var i = 0; i < res.mercList.length; i++) {
+                            if (res.mercList[i].merc_auth_sts == "0" || res.mercList[i].merc_auth_sts == "3" || res.mercList[i].merc_auth_sts == "6" || res.mercList[i].merc_auth_sts == "7") {
+                                merc_list2[i] = {
+                                    "merNam": res.mercList[i].merc_nm,
+                                    "terminalNo": res.mercList[i].merc_id,
+                                }
+                            }
+                        }
+                        console.log(merc_list2);
+
+                        //筛选商户
+                        for (var i = 0; i < merc_list2.length; i++) {
+                            if (merc_list2[i] != undefined) {
+                                merc_list.push(merc_list2[i]);
+                            }
+                        }
+                        console.log(merc_list);
+
+                        if (merc_list.length == 0) {
+                            //暂无可选商户
+                            mui(".no-terminal")[0].style.display = "block";
+                        } else {
+                            $("#store-select").append(tplRender(merc_list));
+                            //usableMerchant();
+                        }
+                    } else if (res.repCode === "STM998") {
+                        mui.alert(res.repMsg, "", "确定", function() {
+                            callLogOutApp();
+                        });
+                    } else {
+                        mui.alert('错误代号：' + res.repCode + ' 错误原因：' + res.repMsg);
+                        //window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+                    }
+                },
+                error: function(xhr, type, errorThrown) {
+                    mui(".loading")[0].style.display = "none";
+                    console.log(type);
+                    console.log(xhr);
+                    //mui.alert("服务器开小差啦，请稍后再试");
+                    //window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+                }
+            });
+
+        };
+        //过滤商户信息
+        function usableMerchant() {
+            var data = {
+                "userId": user_info.usr_no,
+                "token_id": user_info.token_id,
+                "sys_identification": "0",
+                "ocType": "0",
+                "applicationId": appr_info.applicationId,
+                "merchLists": merc_list
+            };
+            console.log(data);
+
+            mui(".loading")[0].style.display = "block";
+            mui.ajax(API.USABLEMERCHANT, {
+                data: data,
+                dataType: 'json',
+                type: 'post',
+                contentType: "application/json; charset=utf-8",
+                success: function(res) {
+                    mui(".loading")[0].style.display = "none";
+                    console.log(res);
+                    if (res.errorCode === "0000") {
+                        if (res.appreciateOpenedMerchantResps.length == 0) {
+                            //暂无可选商户
+                            mui(".no-terminal")[0].style.display = "block";
+                        } else {
+                            usable_merc_list = res.appreciateOpenedMerchantResps;
+                            $("#store-select").append(tplRender(usable_merc_list));
+                        }
+                    } else if (res.errorCode === "STM998") {
+                        mui.alert(res.message, "", "确定", function() {
+                            callLogOutApp();
+                        });
+                    } else {
+                        // mui.alert('错误代号：' + res.errorCode + ' 错误原因：' + res.message);
+                        window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.errorCode + "&error_msg=" + res.message;
+                    }
+                },
+                error: function(xhr, type, errorThrown) {
+                    mui(".loading")[0].style.display = "none";
+                    console.log(type);
+                    console.log(xhr);
+                    mui.alert("服务器开小差啦，请稍后再试");
+                    //window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+                }
+            });
+        };
+
+        //跳转钱客多页面
+        function onSubmit() {
+            //step1 判断是否选择
+            if (merc_nm === "" || merc_id === "") {
+                mui.alert("请选择商户")
+            } else {
+                if (user_info.usr_typ == "0") { //管理员
+                    //step2会员系统查询是否开通
+                    var data = {
+                        "appCode": "memberClient",
+                        "timestamp": timeStamp,
+                        "signType": "MD5",
+                        "sign": "",
+                        "channel": "XGJ",
+                        "mercId": merc_id,
+                        "userAccount": "10000"
+                    };
+
+                    mui(".loading")[0].style.display = "block";
+
+                    mui.ajax(API.GETMERCHANTINFO, {
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        type: 'post',
+                        success: function(res) {
+                            mui(".loading")[0].style.display = "none";
+                            console.log(res);
+                            if (res.code === "SUCCESS") {
+                                mercOpenId = res.data.mercOpenId;
+                                userAccount = res.data.userAccount;
+                                mercSecret = res.data.mercSecret;
+                                //step3用钱客多开通的会员账户登录钱客多页面
+                                openIdLogin()
+                            } else {
+                                mui.alert('请联系新大陆客服开通');
+                                //window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+                            }
+                        },
+                        error: function(xhr, type, errorThrown) {
+                            mui(".loading")[0].style.display = "none";
+                            console.log(type);
+                            console.log(xhr);
+                            mui.alert("服务器开小差啦，请稍后再试");
+                            //window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+                        }
+                    });
+                } else { //操作员
+                    //step2会员系统查询是否开通
+                    var data = {
+                        "appCode": "memberClient",
+                        "timestamp": timeStamp,
+                        "signType": "MD5",
+                        "sign": "",
+                        "channel": "XGJ",
+                        "mercId": merc_id,
+                        "userAccount": "10001"
+                    };
+
+                    mui(".loading")[0].style.display = "block";
+
+                    mui.ajax(API.GETMERCHANTINFO2, {
+                        data: JSON.stringify(data),
+                        dataType: 'json',
+                        type: 'post',
+                        success: function(res) {
+                            mui(".loading")[0].style.display = "none";
+                            console.log(res);
+                            if (res.code === "SUCCESS") {
+                                mercOpenId = res.data.mercOpenId;
+                                userAccount = res.data.userAccount;
+                                mercSecret = res.data.mercSecret;
+                                //step3用钱客多开通的会员账户登录钱客多页面
+                                openIdLogin()
+                            } else {
+                                mui.alert('请联系新大陆客服开通');
+                                //window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+                            }
+                        },
+                        error: function(xhr, type, errorThrown) {
+                            mui(".loading")[0].style.display = "none";
+                            console.log(type);
+                            console.log(xhr);
+                            mui.alert("服务器开小差啦，请稍后再试");
+                            //window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+                        }
+                    });
+                }
+
+            }
+
+        };
+        //调用钱客多登录接口
+        function openIdLogin() {
+            var str = mercOpenId + userAccount + timeStamp + mercSecret;
+            var signature = str.MD5(32).toUpperCase(); // 32位加密方法
+
+            var data = {
+                "openId": mercOpenId,
+                "userAccount": userAccount,
+                "timeStamp": timeStamp,
+                "sign": signature
+            }
+            console.log(data);
+
+            mui(".loading")[0].style.display = "block";
+
+            window.location.href = API.OPENIDLOGIN + "?openId=" + mercOpenId + "&userAccount=" + userAccount + "&timeStamp=" + timeStamp + "&sign=" + signature + "&mercId=" + merc_id + "&mercNm=" + merc_nm;
+            //var qkdHref = API.OPENIDLOGIN + "?openId=" + mercOpenId + "&userAccount=" + userAccount + "&timeStamp=" + timeStamp + "&sign=" + signature;
+            //				callOpenQKD("test");
+        }
+    </script>
+</body>
+
+</html>

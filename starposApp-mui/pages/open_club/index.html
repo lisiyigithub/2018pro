@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<title>星商户俱乐部</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<script src="../../js/mui.min.js"></script>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+      body{
+        background: #f9f9f9;
+      }
+      .banner-div-div{
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        top: 7%;
+      }
+      .banner-div-div span{
+        color: #FFFFFF;
+        font-size: 21px;
+        padding: 7px 0;
+        border-top: 2px solid rgba(255,255,255,0.5);
+        border-bottom: 1px solid #ffffff;
+      }
+      .con1{
+        background: #ffffff;
+        margin-top: -5px;
+      }
+      .con1 table{
+        width: 260px;
+        margin: 0 auto 16px auto;
+      }
+      .con1 table tr{
+        margin-bottom: 20px;
+      }
+      .con1 table tr td:nth-child(2){
+        padding-left: 45px;
+        padding-top: 9px;
+        padding-bottom: 9px;
+      }
+      .tb-p{
+        color: #333333;
+        font-size: 17px;
+        margin-bottom: 4px;
+      }
+      .tb-p2{
+        color: #999999;
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+      .gray-line{
+        background: #F9F9F9;
+        height: 10px;
+      }
+      .con2{
+        background: #ffffff;
+        padding: 10px 0 7px 0;
+        margin-top: -15px;
+        margin-bottom: 44px;
+      }
+      .con2-p1{
+        font-size: 13px;
+        color: #333333;
+        margin-bottom: 2px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 305px;
+      }
+      .con2-p{
+        font-size: 13px;
+        color: #999999;
+        margin-bottom: 2px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 305px;
+      }
+      .con1 table tr td img{
+        vertical-align: initial;
+      }
+      #btn-grp1{
+        display: none;
+        z-index: 20;
+      }
+      #btn-grp1 button{
+        border: none;
+        background: #25A2F2;
+        color: #ffffff;
+        border-radius: 0;
+        width: 100%;
+        font-size: 15px;
+        padding: 12px 12px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+      }
+      #btn-grp2 {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        font-size: 0;
+        width: 100%;
+        z-index: 20;
+      }
+      #btn-grp2 button{
+        border: none;
+        background: #25A2F2;
+        color: #ffffff;
+        border-radius: 0;
+        width: 50%;
+        font-size: 15px;
+        padding: 12px 12px;
+      }
+      #gray-spi{
+        display: none;
+        color: #ffffff;
+        position: fixed;
+        bottom: 8px;
+        left: 50%;
+        z-index: 21;
+        width: 1px;
+        height: 28px;
+        border-right: 1px solid #ffffff;
+        margin-bottom: 0;
+      }
+      #little-img{
+        position: relative;
+        top: 6px;
+      }
+      #dy-text{
+        position: absolute;
+      }
+      @media screen and (max-width:340px) {
+        #dy-text{
+          position: static;
+        }
+      }
+		</style>
+  </head>
+  <body>
+    <!-- <div class="loading">
+      <div class="loading-div">
+        <div id="loading-svg"></div>
+        <p class="loading-p">数据加载中</p>
+      </div>
+    </div> -->
+
+    <!-- <div class="mn-head"></div> -->
+    <div class="banner-div">
+      <img id="banner-img" src="../../img/2xbg_vip.jpg" width="100%">
+      <div class="banner-div-div">
+        <span>开通会员 享受特权</span>
+      </div>
+    </div>
+    <div class="con1">
+      <table>
+        <tr>
+          <td>
+            <img src="../../img/2xicon_wallet.png" id="little-img" width="42px">
+          </td>
+          <td style="padding-top:25px;">
+            <p class="tb-p">免服务费</p>
+            <p class="tb-p2">星POS月租服务费免除</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="../../img/2xicon_bonus.png" width="43px">
+          </td>
+          <td>
+            <p class="tb-p">刷卡奖励金</p>
+            <p class="tb-p2">非封顶类交易享受0.02%刷卡奖励金（最高80元）
+              <!-- <span id="dy-text">奖励金（最高80元）</span> -->
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="../../img/2xicon_gift.png" width="42px">
+          </td>
+          <td>
+            <p class="tb-p">流量包买1送1</p>
+            <p class="tb-p2">POS管家购买流量包买1送1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="../../img/2xicon_custom service.png" width="39px">
+          </td>
+          <td>
+            <p class="tb-p">专属客服</p>
+            <p class="tb-p2">400热线、在线客服专人服务</p>
+          </td>
+        </tr> 
+      </table>
+    </div>
+    <div class="gray-line"></div>
+    <div class="con2">
+      <p class="con2-p1">参加条件及规则</p>
+      <p class="con2-p">参加条件：星POS商户，并且使用智能POS</p>
+      <p class="con2-p">缴费标准：30元/月/台，150元/半年/台，240元/年
+        <span id="dy-text">/台</span>
+      </p>
+      <p class="con2-p">生效时间：缴费后次月生效</p>
+    </div>
+    <div class="gray-line"></div>
+    <div id="btn-grp1">
+      <button type="button" id="myOrder" onclick="callOpenClub()">我要开通</button>
+    </div>
+    <p id="gray-spi"></p>
+    <div id="btn-grp2">
+      <button type="button" id="openApply" onclick="callOpenMyClub()">我的俱乐部</button>
+      <button type="button" id="myOrder" onclick="callOpenClub()">我要开通</button>
+    </div>
+
+    <script src="../../js/utils.js"></script>
+		<!-- <script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script> -->
+		<script type="text/javascript" charset="utf-8">
+      mui.init();
+      sysConfig();
+
+      function sysConfig(){
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid){
+          console.log("isAndroid");
+          console.log(mui(".con1 table tr td:nth-child(2)").style)
+          for(var i=0;i<mui(".con1 table tr td:nth-child(2)").length;i++){
+            mui(".con1 table tr td:nth-child(2)")[i].style.paddingTop = "6px";
+            mui(".con1 table tr td:nth-child(2)")[i].style.paddingBottom = "6px";
+          }
+          mui(".con1 table tr td:nth-child(2)")[0].style.paddingTop = "15px";
+        }else{
+          console.log("isIOS");
+        }
+      }
+
+      checkParam( getUrlParams("isOpenClub"),"开通标识" );
+      //控制按钮/分隔符显隐
+      if(getUrlParams("isOpenClub")==="Y"){
+        mui("#btn-grp1")[0].style.display = "none";
+        mui("#btn-grp2")[0].style.display = "block";
+        mui("#gray-spi")[0].style.display = "block";
+      }else{
+        mui("#btn-grp1")[0].style.display = "block";
+        mui("#btn-grp2")[0].style.display = "none";
+        mui("#gray-spi")[0].style.display = "none";
+      }
+
+    </script>  
+  </body>
+</html>

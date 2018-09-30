@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>确认订单</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn' >
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"   id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">确认订单</h1>
+		</header>
+		<div class="confirm-order">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>服务名称</label>
+					<input type="text" class="mui-input-clear" id='appName' value="" disabled>
+				</div>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row">
+					<label>开通费用</label>
+					<input type="text" class="mui-input-clear" id='priceTotal' value="1000.00元/终端" disabled>
+				</div>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row">
+					<label>终端数量</label>
+					<input type="text" class="mui-input-clear" value="1台" disabled>
+				</div>
+				<div class="gray-solid-line"></div>
+				<div class="mui-input-row">
+					<label>有限期限</label>
+					<input type="text" class="mui-input-clear" id='validTerm' value="" disabled>
+				</div>
+				<div class="gray-solid-line"></div>
+				<p class="total-count">合计： <span class="money-count" id='money-count'></span></p>
+			</form>
+			<p style="color:#999;margin:0 15px;font-size:12px;">
+				注：1.由于资质审核不通过导致的开通失败，收取的开通费用请您通过终端进行退款申请；2.其他情况开通费用不予退回，服务内购买项目视具体项目而定；3.有效期为自开通成功之日起开始计算。
+			</p>
+			<div class="mui-button-row" style="margin-top:15%;">
+				<button type="button" class="mui-btn mui-btn-primary my-btn" onclick="next_step()">立即支付</button>
+			</div>
+		</div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var user_info = sessionFetch('user_info');
+			var orderAppInfo = sessionFetch('orderAppInfo');
+			var zdInfo = sessionFetch('zdInfo');
+			var payNumber;
+			var paymentTotal; //查询星管家开通服务费
+			//界面内容显示
+			document.getElementById('appName').value = orderAppInfo.appName;
+			document.getElementById('priceTotal').value = Number(orderAppInfo.ocFixedAmount).toFixed(2) + ' 元 / 终端';
+			if(orderAppInfo.validTerm === '0') {
+				document.getElementById('validTerm').value = '不限月';
+			} else {
+				document.getElementById('validTerm').value = orderAppInfo.validTerm + '个月';
+			}
+
+			document.getElementById('money-count').innerHTML = '￥' + Number(orderAppInfo.ocFixedAmount).toFixed(2);
+			//立即支付button
+			function next_step() {
+			callLayPoint("OrderPayment");
+
+				//生成订单
+				var data = {
+					appId: "com.nld.takeout",
+					appName: orderAppInfo.appName,
+					applicationId: orderAppInfo.applicationId,
+					merName: zdInfo.merc_nm,
+					ocType: orderAppInfo.ocType,
+					paymentTotal: orderAppInfo.ocFixedAmount,
+					storeNo: zdInfo.stoe_id, //门店号
+					terminalNo: zdInfo.merc_id, //商户号
+					trmNo: zdInfo.trmNo, //终端号
+					userId: user_info.usr_no,
+					validTerm: orderAppInfo.validTerm,
+					verCode: orderAppInfo.verCode,
+					verNo: orderAppInfo.verNo,
+					sn: zdInfo.sn, //sn号
+					token_id: user_info.token_id,
+					sys_identification: 0
+				}
+				mui(".loading")[0].style.display = "block";
+				mui.ajax(API.SAVEORDERINFO, {
+					dataType: 'json', //服务器返回json格式数据
+					contentType: "application/json; charset=utf-8",
+					type: 'post', //HTTP请求类型
+					data: data,
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						console.log('生成订单成功！')
+						if(data.errorCode === '0000') {
+							mui(".loading")[0].style.display = "none";
+							//生成订单，获取订单号
+							payNumber = data.appreciatePayResp.payNumber;
+							//根据订单号，查订单支付状态
+							getOrderInfo(payNumber);
+						} else {
+							mui(".loading")[0].style.display = "none";
+							//mui.alert("返回异常，errorCode:" + data.errorCode + ",message:" + data.message);
+							window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + data.errorCode + "&error_msg=" + data.message;
+						}
+
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						mui.alert('生成订单-网络异常,请稍候再试');
+						mui(".loading")[0].style.display = "none";
+						console.log(type);
+					}
+				});
+			};
+			//查询订单支付状态
+			function getOrderInfo(payNumber) {
+				var data = {
+					payNumber: payNumber,
+					token_id: user_info.token_id,
+					sys_identification: "0",
+					userId: user_info.usr_no
+				}
+				mui(".loading")[0].style.display = "block";
+				mui.ajax(API.GETORDERINFO, {
+					dataType: 'json',
+					contentType: "application/json; charset=utf-8",
+					type: 'post',
+					data: data,
+					success: function(res) {
+						mui(".loading")[0].style.display = "none";
+						console.log(res);
+
+						if(res.errorCode === "0000") {
+							//0未支付  1已支付
+							if(res.payAndSuccessResp.isPay == "0") {
+								//判断价格是否修改
+								paymentTotal = res.payAndSuccessResp.paymentTotal;
+								console.log(paymentTotal)
+								console.log(orderAppInfo.ocFixedAmount)
+								if(paymentTotal !== orderAppInfo.ocFixedAmount) {
+									console.log('价格改变')
+									//服务开通费修改
+									mui.alert("开通服务费有修改，请再次确认后支付", "", "确定", function() {
+										//修改sessionStorage里面的价格
+										orderAppInfo.ocFixedAmount = paymentTotal;
+										sessionSave('orderAppInfo', orderAppInfo);
+										location.reload();
+									});
+
+								} else {
+									console.log("该订单未支付，调用app支付方法中")
+									//									mui.alert("调用app支付方法", "", "确定", function() {
+									//										mui.openWindow({
+									//											id: 'pay_succeed',
+									//											url: '../common_pages/pay_succeed.html?ap=order'
+									//										});
+									//									});
+									//mui.alert("请在POS终端-应用商店中去完成支付", "", "确定");
+									callAliPay(res.payAndSuccessResp.paymentTotal, orderAppInfo.appName+'开通费用',payNumber);
+								}
+
+							} else if(res.payAndSuccessResp.isPay == "1") {
+								console.log("该订单已支付");
+								mui.alert("该订单已支付");
+								mui.openWindow({
+									id: 'pay_fail',
+									url: '../common_pages/pay_fail.html'
+								});
+							}
+
+						} else {
+							console.log("订单状态查询失败，未调起app支付方法");
+							//mui.alert('错误代号：' + res.errorCode + ' 错误原因：' + res.message);
+							window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.errorCode + "&error_msg=" + res.message;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui(".loading")[0].style.display = "none";
+						console.log(type);
+						console.log(xhr);
+						//mui.alert("服务器开小差啦，请稍后再试");
+						window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
+				});
+			};
+		</script>
+	</body>
+
+</html>

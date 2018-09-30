@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<link href="../../css/mer_account.css" rel="stylesheet" />
+		<title>账户</title>
+		<style>
+			body {
+				background-color: #25A2F2;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav" style="background-color: #25A2F2;">
+			<svg class="icon" aria-hidden="true" id='backBtn'>
+				<use xlink:href="#icon-fanhuijiantou-copy"></use>
+			</svg>
+			<h1 class="mui-title">账户</h1>
+		</header>
+		<div class='content'>
+			<div class="mer_account">
+				<div class='mer_account_inner'>
+					<div class='accountText'><span><sup  class='supMoney'>￥</sup></span><span class='num' id="tatalBalance">0.00</span></div>
+				</div>
+
+			</div>
+		</div>
+		<div class='description'>
+			<p>待结算余额</p>
+		</div>
+		<div class="accountImg">
+			<img src="../../img/@2ximg_balance.png" width="230px" />
+		</div>
+		<script src="//at.alicdn.com/t/font_489463_duxkudu7huf8ncdi.js"></script>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script>
+			document.getElementById('backBtn').addEventListener('click',
+				function(e) {
+					callCloseWebview()
+				});
+			var usr_no, usr_typ, version, opSys, token_id
+			if(window.location.toString().indexOf("?") != -1) {
+				usr_no = getUrlParams("usr_no")
+				usr_typ = getUrlParams("usr_typ")
+				version = getUrlParams("version")
+				opSys = getUrlParams("opSys")
+				token_id = getUrlParams("token_id")
+			}
+			if(checkParam(usr_no, "usr_no") || checkParam(version, "version") || checkParam(token_id, "token_id") || checkParam(usr_typ, "usr_typ")) {
+				getTotalBalance()
+			}
+
+			//获取商户信息
+			function getTotalBalance() {
+				var data = {
+					"contentTyp": "application/json",
+					"characterSet": "GBK",
+					"sys_cnl": "app",
+					"version": version,
+					"opSys": opSys,
+					"token_id": token_id,
+					"usr_no": usr_no,
+					"usr_typ": usr_typ
+				};
+				console.log(data);
+
+				mui(".loading")[0].style.display = "block";
+				mui.ajax(API.GETTOTALBALANCE, {
+					data: JSON.stringify(data),
+					dataType: 'json',
+					type: 'post',
+					success: function(res) {
+						mui(".loading")[0].style.display = "none";
+						console.log(res);
+						if(res.repCode === "000000") {
+							console.log(res.balance)
+							document.getElementById('tatalBalance').innerHTML = getFloatStr(res.balance);
+						} else {
+							mui.alert('错误代号：' + res.repCode + ' 错误原因：' + res.repMsg);
+							//window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui(".loading")[0].style.display = "none";
+						console.log(type);
+						console.log(xhr);
+						mui.alert("服务器开小差啦，请稍后再试");
+						//window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
+				});
+
+			};
+
+			function getFloatStr(num) {
+				console.log(num)
+				num += '';
+				num = num.replace(/[^0-9|\.]/g, ''); //清除字符串中的非数字非.字符
+
+				if(/^0+/) //清除字符串开头的0
+					num = num.replace(/^0+/, '');
+				if(!/\./.test(num)) //为整数字符串在末尾添加.00
+					num += '.00';
+				if(/^\./.test(num)) //字符以.开头时,在开头添加0
+					num = '0' + num;
+				num += '00'; //在字符串末尾补零
+				num = num.match(/\d+\.\d{2}/)[0];
+				return num;
+			};
+		</script>
+	</body>
+
+</html>

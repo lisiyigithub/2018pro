@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+		<title>支付成功</title>
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<style>
+			/* 支付成功/失败页面 */
+			
+			#img-section1,
+			#img-section2 {
+				margin: 94px 0 10% 0 !important;
+				background-color: #FFFFFF;
+				height:200px;
+				text-align: center;
+			}
+			#img-section1 img,
+			#img-section2 img{
+				margin: 40px 0 20px 0;
+			}
+			#img-section1 p,
+			#img-section2 p{
+				font-size: 20px;
+				color: #666666;
+			}
+			@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+				#img-section1,
+				#img-section2 {
+					margin: 114px 0 10% 0 !important;
+					background-color: #FFFFFF;
+					height: 200px;
+					text-align: center;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">支付成功</h1>
+		</header>
+		<div id='img-section1'>
+			<img alt="成功" src="../../img/zhifuchenggong_icon_chenggong@2x.png" height="50px" width="50px">
+			<p>&nbsp;&nbsp;&nbsp;支付成功！</p>
+		</div>
+		<div id='btn-section'>
+			<button type="button" class="mui-btn mui-btn-outlined my-btn" onclick="toMyOrder()">完成</button>
+		</div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script>
+			mui.init();
+			var user_info = sessionFetch('user_info');
+			//返回我的订单页
+			function toMyOrder() {
+				if(getUrlParams("ap") === "invoice") {
+					window.location.href = "../open_invoice/index.html?usr_no="+user_info.usr_no+"&usr_typ="+user_info.usr_typ+"&version="+user_info.version+"&opSys="+user_info.opSys+"&token_id="+user_info.token_id;
+				} else if(getUrlParams("ap") === "order") {
+					window.location.href = "../open_order/index.html?usr_no="+user_info.usr_no+"&usr_typ="+user_info.usr_typ+"&version="+user_info.version+"&opSys="+user_info.opSys+"&token_id="+user_info.token_id;
+				} else if(getUrlParams("ap") ==="ad" ){
+					window.location.href = "../wx_ad/index.html?usr_no="+user_info.usr_no+"&usr_typ="+user_info.usr_typ+"&userName="+user_info.userName+"&userTelephone="+user_info.userTelephone+"&token_id="+user_info.token_id;
+				}else if(getUrlParams("ap") ==="member" ){
+					window.location.href = "../open_member/index.html?usr_no="+user_info.usr_no+"&usr_typ="+user_info.usr_typ+"&version="+user_info.version+"&opSys="+user_info.opSys+"&token_id="+user_info.token_id;
+				}
+			};
+		</script>
+
+	</body>
+
+</html>

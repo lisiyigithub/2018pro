@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<style>
+			@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+				.withdrawals_explan {
+					margin-top: 88px;
+				}
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title">提现说明</h1>
+		</header>
+		<div class="withdrawals_explan">
+			<div class="withdrawals_explan_list">
+				<p id="explan_title">提现受理时间</p>
+				<div class="withdrawals_explan_crite">
+					<span></span>
+				</div>
+				<div class="withdrawals_explan_text">
+					每日提现服务的业务受理时段为8:00-22:00
+				</div>
+				<hr style="background: #000000;" />
+			</div>
+			<div class="withdrawals_explan_list">
+				<p id="explan_title">门店提现最高金额</p>
+				<ul type="disc">
+					<li>单日最高提现金额为<span id="max_amoun_cash" class="text_gradient_color">100000元</span></li>
+					<li>单笔最高提现金额为<span id="max_amoun" class="text_gradient_color">50000元</span></li>
+					<li>单笔最低提现金额为<span id="min_amoun" class="text_gradient_color">1元</span></li>
+				</ul>
+				<hr style="background: #000000;" />
+			</div>
+			<div class="withdrawals_explan_list">
+				<p id="explan_title">提现手续费</p>
+				<div class="withdrawals_explan_crite">
+					<span></span>
+				</div>
+				<div class="withdrawals_explan_text">
+					提现金额的<span id="service_charge" class="text_gradient_color">0.02%</span>（单笔手续费不足0.5元按0.5元结算），手续费将从收款余额中自动扣除。
+				</div>
+				<hr style="background: #000000;" />
+			</div>
+			<div class="withdrawals_explan_list">
+				<p id="explan_title">到账时长</p>
+				<div class="withdrawals_explan_crite">
+					<span></span>
+				</div>
+				<div class="withdrawals_explan_text">
+					您申请的提现金额预计将在2小时内到达您的结算账户，具体到账时间请以银行通知为准。
+				</div>
+			</div>
+
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script type="text/javascript">
+			mui.init()
+			var user_info = sessionFetch("user_info");
+			if(user_info != '[]') {
+				var data = {
+					"contentTyp": "application/json",
+					"characterSet": "GBK",
+					"sys_cnl": "app",
+					"version": user_info.version,
+					"opSys": user_info.opSys,
+					"token_id": user_info.token_id,
+					"usr_no": user_info.usr_no,
+					"usr_typ": user_info.usr_typ,
+					"merc_id": getUrlParams("wd_mercid")
+				};
+				//mui(".loading")[0].style.display = "block";
+				mui.ajax(API.GETEXPLANTEXT, {
+					data: data,
+					dataType: 'json',
+					type: 'post',
+					contentType: "application/json; charset=utf-8",
+					success: function(res) {
+						max_amoun_cash = document.getElementById("max_amoun_cash");
+						max_amoun = document.getElementById("max_amoun");
+						min_amoun = document.getElementById("min_amoun");
+						service_charge = document.getElementById("service_charge");
+						if(res.repCode === "000000") {
+							if(res.pay_day_max !== null) {
+								max_amoun_cash.innerText = res.pay_day_max+"元";
+							}
+							if(res.pay_sig_max !== null) {
+								max_amoun.innerText = res.pay_sig_max+"元";
+							}
+							if(res.pay_day_min !== null) {
+								min_amoun.innerText = res.pay_day_min+"元";
+							}
+							if(res.service_fee !== null) {
+								service_charge.innerText = res.service_fee+"%";
+							}
+						} else {
+							mui.alert(res.repMsg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(type);
+						console.log(xhr);
+						mui.alert("服务器开小差啦，请稍后再试");
+					}
+				});
+			} else {
+				mui.alert("开通数据为空，请重新登录");
+			}
+		</script>
+	</body>
+
+</html>

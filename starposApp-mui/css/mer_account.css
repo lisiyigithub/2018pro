@@ -1,0 +1,72 @@
+.content {
+	margin-top: 8rem
+}
+.supMoney{
+	font-size: 15px;
+    position: relative;
+    top: -12px;
+}
+.mer_account {
+	height: 5.2rem;
+	width: 20.2rem;
+	border: 1px solid #fff;
+	padding: .5rem;
+	margin: 0px auto;
+}
+
+.mer_account_inner {
+	background-color: #fff;
+	height: 4rem;
+	width: 19rem;
+}
+
+.accountText {
+	color: #25A2F2;
+	text-align: center;
+	position: relative;
+	top: 1.4rem
+}
+
+.num {
+	font-size: 30px;
+	font-family: SFUIText-Regular;
+}
+
+.description {
+	text-align: center;
+}
+
+.accountImg {
+	text-align: center;
+	margin-top: 12rem
+}
+.description p {
+	color: #ffffff;
+	margin-top: 10px;
+	opacity: 0.85;
+	font-family: PingFangSC-Regular;
+}
+
+@media (min-width:320px) and (max-width:358px) {
+	.mer_account {
+		height: 5.2rem;
+		width: 15.1rem;
+		border: 1px solid #fff;
+		padding: .5rem;
+		margin: 0px auto;
+	}
+	.mer_account_inner {
+		background-color: #fff;
+		height: 4rem;
+		width: 14rem;
+	}
+	.content {
+		margin-top: 8rem
+	}
+	.accountImg {
+		text-align: center;
+		margin-top: 8rem
+		/*position: fixed;*/
+		/*bottom: 1rem;*/
+	}
+}

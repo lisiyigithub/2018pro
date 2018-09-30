@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>提现结果</title>
+    <link href="../../css/mui.min.css" rel="stylesheet" />
+    <link href="../../css/commonCss.css" rel="stylesheet" />
+    <!-- <link href="../../css/withdraw_shop.css" rel="stylesheet" /> -->
+    <script src="../../js/mui.min.js"></script>
+    <style>
+        body {
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .withdrawals-succeess-con1 {
+            margin-top: 120px;
+            text-align: center;
+        }
+        .withdrawals-succeess-con1 p{
+            font-size: 18px;
+            color: #333333;
+            margin-top: 6%;
+        }
+
+        .withdrawals-succeess-con2 {
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            bottom: 15%;
+        }
+        .withdrawals-succeess-con2 button{
+            background: #25A2F2;
+            border-color: #25A2F2;
+            box-shadow: 0 0 10px 0 #419BF9;
+            border-radius: 46px;
+            color: #fff;
+            font-size: 16px;
+            width: 90%;
+            margin: 0 5%;
+            padding:9px 12px;
+        }
+
+        @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+            .withdrawals-succeess-con1 {
+                margin-top: 144px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav mn-head">
+        <a class="mui-action-back" id='backBtn'>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fanhuijiantou-copy"></use>
+            </svg>
+        </a>
+        <h1 class="mui-title">提现结果</h1>
+        <span class="heade-right-side" onclick="window.history.go(-1)">完成</span>
+    </header>
+    <div class="withdrawals-succeess-con1">
+        <img src="../../img/@2ximg_shenhe.png" width="60px">
+        <p>提现申请已提交，等待处理结果</p>
+    </div>
+    <div class="withdrawals-succeess-con2">
+        <button type="button" class="mui-btn mui-btn-outlined" onclick="toWithdrawalsDetails()">查看明细</button>
+    </div>
+
+
+    <script src="../../js/utils.js"></script>
+    <!-- <script src="../../js/api.js"></script>
+    <script src="../../js/storage.js"></script>
+    <script src="../../js/zepto.min.js"></script>
+    <script src="../../js/bodymovin.js"></script>
+    <script src="../../js/loadingConfig.js"></script> -->
+    <script src="//at.alicdn.com/t/font_489463_0e4fz16ytlu15rk9.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        mui.init();
+
+        function toWithdrawalsDetails(){
+            mui.openWindow({
+                url: 'withdrawals_detail.html?wd_mercid='+ getUrlParams("wd_mercid")
+            });
+        }
+    </script>
+</body>
+
+</html>

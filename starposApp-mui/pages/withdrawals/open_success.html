@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>开通成功</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/lexible_css.css" />
+		<style>
+			body {
+				background: #FFFFFF;
+			}
+			/* 开通成功/失败页面 */
+			
+			#img-section1 {
+				margin-top: 120px;
+				text-align: center;
+			}
+			
+			#img-section1 img {
+				height: 62px;
+			}
+			
+			#img-section1 h4 {
+				font-family: PingFangSC-Regular;
+				font-size: 18px;
+				color: #333333;
+				line-height: 25px;
+				margin-bottom: 10px;
+			}
+			
+			#img-section1 h6 {
+				font-family: PingFangSC-Regular;
+				font-size: 14px;
+				color: #666666;
+				line-height: 20px;
+			}
+			
+			#part-open h5 {
+				font-family: PingFangSC-Regular;
+				font-size: 14px;
+				color: #666666;
+			}
+			
+			#part-open div p {
+				padding: 0px;
+				margin-bottom: 11px;
+			}
+			
+			#part-open div p span {
+				font-family: PingFangSC-Regular;
+				font-size: 16px;
+				color: #999999;
+				margin-right: 15px;
+				text-align: center;
+			}
+			
+			#part-open div p img {
+				height: 11.55px;
+			}
+			
+			#open_success_list {
+				margin-top: 17px;
+				margin-bottom: 34px;
+			}
+			
+			#open_fail_list {
+				margin-top: 22px;
+			}		
+			
+			.wrap{
+				position: fixed;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background: rgba(0,0,0,.4);
+				z-index: 666;
+			}
+			.inner{
+				width:80%;
+				height: 192px; 
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				margin: auto;
+				border-radius: 5px;
+				background: #fff;
+				text-align: center;
+			}
+			.inner_tit{
+				margin: 15px 0 9px 0;
+				font-size: 18px;
+				color:rgba(34,34,34,1);
+			}
+			.inner p{
+				width: 220px;
+				margin: 0 auto;
+				color: #666666;
+				font-size: 14px;
+				margin-bottom: 24px;
+			}
+			.inner_btn{
+				height:44px;
+				border-top: 1px solid #ddd;
+			}
+			.inner_btn div{
+				width: 50%;
+				height: 100%;
+				line-height:44px;
+				text-align: center;
+				background: none;
+				float: left;
+				border: 0;
+				outline: none;
+				font-size: 16px;
+				color: #666666;
+			}
+			
+			.agreement_p {
+				font-size: 12px!important;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: rgba(182, 179, 179, 1) !important;
+				margin-bottom: 16px !important;
+			}
+			
+			.agreement_span {
+				font-size: 12px;
+				font-family: PingFangSC-Regular;
+				font-weight: 400;
+				color: #15A0F5;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<span onclick="javascript :history.back(-1);">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fanhuijiantou-copy"></use>
+            </svg>
+        </span>
+			<h1 class="mui-title">申请开通</h1>
+		</header>
+
+		<div class="wrap">
+			<div class="inner">
+				<div class="inner_tit">
+					提示
+				</div>
+				<p>您已符合提现开通资质，请继续完成人脸识别认证。</p>
+				<p class="agreement_p">点击去认证即同意<span class="agreement_span" onclick="goToAgreement()">《用户协议》</span></p>
+				<div class="inner_btn">
+					<div onclick="callCloseWebview()">取消</div>
+					<div style="border-left: 1px solid #ddd;color: #25A2F2;" onclick="goToidentity()">去认证</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script type="text/javascript" src="../../js/flexible.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			//mui.plusReady(initSuccess());
+			//前往提现页面
+			function toWithdrawShop() {
+				var user_info = sessionFetch("user_info");
+				mui.openWindow({
+					url: 'index.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version + '&opSys=' + user_info.opSys
+				});
+			};
+
+			//初始化页面
+			function initSuccess() {
+				var res = getUrlParams("res");
+				var button = document.getElementById("finish");
+				open_success_list = document.getElementById("open_success_list");
+				open_fail_list = document.getElementById("open_fail_list");
+				if(res == null) {
+					document.getElementById("part-open").style.display = "none"
+				} else {
+					document.getElementById("open-text").innerHTML = "恭喜您，以下商户开通成功:";
+					document.getElementById("open-text2").style.display = "none"
+					var merc_list_json = JSON.parse(res);
+					mui.each(merc_list_json, function(key, value) {
+						fragment = document.createDocumentFragment();
+						p = document.createElement("p");
+						span = document.createElement("span");
+						img = document.createElement("img");
+						span.innerHTML = value.merc_nm;
+						p.appendChild(span);
+						if(value.sts == 0) {
+							img.setAttribute("src", "../../img/@2xicon_success.png");
+							fragment.appendChild(p)
+							open_success_list.appendChild(fragment)
+						} else {
+							img.setAttribute("src", "../../img/@2xicon_fail.png");
+							fragment.appendChild(p);
+							open_fail_list.appendChild(fragment);
+						}
+						button.setAttribute("style", "margin-top: 101px;")
+						p.appendChild(img);
+					});
+				}
+			};
+			function goToidentity(){
+				var user_info = sessionFetch("user_info");
+				mui.openWindow({
+					url: 'identity.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version + '&opSys=' + user_info.opSys
+				});
+			}
+			function goToAgreement(){
+				mui.openWindow({
+					url: '../doc/verification_agreement.html'
+				});
+			}
+		</script>
+	</body>
+
+</html>

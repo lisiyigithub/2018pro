@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<title>电子发票</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<script src="../../js/mui.min.js"></script>
+		<style>
+			body {
+				margin: 0 auto;
+				padding: 0 auto;
+				background-image: url(../../img/bg1.jpg);
+				background-attachment: fixed;
+				background-size: cover;
+				background-repeat: no-repeat;
+			}
+			
+			#invoice_section {
+				padding: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<svg class="icon" aria-hidden="true" id='backBtn'>
+				<use xlink:href="#icon-fanhuijiantou-copy"></use>
+			</svg>
+			<h1 class="mui-title">电子发票</h1>
+		</header>
+		<div id='invoice_section'>
+			<div class="paragraph1">
+				<p id='p1'>简单快速</p>
+				<p id='p2'>POS收银直接跳转，开票仅需5秒。</p>
+			</div>
+			<div>
+				<p id='p1'>节约成本</p>
+				<p id='p2'>无纸化服务，多人工作一人完成，省心省力省成本。</p>
+			</div>
+			<div class="paragraph2">
+				<p id='p1'>自助服务</p>
+				<p id='p2'>公众号内消费者自助查询所有发票，找回遗失发票。</p>
+			</div>
+			<div class="btn-group">
+				<button type="button" id="openApply">我要开通</button>
+				<button type="button" id="myOrder">我的订单</button>
+				<!-- <p>您也可以直接拨打人工客服咨询<a href="tel:4006-555-666">4006-555-666</a></p> -->
+			</div>
+		</div>
+
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_duxkudu7huf8ncdi.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			//类型
+			sessionSave("ap","invoice");
+			//获取用户信息
+			if(window.location.toString().indexOf("?") != -1) {
+				var user_info = {
+					usr_no: getUrlParams("usr_no"),
+					usr_typ: getUrlParams("usr_typ"),
+					version: getUrlParams("version"),
+					opSys: getUrlParams("opSys"),
+					token_id: getUrlParams("token_id"),
+				};
+				sessionSave("user_info", user_info);
+				console.log("首次访问，url后带有参数");
+				//alert("首次访问，url后带有参数");
+			} else {
+				var user_info = sessionFetch("user_info");
+				console.log(user_info)
+				console.log("返回访问，url后无参数");
+				//alert("返回访问，url后无参数");
+			}
+
+			getAppreciations();
+
+			//获取增值服务信息
+			function getAppreciations() {
+
+				mui(".loading")[0].style.display = "block";
+				mui.ajax(API.GETAPPRECIATIONS + "?appId=com.newland.starpos.elctrinvc" + "&sys_identification=0" + "&userId=" + user_info.usr_no + "&token_id=" + user_info.token_id, {
+					dataType: 'json',
+					type: 'get',
+					contentType: "application/json; charset=utf-8",
+					success: function(res) {
+						mui(".loading")[0].style.display = "none";
+						console.log(res);
+
+						if(res.errorCode === "0000") {
+							sessionSave("appr_info", res.appreciateApplicationResps[0]);
+						} else if(res.errorCode === "STM998") {
+							//在其他设备登录账号
+							mui.alert(res.message, "", "确定", function() {
+								callLogOutApp();
+							});
+						} else {
+							// mui.alert('错误代号：' + res.errorCode + ' 错误原因：' + res.message);
+							window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.errorCode + "&error_msg=" + res.message;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui(".loading")[0].style.display = "none";
+						console.log(type);
+						console.log(xhr);
+						// mui.alert("服务器开小差啦，请稍后再试");
+						// window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
+				});
+			};
+
+			mui(".btn-group").on('tap', '#myOrder', function() {
+				mui.openWindow({
+					id: 'my_order',
+					url: 'my_order.html'
+				});
+			});
+			mui(".btn-group").on('tap', '#openApply', function() {
+				callLayPoint("InvoiceOpenApply");
+				mui.openWindow({
+					id: 'open_apply',
+					url: 'open_apply.html'
+				});
+			});
+		    document.getElementById('backBtn').addEventListener('click',
+				function(e) {
+						callCloseWebview()
+				});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+    <meta name="description" content="星管家" />
+    <title>星榜单</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link href="../../css/transCss.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- <div style="height:64px;background:#fff;">mn-head</div> -->
+    <div class="loading">
+        <div class="loading-div">
+            <div id="loading-svg"></div>
+            <p class="loading-p">数据加载中</p>
+        </div>
+    </div>
+    <div class="container_share">
+        <img src="../../img/banner-x.jpg" width="100%" id="banner-img" />
+        <img src="../../img/yemian_pic_yuansu.png" style="position:absolute;top:30%;left:-20px;" />
+        <div class="m-select">
+            <p class="m-select-text" onclick="drowDown()">
+                <span id="merc-id">暂无商户</span>
+                <span id="triangle-up"></span>
+            </p>
+            <p style="visibility:hidden;">占位符</p>
+            <ul id="merc-list">
+                <li style="visibility:hidden;">占位符</li>
+                <!-- 加载商户名 -->
+            </ul>
+        </div>
+        <!-- echarts图表 -->
+        <div class="moudle1">
+            <p style="padding-top:30px;" id="date1">/ 年 / 月 / 日的<span class="yellow-text">交易额排名</span></p>
+            <p style="font-size:10px;visibility:hidden;">Transaction amount</p>
+            <!-- 在同一地区和行业  -->
+            <!-- 1.7.1版本星榜单 -->
+            <span id="hasRecord">
+                <table class="hasRecord-table">
+                    <tr>
+                        <td id="je_rank_city"></td>
+                        <td id="je_rank_in"></td>
+                    </tr>
+                    <tr>
+                        <td id="je_rank_city_text"></td>
+                        <td id="je_rank_in_text"></td>
+                    </tr>
+                </table>
+            </span>
+            <!-- 不在同一地区和行业  -->
+            <div id="hasNoRecord">
+                <img src="../../img/no-record.png" width="60px">
+                <p id="no-text1">抱歉，该商户下门店不在同一地区</p>
+                <p>暂时无法统计</p>
+            </div>
+            <!-- 无绑定商户时 -->
+            <div id="hasNoStore">
+                <img src="../../img/no-record.png" width="60px">
+                <p>暂无商户绑定</p>
+            </div>
+        </div>
+        
+        <div class="moudle2">
+            <p style="padding-top:30px;margin-left:20px;" id="date2">/ 年 / 月 / 日的<span class="yellow-text">交易笔数排名</span></p>
+            <!-- <p style="font-size:10px;margin-left:20px;visibility:hidden;">Number of transactions</p> -->
+            <!-- 在同一地区和行业  -->
+            <!-- 1.7.1版本星榜单 -->
+            <span id="hasRecord2">
+                <table class="hasRecord2-table" style="padding-top:15px;">
+                    <tr>
+                        <td id="bs_rank_city"></td>
+                        <td id="bs_rank_in"></td>
+                    </tr>
+                    <tr>
+                        <td id="bs_rank_city_text"></td>
+                        <td id="bs_rank_in_text"></td>
+                    </tr>
+                    <tr>
+                        <td class="num_row" id="num_row1">
+                            <span class="dot-trans">• </span>比前一名少
+                            <span id="ct_faknum">/</span>笔交易
+                        </td>
+                        <td class="num_row" id="num_row2">
+                            <span class="dot-trans">• </span>比前一名少
+                            <span id="fakenum">/</span>笔交易
+                        </td>
+                    </tr>
+                </table>
+            </span>
+            <!-- 不在同一地区和行业  -->
+            <div id="hasNoRecord2">
+                <img src="../../img/no-record.png" width="60px">
+                <p id="no-text2">抱歉，该商户下门店不在同一行业</p>
+                <p>暂时无法统计</p>
+            </div>
+            <!-- 无绑定商户时 -->
+            <div id="hasNoStore2">
+                <img src="../../img/no-record.png" width="60px">
+                <p>暂无商户绑定</p>
+            </div>
+        </div>
+        <button id="app_page" onclick="share2wx()" style="display:block;">去朋友圈炫单</button>
+        <button id="wx_page" onclick="downloadApp()" style="display:none;">我也要上榜</button>
+        <p style="visibility:hidden;height:10px;"></p>
+        <!-- <img src="../../img/yemian_pic_yuansuyouxia.png" width="71px" style="position:absolute;bottom:0;right:0;"> -->
+    </div>
+    <div class="wjy">
+        <div>
+            <img src="../../img/@2xtankuang_pic_weijiaoyi.png">
+            <img src="../../img/@2xtankuang_icon_guanbi.png" onclick="closeeWjy()">
+            <p>商户当日未产生交易</p>
+            <button onclick="closeeWjy()">确定</button>
+        </div>
+    </div>
+
+
+    <script src="../../js/echarts.simple.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/utils.js"></script>
+    <script src="../../js/bodymovin.js"></script>
+    <script src="../../js/loadingConfig.js"></script>
+    <!-- 页面初始化 -->
+    <script>
+        mui.init();
+        is_weixin();
+        
+        var clientWidth = document.documentElement.clientWidth;
+        var clientHeight = document.documentElement.clientHeight;
+        
+        // alert("client宽：" + clientWidth+"client高：" + clientHeight+"屏幕宽：" + window.screen.width+"屏幕高：" + window.screen.height)
+
+        var AndroidSys = false;
+        var IOSSys = false;
+        whichSys();
+        
+        function whichSys(){
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isAndroid) {
+                AndroidSys = true;
+            } else if (isiOS) {
+                IOSSys = true;
+            }
+        };
+
+        //铺满整屏
+        if(AndroidSys && !IOSSys){
+            $(".container_share").css("minHeight", clientHeight + "px");
+            $(".num_row").css({"position":"relative","top":"-5px"});
+        } else {
+            $(".container_share").css("minHeight", (window.screen.height-64) + "px");
+        }
+
+        //适配屏幕较长的手机
+        if(clientHeight > 671 || window.screen.height > 700){
+            $("#banner-img").css("margin-bottom","25px");
+            $("#app_page, #wx_page").css("margin","15px auto 0 auto");
+        }
+        //适配屏幕较短的手机
+        if(clientHeight < 615 && AndroidSys){
+            //更换图片背景
+            $(".moudle1").css({
+                "background-image":"url(../../img/bg_shang_Android.png)",
+                "height":"180px"
+            });
+            $(".moudle2").css({
+                "background-image":"url(../../img/bg_xia_Android.png)",
+                "height":"160px"
+            });
+            // $(".hasRecord-table tr:nth-child(1), .hasRecord2-table tr:nth-child(1)").css({
+            //     "font-size":"33px"
+            // });
+            $(".hasRecord-table, .hasRecord2-table").css({
+                "padding":"0px 20px 0 20px"
+            });
+            //缩短文字、按钮间隔
+            $("#date1").css({
+                "padding-top":"25px"
+            });
+            $("#date2").css({
+                "margin-left":"30px",
+                "padding-top":"20px"
+            });
+            $("#app_page, #wx_page").css("margin","-5px auto 0 auto");
+            $("#hasNoRecord, #hasNoRecord2, #hasNoStore, #hasNoStore2").css("margin-top","-4px");
+
+            if(clientHeight > 566 && clientHeight < 615 && AndroidSys){
+                $("#banner-img").css("margin-bottom","20px");
+            }
+        }
+        
+        //获取url信息
+        var usr_no = getUrlParams("usr_no");
+        var usr_typ = getUrlParams("usr_typ");
+        var version = getUrlParams("version");
+        var opSys = getUrlParams("opSys");
+        var token_id = getUrlParams("token_id");
+        var mercIdList = [];
+        var mercIdList2 = [];
+
+        console.log("usr_no: " + usr_no + " usr_typ:" + usr_typ + " version:" + version + " opSys:" + opSys + " token_id:" + token_id);
+        
+        if (checkParamXBD(usr_no, "usr_no") || checkParamXBD(usr_typ, "usr_typ") || checkParamXBD(version, "version") || checkParamXBD(opSys, "opSys") || checkParamXBD(token_id, "token_id")){
+            getInfo();
+        }
+
+        function closeeWjy() {
+            $(".wjy").css("display", "none");
+        };
+
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                $("#app_page").css("display", "none");
+                $("#wx_page").css("display", "block");
+                console.log("是微信浏览器");
+            } else {
+                $("#app_page").css("display", "block");
+                $("#wx_page").css("display", "none");
+                console.log("不是微信浏览器");
+            }
+        };
+
+        function drowDown() {
+            $(".m-select ul").slideToggle();
+            $("#triangle-up").toggleClass("rotate-tri");
+        };
+
+        function getInfo() {
+            //查询绑定商户
+            var data = {
+                "contentTyp": "application/json",
+                "characterSet": "GBK",
+                "sys_cnl": "app",
+                "version": version,
+                "opSys": opSys,
+                "token_id": token_id,
+                "usr_no": usr_no,
+                "usr_typ": usr_typ
+            };
+            console.log(data);
+
+            mui(".loading")[0].style.display = "block";
+
+            // mui.ajax("http://101.227.81.8:8302/estmapp/checkmer1.json", {
+            mui.ajax(API.CHECKMER1, {
+                data: JSON.stringify(data),
+                dataType: 'json',
+                type: 'post',
+                success: function (res) {
+                    mui(".loading")[0].style.display = "none";
+
+                    if (res.repCode === "000000") {
+                        //下拉列表内容
+                        for (var i = 0; i < res.mercList.length; i++) {
+                            if (res.mercList[i].merc_auth_sts == "0" || res.mercList[i].merc_auth_sts == "3" || res.mercList[i].merc_auth_sts == "6" || res.mercList[i].merc_auth_sts == "7") {
+                                mercIdList2[i] = {
+                                    "merc_nm": res.mercList[i].merc_nm,
+                                    "merc_id": res.mercList[i].merc_id
+                                }
+                            }
+                        }
+                        console.log(mercIdList2);
+
+                        for (var i = 0; i < mercIdList2.length; i++) {
+                            if (mercIdList2[i] != undefined) {
+                                mercIdList.push(mercIdList2[i]);
+                            }
+                        }
+                        console.log(mercIdList);
+
+                        //下拉列表首选项
+                        $("#merc-id").text(addEllipsis(mercIdList[0]['merc_nm'], 11));
+                        for (var i = 0; i < mercIdList.length; i++) {
+                            $("#merc-list").append(
+                                '<li class="select-on" onclick="liClick(' + i + ')" >' + mercIdList[i].merc_nm + "</li>"
+                            );
+                        }
+                        queryRank(0);
+                        $(".select-on").css("color","#ffffff");
+                        document.querySelectorAll(".select-on")[0].style.color = "#F5433D";
+
+                    } else if (res.repCode === "STM001") {
+                        $("#merc-id").text("无绑定商户");
+                        $("#hasRecord").css("display", "none");
+                        $("#hasRecord2").css("display", "none");
+                        $("#hasNoStore").css("display", "block");
+                        $("#hasNoStore2").css("display", "block");
+
+                    } else if (res.repCode === "SRM302") {
+                        alert(res.repMsg+" 请重新登录");
+                        callLogOutApp();
+                    } else {
+                        alert('错误代号：' + res.repCode + ' 错误原因：' + res.repMsg);
+                    }
+                },
+                error: function (xhr, type, errorThrown) {
+                    mui(".loading")[0].style.display = "none";
+                    console.log(type);
+                    console.log(xhr);
+                    console.log(errorThrown);
+                    alert("服务器开小差啦，请稍后再试");
+                }
+            });
+        };
+
+        function queryRank(index) {
+            console.log("index: " + index);
+            //查询排名
+            var data = {
+                "contentTyp": "application/json",
+                "characterSet": "GBK",
+                "sys_cnl": "app",
+                "version": version,
+                "opSys": opSys,
+                "token_id": token_id,
+                "usr_no": usr_no,
+                "usr_typ": usr_typ,
+                "merc_id": mercIdList[index]['merc_id']
+            };
+            console.log(data);
+
+            mui(".loading")[0].style.display = "block";
+            
+            // mui.ajax("http://101.227.81.8:8302/estmapp/qry_tran_rank.json", {
+            mui.ajax(API.QRYTRANRANK, {
+                data: JSON.stringify(data),
+                dataType: 'json',
+                type: 'post',
+                success: function (res) {
+                    console.log(res);
+                    mui(".loading")[0].style.display = "none";
+
+                    if (res.repCode === "000000") {
+                        if (res.muti_ind_flg === "0") {
+                            // 初始化模块显隐
+                            $("#hasRecord").css("display", "initial");
+                            $("#hasRecord2").css("display", "initial");
+                            $("#hasNoRecord").css("display", "none");
+                            $("#hasNoRecord2").css("display", "none");
+                            $("#hasNoStore").css("display", "none");
+                            $("#hasNoStore2").css("display", "none");
+
+                            //获取日期、行业、城市
+                            $("#date1").html(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2) + "月" + res.ac_dt.substr(6, 2) + '日的<span class="yellow-text">交易额排名</span>');
+                            $("#date2").html(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2) + "月" + res.ac_dt.substr(6, 2) + '日的<span class="yellow-text">交易笔数排名</span>');
+                            
+                            /* 星榜单1.7.1*/
+                            // 交易额城市排名 
+                            if(Number(res.amt_city_pri) > 99999){
+                                $("#je_rank_city").html('99999' + '<span class="table-plus">+</span>');
+                            } else {
+                                $("#je_rank_city").text(res.amt_city_pri);
+                            }
+                            $("#je_rank_city_text").text(res.city+"排名");
+                            
+                            // 交易额行业排名
+                            if(Number(res.amt_ind_pri) > 99999){
+                                $("#je_rank_in").html('99999' + '<span class="table-plus">+</span>');
+                            } else {
+                                $("#je_rank_in").text(res.amt_ind_pri);
+                            }
+                            $("#je_rank_in_text").text(res.industry+"排名");
+
+                            // 交易笔数城市排名
+                            if(Number(res.cnt_city_pri) > 99999){
+                                $("#bs_rank_city").html('99999' + '<span class="table-plus">+</span>');
+                            } else {
+                                $("#bs_rank_city").text(res.cnt_city_pri);
+                            }
+                            $("#bs_rank_city_text").text(res.city+"排名");
+                            
+                            // 交易笔数行业排名
+                            if(Number(res.cnt_ind_pri) > 99999){
+                                $("#bs_rank_in").html('99999' + '<span class="table-plus">+</span>');
+                            } else {
+                                $("#bs_rank_in").text(res.cnt_ind_pri);
+                            }
+                            $("#bs_rank_in_text").text(res.industry+"排名");
+
+                            //city_fake_num
+                            if(Number(res.cnt_city_pri) !=1){
+                                $("#num_row1").css("visibility","visible")
+                                $("#ct_faknum").text(res.ct_faknum)
+                            } else {
+                                $("#num_row1").css("visibility","hidden")
+                            }
+                            //fake_num
+                            if(Number(res.cnt_ind_pri) !=1){
+                                $("#num_row2").css("visibility","visible")
+                                $("#fakenum").text(res.fakenum)
+                            } else {
+                                $("#num_row2").css("visibility","hidden")
+                            }
+                            
+                        } else {
+                            // 跨行业时无法统计
+                            $("#hasRecord").css("display", "none");
+                            $("#hasRecord2").css("display", "none");
+                            $("#hasNoRecord").css("display", "block");
+                            $("#hasNoRecord2").css("display", "block");
+                            $("#no-text1").text("抱歉，该商户下门店不在同一行业");
+                            $("#no-text2").text("抱歉，该商户下门店不在同一行业");
+                        }
+                    } else if (res.repCode === "100016" || res.repCode === "100021") {
+                        // 商户当日未产生交易
+                        $("#date1").html(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2)  + "月" + res.ac_dt.substr(6, 2)  + '日的<span class="yellow-text">交易额排名</span>');
+                        $("#date2").html(res.ac_dt.substr(0, 4) + "年" + res.ac_dt.substr(4, 2)  + "月" + res.ac_dt.substr(6, 2) + '日的<span class="yellow-text">交易笔数排名</span>');
+
+                        $(".wjy p").text("商户当日未产生交易");
+                        $(".wjy").css("display", "block");
+
+                        $("#hasRecord").css("display", "none");
+                        $("#hasRecord2").css("display", "none");
+                        $("#hasNoRecord").css("display", "block");
+                        $("#hasNoRecord2").css("display", "block");
+                        $("#no-text1").text("抱歉，该商户当日未产生交易");
+                        $("#no-text2").text("抱歉，该商户当日未产生交易");
+
+                    } else if(res.repCode === "100022") {
+                        // 跨行业时无法统计
+                        $("#hasRecord").css("display", "none");
+                        $("#hasRecord2").css("display", "none");
+                        $("#hasNoRecord").css("display", "block");
+                        $("#hasNoRecord2").css("display", "block");
+                        $("#no-text1").text("抱歉，该商户下门店不在同一行业");
+                        $("#no-text2").text("抱歉，该商户下门店不在同一行业");
+                    } else {
+                        alert('错误代号：' + res.repCode + ' 错误原因：' + res.repMsg);
+                    }
+                },
+                error: function (xhr, type, errorThrown) {
+                    mui(".loading")[0].style.display = "none";
+                    console.log(type);
+                    console.log(xhr);
+                    console.log(errorThrown);
+                    alert("服务器开小差啦，请稍后再试");
+                }
+            });
+        };
+
+        //li点击事件
+        function liClick(index) {
+            $("#triangle-up").toggleClass("rotate-tri");
+            $(".m-select ul").slideUp();
+            $("#merc-id").text(addEllipsis(mercIdList[index].merc_nm, 11));
+            queryRank(index);
+            $(".select-on").css("color","#ffffff");
+            document.querySelectorAll(".select-on")[index].style.color = "#F5433D";
+        };
+
+        function share2wx() {
+            callLayPoint("StarRankShare2wx");
+
+            //调用ios/Android分享方法
+            var u = navigator.userAgent;
+            var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
+            var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isAndroid) {
+                window.android.callWeChatShare();
+            } else if (isiOS) {
+                window.WebViewJavascriptBridge.callWeChatShare(
+                    "callWeChatShare",
+                    function responseCallback(responseData) {
+                        console.log("JS received response:", responseData);
+                    }
+                );
+            }
+        };
+
+        function downloadApp() {
+            //在微信中打开显示该按钮 点击后下载星管家
+            window.location.href = "skip.html";
+        };
+    </script>
+
+</body>
+
+</html>

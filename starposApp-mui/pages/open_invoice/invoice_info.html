@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<title>发票信息</title>
+	<link href="../../css/mui.min.css" rel="stylesheet" />
+	<link href="../../css/commonCss.css" rel="stylesheet" />
+	<style>
+		/* checkbox label调整 */
+
+		.mui-checkbox label,
+		.mui-radio label {
+			width: 27px;
+		}
+
+		.mui-checkbox.mui-left label,
+		.mui-radio.mui-left label {
+			padding-right: 0;
+		}
+
+		.mui-checkbox input[type=checkbox]:before,
+		.mui-radio input[type=radio]:before {
+			font-size: 27px;
+		}
+
+		/* 提示框 */
+
+		.tips {
+			display: none;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			position: absolute;
+			background: rgba(0, 0, 0, .77);
+			z-index: 99999;
+		}
+
+		.tips div {
+			margin: 50% auto 0 auto;
+			text-align: center;
+			background-color: #ffffff;
+			width: 86%;
+			border-radius: 8px;
+		}
+
+		.tips div p {
+			padding: 50px 10px 40px 10px;
+			color: rgb(102, 102, 102);
+			line-height: 1.7;
+			font-size: 15px;
+			margin-bottom: 0;
+		}
+
+		.tips div button {
+			margin: 0 20px 20px 20px;
+			width: 86%;
+			background-color: #25A2F2;
+			color: #ffffff;
+			font-size: 16px;
+			padding: 7px 0;
+			border: none;
+			box-shadow: 0 2px 8px 0 #25A2F2;
+		}
+
+		.mark {
+			font-size: 10px;
+			line-height: 5px;
+			padding: 5px 6px;
+			color: #FFFFFF;
+			background-color: #FC4949;
+			border-radius: 50%;
+			position: absolute;
+			top: 19px;
+			right: 2px;
+			display: none;
+		}
+
+		form .mui-input-row input {
+			width: 62%;
+		}
+		
+		form .mui-input-row label {
+			width: 38%;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="tips">
+		<div>
+			<p>请填写以下信息，付费成功后，关注“星POS管家”微信公众号，回复“电子发票”关键字，按提示开通电子发票服务。</p>
+			<button onclick="closeTips()">确定</button>
+		</div>
+	</div>
+	<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+		<h1 class="mui-title">发票信息</h1>
+	</header>
+	<form class="mui-input-group">
+		<div style="width:270px;margin:0 auto; padding:25px 0;">
+			<img src="../../img/dianzifapiao_bg_pic@2x.png" width="270px" />
+		</div>
+		<div class="mui-input-row">
+			<label>企业简称</label>
+			<input type="text" class="" name="mercShortName" placeholder="限7个汉字以内" maxlength="7" oninput="checkJC()">
+			<span class="mark">!</span>
+		</div>
+		<div class="gray-solid-line"></div>
+		<div class="mui-input-row">
+			<label>纳税人识别号</label>
+			<input type="text" class="" name="merchantCode" placeholder="请输入纳税人识别号" maxlength="20" oninput="checkCode()">
+			<span class="mark">!</span>
+		</div>
+		<div class="gray-solid-line"></div>
+		<div class="mui-input-row">
+			<label>税盘号</label>
+			<input type="text" class="" name="mercTaxNo" placeholder="请输入税盘号" maxlength="12" oninput="checkSPH()">
+			<span class="mark">!</span>
+		</div>
+		<div class="gray-solid-line"></div>
+		<div class="mui-input-row">
+			<label>确认税盘号</label>
+			<input type="text" class="" name="mercTaxNo2" placeholder="请确认税盘号" maxlength="12" oninput="checkSPH2()">
+			<span class="mark">!</span>
+		</div>
+	</form>
+	<div class="mui-input-row mui-checkbox mui-left" style="font-size:13px;">
+		<label></label>
+		<span>
+			已阅读并同意
+			<a href="../doc/invoice_XY.html">
+				<span class="blue-text">《开通协议》</span>
+			</a>
+			相关条款
+		</span>
+
+		<input name="checkbox2" value="c2" type="checkbox">
+	</div>
+	<div class="mui-button-row" style="margin-top:10%;margin-bottom:200px;">
+		<button type="button" class="mui-btn mui-btn-primary my-btn" onclick="next_step()">提交</button>
+	</div>
+
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../js/utils.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/storage.js"></script>
+	<!-- <script src="../../js/zepto.min.js"></script> -->
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		showTips();
+
+		var u = navigator.userAgent;
+		var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
+		if (isAndroid) {
+			console.log("isAndroid");
+			$("[name='mercTaxNo'],[name='mercTaxNo2']").focus(function () {
+				$('body').animate({ scrollTop: 150 }, 100);
+			});
+			$("[name='mercTaxNo2']").blur(function () {
+				$('body').animate({ scrollTop: 0 }, 100);
+			});
+		} else {
+			$("[name='mercTaxNo2']").blur(function () {
+				$('body').animate({ scrollTop: 0 }, 100);
+			});
+		}
+
+		var user_info = sessionFetch("user_info"); //商户信息
+		var appr_info = sessionFetch("appr_info"); //应用信息
+		var merc_info = sessionFetch("merc_info"); //用户选择商户信息
+		console.log(merc_info);
+
+		function showTips() {
+			mui(".tips")[0].style.display = "block";
+		};
+
+		function closeTips() {
+			mui(".tips")[0].style.display = "none";
+		};
+
+		function next_step() {
+			callLayPoint("InvoiceSaveInfo");
+			
+			var tipsArray = [];
+			var isNull = true;
+			//验证表单内容不为空
+			mui(".mui-input-group input").each(function () {
+				if (this.value == "" || filterBlank(this.value) == "") {
+					var label = this.previousElementSibling;
+					tipsArray.push(label.innerText);
+					isNull = false;
+				}
+			});
+			var status = mui("[name=checkbox2]")[0]['checked'];
+
+			if (!isNull && !status) {
+				mui.alert("请填写" + tipsArray.join(", ") + ", 并同意《开通协议》");
+			} else if (isNull && !status) {
+				mui.alert("已阅读并同意《开通协议》");
+			} else if (!isNull && status) {
+				mui.alert("请填写" + tipsArray.join(", "));
+			} else {
+				//通过验证 储存用户信息
+				var invoice_info = {
+					"appCode": "invoiceClient",
+					"appNldKey": appr_info.appNldKey,
+					"mercShortName": filterBlank(mui("[name=mercShortName]")[0]['value']),
+					"merchantCode": filterBlank(mui("[name=merchantCode]")[0]['value']),
+					"mercTaxNo": filterBlank(mui("[name=mercTaxNo]")[0]['value']),
+					"signContract": "Y",
+					"contractVersion": "v1.0",
+					"mercName": merc_info.merc_nm,
+					"mercId": merc_info.merc_id,
+				}
+				sessionSave("invoice_info", invoice_info);
+
+				mui.openWindow({
+					id: 'confirm_order',
+					url: 'confirm_order.html'
+				});
+			}
+		};
+
+		function checkJC() {
+			var re = /^[ \u4e00-\u9fa5 ]*$/g;
+			var JC = mui("[name=mercShortName]")[0]['value'];
+			if (!re.test(JC)) {
+				mui(".mark")[0].style.display = "block";
+				mui(".my-btn")[0]['disabled'] = true;
+			} else {
+				mui(".mark")[0].style.display = "none";
+				mui(".my-btn")[0]['disabled'] = false;
+			}
+		};
+
+		function checkCode() {
+			var re = /^[0-9a-zA-Z]*$/g;
+			var Code = mui("[name=merchantCode]")[0]['value'];
+			var coLe = Code.length;
+			var aa = (coLe != 15 && coLe != 18 && coLe != 20)
+			if (!re.test(Code) || aa) {
+				mui(".mark")[1].style.display = "block";
+				mui(".my-btn")[0]['disabled'] = true;
+			} else {
+				mui(".mark")[1].style.display = "none";
+				mui(".my-btn")[0]['disabled'] = false;
+			}
+		};
+
+		function checkSPH() {
+			var re = /^\d+$/;
+			var mercTaxNo = mui("[name=mercTaxNo]")[0]['value'];
+			var mercTaxNo2 = mui("[name=mercTaxNo2]")[0]['value'];
+			if (mercTaxNo === "") {
+				mui(".mark")[2].style.display = "block";
+				mui(".my-btn")[0]['disabled'] = false;
+			} else if (!re.test(mercTaxNo)) {
+				mui(".mark")[2].style.display = "block";
+				mui(".my-btn")[0]['disabled'] = true;
+			} else if (mercTaxNo !== mercTaxNo2) {
+				if (mercTaxNo2 === "") {
+					mui(".mark")[2].style.display = "none";
+					mui(".my-btn")[0]['disabled'] = false;
+				} else {
+					mui(".mark")[2].style.display = "block";
+					mui(".my-btn")[0]['disabled'] = true;
+				}
+			} else {
+				mui(".mark")[2].style.display = "none";
+				mui(".mark")[3].style.display = "none";
+				mui(".my-btn")[0]['disabled'] = false;
+			}
+		};
+
+		function checkSPH2() {
+			var re = /^\d+$/;
+			var mercTaxNo = mui("[name=mercTaxNo]")[0]['value'];
+			var mercTaxNo2 = mui("[name=mercTaxNo2]")[0]['value'];
+			if (mercTaxNo2 === "") {
+				mui(".mark")[3].style.display = "none";
+				mui(".my-btn")[0]['disabled'] = false;
+			} else if (!re.test(mercTaxNo2)) {
+				mui(".mark")[3].style.display = "block";
+				mui(".my-btn")[0]['disabled'] = true;
+			} else if (mercTaxNo !== mercTaxNo2) {
+				if (mercTaxNo === "") {
+					mui(".mark")[3].style.display = "none";
+					mui(".my-btn")[0]['disabled'] = false;
+				} else {
+					mui(".mark")[3].style.display = "block";
+					mui(".my-btn")[0]['disabled'] = true;
+				}
+			} else {
+				mui(".mark")[2].style.display = "none";
+				mui(".mark")[3].style.display = "none";
+				mui(".my-btn")[0]['disabled'] = false;
+			}
+		};
+
+		//过滤空格
+		function filterBlank(str) {
+			return str.replace(/ /g, "");
+		};
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>身份验证</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<link href="../../css/identity.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/lexible_css.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav mn-head">
+			<span onclick="javascript :history.back(-1);">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-fanhuijiantou-copy"></use>
+            </svg>
+        </span>
+			<h1 class="mui-title">身份验证</h1>
+		</header>
+		<div class="identity_out">
+			<div onclick="idCardVerify('front')">
+				<img src="../../img/jinjian_img_2@2x.png" id="front_img" />
+				<p>点击上传身份证人像面</p>
+			</div>
+			<div onclick="idCardVerify('back')">
+				<img src="../../img/jinjian_img_3@2x.png" id="back_img" />
+				<p>点击上传身份证国徽面</p>
+			</div>
+		</div>
+		<div class="identity_ipt">
+			<div style="position: relative;">
+				<label>姓名</label>
+				<input type="" name="" id="name" placeholder="请输入姓名" disabled="disabled" />
+				<img class="identity_img" src="../../img/编辑姓名@2x.png" onclick="xiu()" style="position: absolute;right: 15px;top: 10px;" />
+			</div>
+			<div>
+				<label>身份证号</label>
+				<input type="" name="" id="id_code" placeholder="请输入身份证号" disabled="disabled" />
+			</div>
+		</div>
+		<p style="margin: 12px 0 40px 15px; color: #666666;">请确认身份信息，如有误请修改</p>
+		<div class="identity_bot">
+			<button class="mui-btn mui-btn-outlined my-btn" onclick="goToSubmit()" disabled="disabled">下一步</button>
+		</div>
+
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="../../js/utils.js"></script>
+	<script src="../../js/storage.js"></script>
+	<script src="../../js/flexible.js" type="text/javascript" charset="utf-8"></script>
+	<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+	<script src="https://cdn.ravenjs.com/3.26.2/raven.min.js" crossorigin="anonymous"></script>
+	<script src=https://cdn.bootcss.com/eruda/1.4.3/eruda.min.js></script>
+	<script type="text/javascript">
+		mui.init();
+		eruda.init();
+		Raven.config('http://3afafcc6e47a461eb7644f38e1f72553@sentry.starpos.com.cn:9000/18').install()
+		var front_img_flag = 0
+		var back_img_flag = 0
+
+		function xiu() {
+			$('#name').prop("disabled", false);
+		}
+		//身份证识别回调
+		function idCardVerifyResult(arg) {
+			var idcard_img = arg['idcard_img'];
+			var idcard_name = arg['idcard_name'];
+			var idcard_number = arg['idcard_number'];
+			var repCode = arg['repCode'];
+			var repMsg = arg['repMsg'];
+			console.log(arg)
+			if(idcard_img != null && idcard_img != undefined && idcard_img != '') {
+				if(idcard_name != null && idcard_name != undefined && idcard_name != '') {
+					front_img_flag = 1
+					console.log(idcard_name + idcard_number)
+					mui("#name")[0].value = idcard_name
+					mui("#id_code")[0].value = idcard_number
+					console.log(idcard_img + "idcard_img")
+					var img_base64 = sha1_to_base64(idcard_img)
+					console.log(img_base64 + "img_base64")
+					document.getElementById('front_img').setAttribute('src', 'data:image/png;base64,' + img_base64);
+				} else {
+					back_img_flag = 1
+					var img_base64 = sha1_to_base64(idcard_img)
+					console.log(img_base64 + "img_base64")
+					document.getElementById('back_img').setAttribute('src', 'data:image/png;base64,' + img_base64);
+				}
+				//console.log("idcard_img："+idcard_img+"idcard_name："+idcard_name+"idcard_number："+idcard_number+"repCode："+repCode+"repMsg："+repMsg)
+				if(back_img_flag == 1 && front_img_flag == 1) {
+					$('.mui-btn').prop("disabled", false);
+				}
+			}else{
+				mui.toast("图片上传出错请重新上传")
+			}
+
+		}
+
+		function goToSubmit() {
+			if(front_img_flag == 0) {
+				mui.toast("请拍摄身份证正面照片")
+				return;
+			}
+			if(back_img_flag == 0) {
+				mui.toast("请拍摄身份证反面照片")
+				return;
+			}
+			faceIdVerify()
+		}
+	</script>
+
+</html>

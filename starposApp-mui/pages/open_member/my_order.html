@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<title>我的订单</title>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<!-- <span class="mui-icon mui-icon-loop Rotation"></span> -->
+				<!-- <span id="loading-svg"></span> -->
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<div class="no-order">
+			<img src="../../img/wodedingdan_kongbai@2x.png">
+			<p>亲，您还没有订单记录哦...</p>
+		</div>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff'></a>
+			<h1 class="mui-title" style='color:#ffffff;line-height: 64px;font-size: 18px;margin-top: 10px;'>我的订单</h1>
+		</header>
+		<div id="qt">
+			<script type="text/template" id="tpl">
+				<%_.each(obj,function(e,i){%>
+				<form class="mui-input-group myorder-form" id="form-list">
+					<div class="mui-input-row">
+						<label>订单编号</label>
+						<input type="text" style="font-size:13px;" class="mui-input-clear" value=<%=e.payNumber%> disabled>
+					</div>
+					<div class="gray-solid-line"></div>
+					<div class="mui-input-row order-input">
+						<label>服务名称</label>
+						<input type="text" class="mui-input-clear" value=<%=addEllipsis(e.appName,12)%> disabled>
+					</div>
+					<div class="mui-input-row order-input">
+						<label>终端数量</label>
+						<input type="text" class="mui-input-clear" value="不限台" disabled>
+					</div>
+					<div class="mui-input-row order-input">
+						<label>商户号</label>
+						<input type="text" class="mui-input-clear" value=<%=e.terminalNo%> disabled>
+					</div>
+					<div class="mui-input-row order-input">
+						<label>有限期限</label>
+						<!-- 判断有限期限-->
+						<% if(e.validTerm == '0'){ %>
+						<input type="text" class="mui-input-clear" value="不限月" disabled>
+						<% } %>
+						<% if(e.validTerm != '0'){ %>
+						<input type="text" class="mui-input-clear" value=<%=e.validTerm + "个月" %> disabled>
+						<% } %>
+					</div>
+					<br>
+					<div class="gray-solid-line"></div>
+					<div class="order-count">
+						<span class="total-count2" style="text-align:left;">
+                        合计： <span class="money-count">￥<%=Number(e.paymentTotal).toFixed(2)%></span>
+						</span>
+						<!-- 判断支付状态-->
+						<% if(e.isPay ==  '0' ){ %>
+						<button type="button" class="mui-btn mui-btn-primary my-btn2" onclick="callAliPay('<%=e.paymentTotal%>','<%=e.appName%>'+'开通费','<%=e.payNumber%>')">去支付</button>
+						<% } %>
+						<% if(e.isPay ==  '1'){ %>
+						<span class="payed">已支付</span>
+						<% } %>
+					</div>
+				</form>
+				<%})%>
+			</script>
+		</div>
+
+		<!-- <button onclick="callCloseWebview()">回到发现页面</button>
+    <button onclick="callLogOutApp()">回到登录页</button> -->
+
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/api.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script src="../../js/zepto.min.js"></script>
+		<script src="../../js/underscore-min.js"></script>
+		<script src="../../js/bodymovin.js"></script>
+		<script src="../../js/loadingConfig.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+			var tplRender = _.template($("#tpl").html());
+
+			var user_info = sessionFetch("user_info"); //商户信息
+			var appr_info = sessionFetch("appr_info"); //应用信息
+			var merc_id_list = [];
+			var merc_id_list2 = [];
+
+			checkmer();
+
+			//监听浏览器返回事件
+//			$(document).ready(function(e) {
+//				if(window.history && window.history.pushState) {
+//					$(window).on('popstate', function() {
+//						//返回index.html
+//						window.location.href = "index.html?usr_no=" + user_info.usr_no + "&usr_typ=" + user_info.usr_typ + "&version=" + user_info.version + "&opSys=" + user_info.opSys + "&token_id=" + user_info.token_id;
+//					});
+//				}
+//				window.history.pushState('forward', null, '#');  //在IE中必须得有这两行  
+//				window.history.forward(1);
+//			});
+
+			//提示
+			function tips() {
+				mui.alert("请在POS终端-应用商店中去完成支付");
+			};
+
+			//获取商户信息
+			function checkmer() {
+				var data = {
+					"contentTyp": "application/json",
+					"characterSet": "GBK",
+					"sys_cnl": "app",
+					"version": user_info.version,
+					"opSys": user_info.opSys,
+					"token_id": user_info.token_id,
+					"usr_no": user_info.usr_no,
+					"usr_typ": user_info.usr_typ
+				};
+				console.log(data);
+
+				mui(".loading")[0].style.display = "block";
+				mui.ajax(API.CHECKMER, {
+					data: JSON.stringify(data),
+					dataType: 'json',
+					type: 'post',
+					success: function(res) {
+						mui(".loading")[0].style.display = "none";
+						console.log(res);
+						if(res.repCode === "000000") {
+							for(var i = 0; i < res.mercList.length; i++) {
+								//获取商户号与商户名  过滤状态除0之外的商户
+								if(res.mercList[i].merc_auth_sts == "0" || res.mercList[i].merc_auth_sts == "3" || res.mercList[i].merc_auth_sts == "6" || res.mercList[i].merc_auth_sts == "7") {
+									merc_id_list2.push(res.mercList[i].merc_id);
+								}
+							}
+							console.log(merc_id_list2);
+							//过滤商户
+							for(var i = 0; i < merc_id_list2.length; i++) {
+								if(merc_id_list2[i] != undefined) {
+									merc_id_list.push(merc_id_list2[i]);
+								}
+							}
+							console.log(merc_id_list);
+
+							//没有符合的商户号时 显示暂无订单
+							if(merc_id_list.length == 0) {
+								mui("#qt")[0].style.display = "none";
+								mui(".no-order")[0].style.display = "block";
+							} else {
+								mui("#qt")[0].style.display = "block";
+								mui(".no-order")[0].style.display = "none";
+								console.log("成功获取商户号数组，调用查询订单接口中");
+								getOrderList();
+							}
+						} else if(res.repCode === "STM998") {
+							mui.alert(res.repMsg, "", "确定", function() {
+								callLogOutApp();
+							});
+						} else {
+							console.log("商户号查询失败，未调用查询订单接口");
+							// mui.alert('错误代号：' + res.repCode + ' 错误原因：' + res.repMsg);
+							window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui(".loading")[0].style.display = "none";
+						console.log(type);
+						console.log(xhr);
+						// mui.alert("服务器开小差啦，请稍后再试");
+						window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
+				});
+
+			};
+
+			//获取订单列表
+			function getOrderList() {
+				var data = {
+					"userId": user_info.usr_no,
+					"token_id": user_info.token_id,
+					"sys_identification": "0",
+					"appId": "com.newland.starpos.elctrinvc",
+					"terminalNos": merc_id_list
+				};
+
+				mui(".loading")[0].style.display = "block";
+				mui.ajax(API.ORDERUSERANDAPPLIST, {
+					data: data,
+					dataType: 'json',
+					type: 'post',
+					contentType: "application/json; charset=utf-8",
+					success: function(res) {
+						mui(".loading")[0].style.display = "none";
+						console.log(res);
+						if(res.errorCode === "0000") {
+							if(res.appreciateOrderListResps.length === 0) {
+								// mui.alert("暂无订单信息");
+								mui("#qt")[0].style.display = "none";
+								mui(".no-order")[0].style.display = "block";
+							} else {
+								mui("#qt")[0].style.display = "block";
+								mui(".no-order")[0].style.display = "none";
+								var appreciateOrderListResps = res.appreciateOrderListResps;
+								$("#qt").append(tplRender(appreciateOrderListResps));
+							}
+						} else if(res.errorCode == "4621") {
+							// mui.alert("暂无订单信息");
+							mui("#qt")[0].style.display = "none";
+							mui(".no-order")[0].style.display = "block";
+						} else if(res.errorCode === "STM998") {
+							mui.alert(res.message, "", "确定", function() {
+								callLogOutApp();
+							});
+						} else {
+							// mui.alert('错误代号：' + res.errorCode + ' 错误原因：' + res.message);
+							window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.errorCode + "&error_msg=" + res.message;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						mui(".loading")[0].style.display = "none";
+						console.log(type);
+						console.log(xhr);
+						// mui.alert("服务器开小差啦，请稍后再试");
+						window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
+				});
+			};
+		</script>
+	</body>
+
+</html>

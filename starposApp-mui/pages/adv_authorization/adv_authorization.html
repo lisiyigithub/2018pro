@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/lexible_css.css" />
+		<link rel="stylesheet" href="../../css/adv_authorization.css" />
+	</head>
+
+	<body>
+		<div class="loading">
+			<div class="loading-div">
+				<div id="loading-svg"></div>
+				<p class="loading-p">数据加载中</p>
+			</div>
+		</div>
+		<div class="head">
+			<img src="../../img/icon_del@2x.png" onclick="closeAuthorizeDialog()" />
+			<div class="head_text">
+				<p>福利大派送</p>
+				<p><q>免费</q>送广告</p>
+			</div>
+		</div>
+		<div class="layer"></div>
+
+		<div class="scroll nui-scroll">
+			<div class="scroll_title ">
+				<p>
+					星POS联手微信针对使用微信支付的优质商户，<br> 赠送给您一份特殊的福利，<br> 您不需要提供任何资料及信息就可以在您店铺<br><b style="color: #25A2F2;">5km范围内免费</b>投放朋友圈广告，<br> 有效的吸引老客户及潜在客户上门。
+				</p>
+			</div>
+			<hr/>
+			<div class="adv_text">
+				<p><span class="num_bg">01</span>什么是朋友圈广告？</p>
+				<p class="adv_text2">朋友圈广告是一款帮助“商户/企业”选择适合自身的客群（店铺所处位置五公里范围内有过消费的老客户、符合商品特性的潜在客户）进行精准的朋友圈内广告展示投放。</p>
+			</div>
+			<div class="adv_text">
+				<p><span class="num_bg">02</span>朋友圈广告给商户带来的好处？</p>
+				<p class="adv_text2">有效的吸引店铺五公路范围内的老客户复购及潜在客户上门，为店铺引流，提高销量。</p>
+			</div>
+			<div class="adv_text">
+				<p><span class="num_bg">03</span>怎么获得更多的奖励金？</p>
+				<p class="adv_text2">上一个月合规的线下微信支付交易订单大于等于100笔（退款笔数无效），下一个月可返还500元广告投放奖励金，订单笔数越多，赠送给您的投放奖励金就越多哦！ 参与活动的行业：餐饮、线下零售、商业服务、休闲娱乐、金融、教育、游戏、交通运输、休闲娱乐。
+				</p>
+			</div>
+			<div class="adv_text">
+				<p><span class="num_bg">04</span>500元奖励金能达到什么宣传效果？</p>
+				<p class="adv_text2">根据广告投放的地域不同，可以投放给2000—17000个老客户或潜在客户的朋友圈里</p>
+			</div>
+			<div class="adv_text" style="margin-bottom: 20px;">
+				<p><span class="num_bg">05</span>如何领取福利？</p>
+				<p class="adv_text2">点击“领取福利”按钮即可投放广告。</p>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="footer_div">
+				<div class="agreement">
+					<input id="all_select" type="checkbox" name="all_select" value="我已确认并同意 " checked="checked" onchange="ischecked()">
+					<label for="all_select"></label>
+					<span class="checkbox_all_span">我已确认并同意<a style="text-decoration:underline" onclick="goToProtocol()">《微信朋友圈广告投放授权书》</a></span>
+				</div>
+				<button id="finish" type="button" class="mui-btn mui-btn-outlined my-btn" onclick="upd_advertising_sts()">领取福利</button>
+			</div>
+		</div>
+	</body>
+
+	<script src="../../js/utils.js"></script>
+	<script src="../../js/api.js"></script>
+	<script src="../../js/storage.js"></script>
+	<script src="../../js/zepto.min.js"></script>
+	<script src="../../js/underscore-min.js"></script>
+	<script type="text/javascript" src="../../js/flexible.js"></script>
+	<script src="../../js/bodymovin.js"></script>
+	<script src="../../js/loadingConfig.js"></script>
+	<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<!--<script src=https://cdn.bootcss.com/eruda/1.4.3/eruda.min.js></script>-->
+	<script type="text/javascript">
+		try {
+			mui.init()
+			//eruda.init();
+			if(checkParam(getUrlParams("usr_no"), "usr_no") && checkParam(getUrlParams("usr_typ"), "usr_typ") && checkParam(getUrlParams("token_id"), "token_id") && checkParam(getUrlParams("version"), "version") && checkParam(getUrlParams("opSys"), "opSys")) {
+				var usr_no = getUrlParams("usr_no");
+				var usr_typ = getUrlParams("usr_typ");
+				var token_id = getUrlParams("token_id");
+				var version = getUrlParams("version");
+				var opSys = getUrlParams("opSys");
+			}
+
+			console.log("usr_no" + usr_no + "usr_typ" + usr_typ + "token_id" + token_id + "version" + version + "opSys" + opSys)
+			//			options = {
+			//				scrollY: true, //是否竖向滚动
+			//				scrollX: false, //是否横向滚动
+			//				startX: 0, //初始化时滚动至x
+			//				startY: 0, //初始化时滚动至y
+			//				indicators: false, //是否显示滚动条
+			//				deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
+			//				bounce: true //是否启用回弹
+			//			}
+
+		} catch(e) {
+			//TODO handle the exception
+			mui.toast(e)
+		}
+		console.log($(".footer").height())
+		console.log(document.documentElement.clientHeight)
+		console.log($(".mui-scroll-wrapper").height());
+		console.log($(".scroll").height());
+		console.log($(".head").height());
+		$(".scroll").height(document.documentElement.clientHeight - $(".head").height() - $(".footer").height() + 10)
+		ischecked()
+		function ischecked() {
+			if($("input").prop("checked") == true) {
+				$('#finish').removeAttr("disabled"); 
+			}
+			if($("input").prop("checked") == false) {
+				$('#finish').attr('disabled',"true");
+			}
+		}
+
+		function upd_advertising_sts() {
+			var data = {
+				"contentTyp": "application/json",
+				"characterSet": "GBK",
+				"sys_cnl": "app",
+				"version": version,
+				"opSys": opSys,
+				"token_id": token_id,
+				"usr_no": usr_no,
+				"usr_typ": usr_typ,
+			};
+			mui(".loading")[0].style.display = "block";
+			mui.ajax(API.UPD_ADVERTISING_STS, {
+				data: data,
+				dataType: 'json',
+				type: 'post',
+				contentType: "application/json; charset=utf-8",
+				success: function(res) {
+					mui(".loading")[0].style.display = "none";
+					if(res.repCode === "000000") {
+						closeAuthorizeDialog()
+						mui.toast("领取成功")
+					} else {
+						mui.toast("领取失败")
+					}
+				},
+				error: function(xhr, type, errorThrown) {
+					mui(".loading")[0].style.display = "none";
+					console.log(type);
+					console.log(xhr);
+					mui.toast("服务器开小差啦，请稍后再试");
+					// window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+				}
+			});
+		}
+		
+		function goToProtocol(){
+			callOpenWebview(API.PROTOCOL)
+		}
+	</script>
+
+</html>
