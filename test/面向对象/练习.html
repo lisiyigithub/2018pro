@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		var x = 20
+		var a = {
+			x:15,
+			fn:function(){
+				var x = 30;
+				return function(){
+					return this.x;
+				}
+			}
+		}
+		console.log(a.fn())
+		console.log((a.fn())())
+		console.log(a.fn()())
+		console.log(a.fn()() == (a.fn())())
+		console.log(a.fn().call(this))
+		console.log(a.fn().call(a))
+	</script>
+</html>

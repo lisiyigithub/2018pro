@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" />
+		<style type="text/css">
+			body,html {
+				background: #000;
+				color: #fff;
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+			
+			canvas {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+			#box {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+				font-size: 24px;
+				z-index: 9999;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="bgCanvas"></canvas>
+		<div id="box">
+			<ul class="nav nav-pills">
+			  <li role="presentation" class="active"><a href="#">Home</a></li>
+			  <li role="presentation"><a href="#">Profile</a></li>
+			  <li role="presentation"><a href="#">Messages</a></li>
+			</ul>
+		</div>
+	</body>
+	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/yejing.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript">	
+		$('#box ul li').click(function(){
+			console.log('aaa')
+			var index = $(this).index()
+			$(this).addClass("active").siblings().removeClass("active")
+		})
+	</script>
+</html>

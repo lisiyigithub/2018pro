@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" >
+	</head>
+	<body>
+		<ul class="nav nav-pills">
+		  <li role="presentation" class="active"><a href="#">Home</a></li>
+		  <li role="presentation"><a href="#">Profile</a></li>
+		  <li role="presentation"><a href="#">Messages</a></li>
+		</ul>
+		<div id="box">
+			你好
+		</div>
+	</body>
+	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$('ul li').click(function(){//点击导航的li来控制content中对应索引的li
+			console.log('aaa')
+			var index = $(this).index()
+			$(this).addClass("active").siblings().removeClass("active")
+		})
+	</script>
+</html>

@@ -56,10 +56,12 @@ $(function(){
             // index是索引号  ele是数组中的对象
             lis.eq(index).css("zIndex",ele.z).stop().animate(ele,500,function (){
                    flag = true;
-                   if(ele.z == 3){
-                   		$(this).css("font-size","18")
+                   if(ele.z == 2){
+                   		$(this).css("font-size",'18px')
+                   }else if(ele.z == 3){
+                   		$(this).css("font-size",'12px')
                    }else{
-                   		$(this).css("font-size","14")
+                   	$(this).css('font-size','30px')
                    }
             });
         });

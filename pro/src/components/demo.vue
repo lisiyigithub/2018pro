@@ -16,22 +16,20 @@
 
 <script>
 import $ from 'jquery'
-var flag = 0
 export default {
     name:"Demo",
     data(){
         return{
-            arr:[1,2,3,4]
+            arr:[1,2,3,4],
+            flag:0
         }
     },
     methods:{
         dian(i){
-            console.log(i)
             var _this = this
                 // var date = new Date()
                 // $('span').eq(i).text(date.getDate())
             if(_this.flag == 0){
-                
                 setInterval(function() {   
                     var time = new Date();   // 程序计时的月从0开始取值后+1   
                     var m = time.getMonth() + 1;   
@@ -39,20 +37,23 @@ export default {
                     + time.getDate() + " " + time.getHours() + ":"     
                     + time.getMinutes() + ":" + time.getSeconds();   
                     $('span').eq(i).text(t)                                 
-                }, 1000); 
-                _this.flag = 1;
-            }else{    
-                alert('结束')                    
+                }, 1000);
+                 _this.flag = 1;
+                console.log(_this.flag)
+            }else{ 
+                 console.log(_this.flag)   
+                // alert('结束')   
+                $('.out').show()                 
                 _this.flag = 0    
-                       
             }
              
         },
         quxiao(){
             $('.out').hide()
+           
         },
         sure(){
-            clearInterval(k);
+            clearInterval();
         }
     }
 }

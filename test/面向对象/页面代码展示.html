@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<style>
+    .prettyprint {
+        margin: 0 0 24px;
+        padding: 8px 16px 6px 56px;
+        background-color: #F7F7F7;
+        border: none;
+        position: relative;
+        overflow-y: hidden;
+        overflow-x: auto;
+    }
+
+
+    pre code {
+        display: block;
+        font-size: 14px;
+        line-height: 22px;
+        overflow-x: auto;
+        padding: 0 !important;
+        color: #000;
+        white-space: pre;
+        word-wrap: normal;
+        background-color: #F7F7F7;
+        border-radius: 4px;
+    }
+
+ 
+    .hljs-tag,
+    .ini .hljs-title {
+        color: #066;
+    }
+
+   
+    .hljs-string
+   {
+        color: #090;
+    }
+    .hljs-keyword
+    {
+        color: #008;
+    }
+    .prettyprint .pre-numbering {
+    position: absolute;
+    width: 48px;
+    background-color: #eef0f4;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 8px 0;
+    list-style: none;
+    text-align: right;
+}
+
+ .pre-numbering li {
+    color: #abb2bf!important;
+    border-right: 1px solid #c5c5c5;
+    padding:0 8px;
+    line-height: 22px;
+    list-style: none;
+    margin: 0;
+}
+</style>
+
+<body>
+    <pre class="prettyprint"><code class="language-javascript"><code class="javascript"><span class="hljs-tag" name="tag">&lt;div </span><span class="hljs-class "><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"hover-area area-Julia"</span>&gt;
+     <span class="xml"><span class="hljs-tag"  name="tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"imgs/21.jpg"</span> <span class="hljs-attr">height</span>=<span class="hljs-string">"360"</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"480"</span>&gt;</span>
+        <span class="hljs-tag"  name="tag">&lt;<span class="hljs-name">h3</span>&gt;</span>PASSIONATE<span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>JULIA<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span>
+        <span class="hljs-tag"  name="tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+           <span class="hljs-tag"  name="tag">&lt;<span class="hljs-name">li</span>&gt;</span>Julia dances in the deep dark.<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+           <span class="hljs-tag"  name="tag">&lt;<span class="hljs-name">li</span>&gt;</span>She loves the smell of the ocean<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+           <span class="hljs-tag"  name="tag">&lt;<span class="hljs-name">li</span>&gt;</span>And dives into the morning light<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+        <span class="hljs-tag"  name="tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag"  name="tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></code></code><ul class="pre-numbering"></ul></pre>
+</body>
+<script>
+    $(function(){
+       var num= $(".javascript span[name=tag]").length;
+       var str="";
+       for(var i=1;i<num+1;i++){
+           str+="<li style='color: rgb(153, 153, 153);'>"+i+"</li>"
+       }
+       $(".pre-numbering").append(str);
+    })
+
+</script>
+</html>

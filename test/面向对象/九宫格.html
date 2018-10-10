@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body{
+				margin: 0;
+				padding: 0;
+				
+			}
+			#box{
+				position: relative;
+			}
+			#box div{
+				width:100px;
+				height:100px;
+				border-radius:10px;
+				position: absolute; 
+				text-align: center;
+				line-height:100px;
+				font-size:50px ;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">		
+			
+		</div>
+		<script type="text/javascript">
+			var oBox = document.getElementById("box");
+			var ml = mt = 10;
+			for(var i = 0 ;i < 3; i++){//行
+				for(var j = 0; j < 3; j++){
+					var aDiv = document.createElement("div");
+					
+					//第一行 top 为0 ；第二行100+10；第三行(100+10)*2;
+					//第一列left 为0；第二列100+10；第三列(100+10)*2；
+					
+					//每创建一个div，同时设置left和top值
+					oBox.appendChild(aDiv);
+					
+					aDiv.style.left = j*(aDiv.offsetWidth + ml) + "px";
+					aDiv.style.top = i*(aDiv.offsetHeight + mt) + "px";
+					aDiv.style.background = "rgb("+Math.floor(Math.random()*256)+","+Math.floor(Math.random()*256)+","+Math.floor(Math.random()*256)+")";
+				}
+			}
+			
+			
+			var arr = ["A","B","C","D","E","F","G","H","I"];
+			
+			var oDiv = oBox.children;
+			var len = oDiv.length;
+			
+			for(var i = 0; i <oDiv.length; i++){
+				oDiv[i].innerHTML = arr[i];
+			}
+			
+			
+			//拖拽
+			
+		/*	for(var i = 0; i<oDiv.length; i++){
+				oDiv[i].onmousedown = function(e){
+					var evt = e || event;
+					var x = evt.offsetX;
+					var y = evt.offsetY;
+					var curNode = this;
+					
+					var cloneNode = curNode.cloneNode();//克隆节点
+					
+					oBox.replaceChild(cloneNode,curNode);
+					oBox.appendChild(curNode);
+					curNode.style.zIndex = 1;//占位处理
+					
+					document.onmousemove = function(e){
+						var evt =  e || event;
+						var Left = evt.clientX - x;
+						var Top = evt.clientY - y;
+						
+						//被拖拽的对象要动起来
+						//考虑到了oDiv[i],报错；
+						//考虑到了this，不起作用， this指向document
+						
+						curNode.style.left = Left + "px";
+						curNode.style.top = Top + "px";
+						
+						return false;
+					}
+					document.onmouseup = function(){
+						document.onmousedown = null;
+						document.onmousemove = null;
+						//交换位置
+						//求拖拽的对象与每个格子的距离，求出最小值，让拖拽对象放到离他最近的那个盒子上
+						//最近的那个盒子会放到拖拽对象的原来位置上
+						
+						var arrPos = [];
+						var newArr = [];
+						//console.lkog(oDiv.length,len);//动态取值
+						for(var j = 0; j<len;j++){//len = oDiv.length 如果var一个len=oDiv.length;则直接让它oDiv-1；但是有bug
+							//console.log(oDiv[j]);
+							var distanceX = curNode.offsetLeft - oDiv[j].offsetLeft;
+							var distanceY = curNode.offsetTop - oDiv[j].offsetTop;
+							var distance = Math.sqrt(Math.pow(distanceX,2)+Math.pow(distanceY,2));
+							arrPos.push(distance);
+							newArr.push(distance);
+						}
+						
+						arrPos.sort(function(a,b){
+							return a-b;
+						})
+						
+						var minIndex = newArr.indexOf(arrPos[0]);
+						
+						curNode.style.left = oDiv[minIndex].style.left;
+						curNode.style.top = oDiv[minIndex].style.top;
+						
+						oDiv[minIndex].style.left = cloneNode.style.left;
+						oDiv[minIndex].style.top = cloneNode.style.top;
+						
+						oBox.removeChild(cloneNode);
+					}
+				}
+			}
+				/*aDiv[i].style.left = (i%3)*100 + "px";
+				aDiv[i].style.top = Math.floor(i/3)*100 + "px"
+			
+				aDiv[i].index = i;
+				aDiv[i].onmousedown = function(e){
+					var evt = e || event;
+					var x = evt.clientX - this.offsetLeft;
+					var y = evt.clientY - this.offsetTop;
+					
+					this.className = "active";
+					var that = this;
+					document.onmousemove = function(e){
+						var evt = e || event;
+						var _left = evt.clientX-x;
+						var _top = evt.clientY-y;
+							
+						that.style.left = _left +"px";
+						that.style.top = _top +"px";
+					}
+					
+					document.onmouseup = function(){
+						document.onmouseup = null;
+						document.onmousemove = null;
+						that.className = "";
+						that.style.left = (that.index%3)*100 + "px";
+						that.style.top = Math.floor(that.index/3)*100 + "px";
+					}
+					return false;
+				}
+			}*/
+			
+		</script>
+	</body>
+</html>

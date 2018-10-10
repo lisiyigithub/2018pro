@@ -3,8 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>雪花背景面向对象版</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<style type="text/css">
-			html,body{
+			html,body,ul{
 				width: 100%;
 				height: 100%;
 				margin: 0;
@@ -15,9 +16,58 @@
 				background-size: cover;
 				overflow: hidden;
 			}
+			h3{
+				margin: 0 auto;
+				text-align: center;
+				font-size: 50px;
+				line-height: 80px;
+			}
+			nav,ul{
+				height: 40px;
+				border-bottom: 1px solid #ddd;
+			}
+			li{
+				float: left;
+				list-style: none;
+				width: 100px;
+				height: 40px;
+				text-align: center;
+				line-height: 40px;
+				margin-right: 2px;
+				background: #6475AE;
+			}
+			a{
+				text-decoration: none;
+				color: #fff;
+			}
+			#con{
+				width: 100%;
+				height: 100%;
+			}
 		</style>
 	</head>
 	<body>
+		<header>
+			<h3>Bock</h3>
+			<nav>
+				<ul>
+					<li><a href="#">1</a></li>
+					<li><a href="#/snow.html">2</a></li>
+					<li><a href="#/index.html">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#">6</a></li>
+				</ul>
+			</nav>
+		</header>
+		<div id="con">
+			<div>一半</div>
+			<div>意外</div>
+			<div>绅士</div>
+			<div>怪咖</div>
+			<div>演员</div>
+			<div>哑巴</div>
+		</div>
 	</body>
 	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
 	<script>
@@ -76,5 +126,12 @@
 			return new Fn();
 		}());
 		flySnow.fly(10, "slow");
+		
+		$('li').click(function(){
+			console.log('aaa')
+			var index = $(this).index()
+			$('#con div').eq(index).css("display":"block").sibling().css("display":"none")
+		})
+		
 	</script>
 </html>
