@@ -1,7 +1,9 @@
 <template>
     <div id="demo">
         <ul>
-            <li v-for="(item,i) in arr"><span></span>-----<button key="i" value="1" @click="dian(i)">点击计时</button></li>
+            <li v-for="(item,i) in arr" :key="item">
+                <span></span>-----<button key="i" value="1" @click="dian(i)">点击计时</button>
+            </li>
         </ul>
         <div class="out">
             <div class="inner">

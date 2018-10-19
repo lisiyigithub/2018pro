@@ -9,6 +9,9 @@ import Mine from '../components/mine'
 import Detail from '../components/detail'
 import Detail2 from '../components/detail2'
 import Demo from '../components/demo'
+import Tan from '../page/tankuang'
+import Map from '../page/map'
+
 Vue.use(Router)
 
 export default new Router({
@@ -47,6 +50,14 @@ export default new Router({
 		{
 			path:'/demo',
 			component:Demo
+		},
+		{
+			path:'/tankuang',
+			component:Tan
+		},
+		{
+			path:'/map',
+			component:Map
 		}
 	]
 })
