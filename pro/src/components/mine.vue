@@ -26,6 +26,8 @@
 			<span>选中{{imgList.length}}张文件，共{{bytesToSize(this.size)}}</span>
 			</div>
 		</div>
+
+    <mt-picker :slots="slots" @change="onValuesChange"></mt-picker>
 	</div>
 </template>
 
@@ -38,10 +40,32 @@ import $ from 'jquery'
           imgList: [],
           datas: new FormData(),
           files:0,
-          size:0
+          size:0,
+          slots: [
+            {
+              flex: 1,
+              values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+              className: 'slot1',
+              textAlign: 'right'
+            }, {
+              divider: true,
+              content: '-',
+              className: 'slot2'
+            }, {
+              flex: 1,
+              values: ['2015-01', '2015-02', '2015-03', '2015-04', '2015-05', '2015-06'],
+              className: 'slot3',
+              textAlign: 'left'
+            }
+          ]
         }
       },
       methods:{
+        onValuesChange(picker, values) {
+          if (values[0] > values[1]) {
+            picker.setSlotValue(1, values[0]);
+          }
+        },
         //调用相册&相机
         fileClick() {
           $('#upload_file').click();
@@ -187,6 +211,60 @@ import $ from 'jquery'
         handleClick(){
           this.$store.commit('add')
         },
+
+        
+        html5Reader(file, item) {
+        let _this = this;
+        const reader = new FileReader();
+        reader.onload = e => {
+          this.$set(item, "srcUrl", e.target.result);
+          console.log(e.target.result);
+          this.$set(
+            item,
+            "base64_img",
+            encodeURIComponent(encodeURIComponent(e.target.result))
+            // _this.stringToHex(e.target.result)
+          );
+
+          console.log("压缩前文件大小" + e.target.result.length);
+
+          if (e.target.result.length <= 500 * 1024) {
+            //选中时自动调用提交函数
+            this.submit();
+          } else {
+            console.log("大于500k了");
+            var img = new Image();
+            img.src = e.target.result;
+            if (e.target.result.length >= 2048 * 1024) {
+              console.log("大于2m了");
+              img.onload = e => {
+                this.$set(item, "base64_img", _this.resizeMe(img, 0.01));
+                this.submit();
+              };
+            } else {
+              img.onload = e => {
+                this.$set(item, "base64_img", _this.resizeMe(img, 0.2));
+                this.submit();
+              };
+            }
+          }
+        };
+        reader.readAsDataURL(file);
+      },
+      //图片压缩函数
+      resizeMe(img, num) {
+        var canvas = document.createElement("canvas"), //创建canvas元素
+          width = img.width, //确保canvas的尺寸和图片一样
+          height = img.height;
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(img, 0, 0, width, height); //将图片绘制到canvas中
+        var dataURL = canvas.toDataURL("image/jpeg", num); //转换图片为dataURL
+
+        console.log(dataURL);
+        console.log("压缩后文件大小" + dataURL.length);
+        return dataURL;
+      }
       }
 	}
 </script>

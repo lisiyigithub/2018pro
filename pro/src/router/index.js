@@ -9,6 +9,7 @@ import Mine from '../components/mine'
 import Detail from '../components/detail'
 import Detail2 from '../components/detail2'
 import Demo from '../components/demo'
+import Phone from '../components/phone'
 import Tan from '../page/tankuang'
 import Map from '../page/map'
 
@@ -58,6 +59,10 @@ export default new Router({
 		{
 			path:'/map',
 			component:Map
+		},
+		{
+			path:'/phone',
+			component:Phone
 		}
 	]
 })
