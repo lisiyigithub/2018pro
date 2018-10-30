@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			nav,div{
+				width: 10rem;
+				height: 10rem;
+				background: #000;
+				margin: 10px;
+			}
+			main{
+				display: flex;
+				flex-direction: column;
+				&:nth-child(2){
+					background: #fff;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header>...</header>
+		<section>
+			<input type="text" id="foo"/>
+			<span id="boo"></span>
+		</section>
+		<main>
+			<nav>...</nav>
+			<div>...</div>
+			<div>...</div>
+			<div>...</div>
+		</main>
+	</body>
+	<script type="text/javascript">
+		const foo = document.querySelector('#foo')
+		const boo = document.querySelector('#boo')
+		const obj = {}
+		Object.defineProperty(obj,'someText',{
+			set:(val)=>{
+				foo.value = val;
+				boo.innerHTML = val;
+			}
+		})
+		foo.onkeyup = (e)=>{
+			obj['someText'] = e.target.value;
+		}
+	</script>
+</html>

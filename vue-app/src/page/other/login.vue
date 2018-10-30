@@ -12,12 +12,12 @@
                 <button>登录</button>
             </div>
             <div class="last">
-                <div class="last_left">
+                <router-link to="" class="last_left">
                     忘记密码
-                </div>
-                <div class="last_right ">
+                </router-link>
+                <router-link to="./register" class="last_right ">
                     注册
-                </div>
+                </router-link>
             </div>
         </div>
     </div>
@@ -78,6 +78,7 @@ export default {
     height: 30px;
     line-height: 30px;     
     background: rgb(68, 120, 189);
+    margin-bottom: 0;
 }
 .btn button{
     width: 100%;
@@ -89,5 +90,17 @@ export default {
     outline: none;
     background: none;
 }
-
+.last{
+    width: 80%;
+    margin: 0 auto;
+}
+.last a{
+    font-size: 12px;
+    margin: 0 5px;
+    color: rgba(58, 51, 51, 0.37);
+    text-decoration: none;
+}
+.last .last_right{
+    float: right;
+}
 </style>
