@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="result">
+			
+		</div>
+		<div id="list"></div>
+	</body>
+	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+//		var tmp = 123;
+		
+		/*if (true) {
+		  let tmp = 'abc'; // ReferenceError
+		  console.log(tmp)
+		}
+		console.log(tmp)*/
+		
+		if (true) {
+		  // TDZ开始
+//		  tmp = 'abc'; // ReferenceError
+//		  console.log(tmp); // ReferenceError
+		
+		  let tmp; // TDZ结束
+		  console.log(tmp); // undefined
+		
+		  tmp = 123;
+		  console.log(tmp); // 123
+		}
+		
+		
+		//不能使用圆括号的情况
+		//1.变量声明语句不能使用圆括号	
+		/*let [(a)] = [1];
+		let {x:(c)} = {x:2};*/
+		let { o: { p: p } } = { o: { p: 2 } };
+		console.log(p)//2/加（）就会报错
+		
+		//2.函数参数(因为函数参数也属于变量声明，因此也不能带圆括号)
+		/*function f([(z)]){
+			return z;		
+		}
+		console.log(f([(3)]))//不加（）打印出3，加（）就会报错
+		*/
+		
+		//3.赋值语句的模式
+		/*{p:a}={p:42}
+		console.log(a)*/
+		
+		//可以使用圆括号的情况（赋值语句的非模式部分）
+		/*[(b)] = [3];
+		console.log(b)*/
+		
+		//用途
+		//1.交换变量值
+		let x = 1;
+		let y = 3;
+		[x,y] = [y,x];
+		console.log(x,y)
+		
+		//2.从函数返回多个值
+		/*function example() {
+		//	return [1, 2, 3];//返回一个数组
+		  return {//返回一个对象
+		    foo: 1,
+		    bar: 2
+		  };
+		}
+		//	let [a, b, c] = example();
+		let { foo, bar } = example();
+		//	console.log(a,b,c)
+		console.log(foo,bar)*/
+		
+		//3.函数参数的定义
+		// 参数是一组有次序的值
+		/*function f([x, y, z]){
+			console.log(x,y,z)
+		}
+		f([1, 2, 3])*/
+		
+		// 参数是一组无次序的值
+		/*function f({x, y, z}) {
+			console.log(x,y,z)
+		}
+		f({z: 4, y: 2, x: 1});*/
+		
+		//4.提取JSON数据
+		/*let jsonData = {
+		  id: 42,
+		  status: "OK",
+		  data: [867, 5309]
+		};
+		let { id, status, data: number } = jsonData;
+		console.log(id, status, number);*/
+		
+		
+		//padStart()/头部补全,padEnd()/尾部补全
+		console.log('x'.padStart(5,'ab'))//头部补全（第一个参数是位数，第二个参数是用于补全替代的内容），省略第二个参数会默认用空格补全
+		console.log('x'.padStart(4))
+		console.log('x'.padEnd(4,'ab'))//尾部补全
+		//用于提示字符串格式
+		console.log('12'.padStart(10, 'YYYY-MM-DD'),
+'09-12'.padStart(10, 'YYYY-MM-DD'))
+		
+		//模板字符串方法
+		let str = "模板字符串"
+		$('#result').append(
+			`
+			There are <b>${str}</b> items in your basket, <em>${str}</em> are on sale!
+			`
+		)
+		
+		$('#list').html(`
+			<ul>
+				<li>	one</li>
+				<li>	two</li>
+			</ul>
+		`.trim())//.trim()消除换行
+		
+		//标签模板
+		//alert`123`
+		//alert(123)
+		
+		
+	</script>
+</html>

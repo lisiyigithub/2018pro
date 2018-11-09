@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script src="../jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+			var goods_data = [
+			{
+				id:3,
+				money:111.00
+			},
+			{
+				id:4,
+				money:44
+			},
+			{
+				id:5,
+				money:55
+			}
+		];
+		var arr = [];
+		for(var i in goods_data){
+			arr.push(goods_data[i].money)		
+		}
+		console.log(arr)
+		var sum = 0;
+		for(var j in arr){
+			sum += arr[j]
+		}
+		console.log(sum)
+	</script>
+</html>
