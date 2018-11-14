@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		let [f0,f1] = [1];
+		console.log(f0,f1);//1,undefined;
+		
+		let [f2,f3 = 2] = [1];
+		console.log(f2,f3)//1,2:当没有赋值时，取自己的默认值
+		
+		//判断一个位置是否有值，必须严格按照===来判断，如果数组中成员不严格等于undefined，默认值不会生效
+		let [f4 = 5] = [1];//1
+		console.log(f4)
+		
+		function fn(){
+			console.log('aa')
+		}
+		let [x = fn(),y = 0] = [1];
+		//只要变量所占在数组中的位置的值不是undefined，fn()根本不会触发执行
+	</script>
+</html>

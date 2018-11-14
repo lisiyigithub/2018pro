@@ -10,7 +10,13 @@
 		<meta http-equiv="Expires" content="0" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<script type="text/javascript" src="../../js/flexible.js"></script>
+		<link rel="stylesheet" href="../../css/lexible_css.css" />
 		<style>
+			html {
+				height: 100%;
+			}
+			
 			body {
 				background: #FFFFFF;
 			}
@@ -34,9 +40,17 @@
 				margin: auto;
 			}
 			
-			.face_con,
+			.face_con {
+				/*display: flex;*/
+				position: relative;
+				bottom: 10px;
+			}
+			
 			.face_bot {
-				display: flex;
+				height: auto;
+				width: 100%;
+				position: fixed;
+				bottom: 1.45rem;
 			}
 			
 			p {
@@ -45,12 +59,12 @@
 				font-size: 18px;
 				text-align: center;
 				color: #333333;
-				margin: 0 35px 245px 50px;
+				margin: 0 1rem;
 			}
 			
-			button {
-				flex: 1;
-				margin: 0 15px;
+			.complaint_button {
+				width: 92%;
+				margin: 0 0.4rem;
 				color: #fff;
 				background: #25A2F2;
 				line-height: 44px;
@@ -60,9 +74,30 @@
 				font-size: 18px;
 				padding: 0;
 			}
+			
+			.authentication_button {
+				width: 92%;
+				margin: 0 0.4rem;
+				color: #25A2F2;
+				background: #fff;
+				line-height: 44px;
+				border-radius: 44px;
+				border: none;
+				box-shadow: 0px 0px 5px 1px #419BF9;
+				font-size: 18px;
+				padding: 0;
+				margin-top: 0.4rem;
+			}
 			/* 适配iphoneX顶部 */
 			
 			@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+				.out {
+					margin-top: 88px;
+				}
+			}
+			/*iphone xsm*/
+			
+			@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
 				.out {
 					margin-top: 88px;
 				}
@@ -85,22 +120,70 @@
 		<div class="face_con">
 			<p>很遗憾，您的人脸识别认证失败了，请重新认证。</p>
 
-			
 		</div>
 		<div class="face_bot">
-				<button onclick="goToIdentity()">去认证</button>
+			<button class="complaint_button" onclick="goToComplaint()">去申诉</button>
+			<button class="authentication_button" onclick="goToIdentity()">重新认证</button>
 		</div>
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/utils.js"></script>
 		<script src="../../js/storage.js"></script>
-		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script src="../../js/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script type="text/javascript" src="../../js/api.js" ></script>
 		<script type="text/javascript">
 			mui.init();
-
+			var merc_id = getUrlParams("merc_id")
+			var flag = getUrlParams("flag")
+			if(flag != "1"){
+				mui('.complaint_button')[0].style.display = "none"
+			}
+			//重新认证
 			function goToIdentity() {
 				var user_info = sessionFetch("user_info");
 				mui.openWindow({
-					url: 'identity.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version + '&opSys=' + user_info.opSys
+					url: 'identity.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version + '&opSys=' + user_info.opSys + '&merc_id=' + merc_id
+				});
+			}
+			//去申诉
+			function goToComplaint() {
+				var user_info = sessionFetch("user_info");
+				var data = {
+					"contentTyp": "application/json",
+					"characterSet": "GBK",
+					"sys_cnl": "app",
+					"version": user_info.version,
+					"opSys": user_info.opSys,
+					"token_id": user_info.token_id,
+					"usr_no": user_info.usr_no,
+					"usr_typ": user_info.usr_typ,
+					"merc_id": merc_id
+				}
+				console.log(data);
+				mui.ajax(API.FACE_CHECK, {
+					data: data,
+					dataType: 'json',
+					type: 'post',
+					contentType: "application/json; charset=utf-8",
+					success: function(res) {
+						console.log(res);
+						if(res.repCode === "000000") {
+							mui.openWindow({
+								url: 'index.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version + '&opSys=' + user_info.opSys
+							});
+						} else if(res.repCode === "STM998") {
+							mui.alert(res.repMsg, "", "确定", function() {
+								callLogOutApp();
+							});
+						} else {
+							mui.alert(res.repMsg);
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(type);
+						console.log(xhr);
+						mui.alert("服务器开小差啦，请稍后再试");
+						// window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
 				});
 			}
 		</script>

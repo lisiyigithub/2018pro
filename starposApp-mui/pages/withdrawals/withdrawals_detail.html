@@ -41,6 +41,12 @@
 				margin-top: 44px;
 			}
 		}
+		/*iphone xsm*/
+		@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+			.mui-content {
+				margin-top: 44px;
+			}
+		}
 		
 		.edge {
 			margin-bottom: 10px;
@@ -78,21 +84,21 @@
 			line-height: 24px;
 			padding: 0px 9px;
 		}
+		
 		.stand_success {
 			float: right;
-			
 			font-size: 12px;
 			font-family: PingFangSC-Regular;
 			color: #07EDB4;
 			line-height: 24px;
-
 		}
+		
 		.stand_fail {
 			float: right;
 			font-size: 12px;
 			font-family: PingFangSC-Regular;
 			color: #ED1A07;
-			line-height: 24px;			
+			line-height: 24px;
 		}
 		
 		#test {
@@ -162,16 +168,15 @@
 			border: none;
 		}
 		
-		
-		.channel{
+		.channel {
 			font-size: 14px;
 			margin: 16px 15px 0 38px;
 			line-height: 18px;
 		}
 		
-		.warning{
+		.warning {
 			display: block;
-			background:#ED1A07 ;
+			background: #ED1A07;
 			color: #fff;
 			text-align: center;
 			width: 14px;
@@ -184,7 +189,7 @@
 			font-style: normal;
 		}
 		
-		em{
+		em {
 			font-style: normal;
 		}
 	</style>
@@ -266,8 +271,7 @@
 								mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
 								// window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
 							}
-							
-							
+
 						},
 						error: function(xhr, type, errorThrown) {
 							console.log(type);
@@ -334,11 +338,11 @@
 				img = doc.createElement("img");
 				span = doc.createElement("span");
 				//textP = doc.createElement("p");
-				
+
 				//提现状态
 				h3 = doc.createElement("h3")
 				i = doc.createElement("i")
-				
+
 				account_amount_p = doc.createElement("p");
 				account_amount_span = doc.createElement("span");
 				account_amount_em = doc.createElement("em");
@@ -354,11 +358,11 @@
 				cash_number_p = doc.createElement("p");
 				cash_number_span = doc.createElement("span");
 				cash_number_em = doc.createElement("em");
-				
+
 				//提现状态
-				h3.setAttribute("class","channel")
-				i.setAttribute("class","warning")
-				
+				h3.setAttribute("class", "channel")
+				i.setAttribute("class", "warning")
+
 				hr.setAttribute("class", "line");
 				li.setAttribute("class", "mui-table-view-cell mui-media edge");
 				div.setAttribute("id", "detail-id-wrapper table-cell ");
@@ -367,8 +371,8 @@
 				text_span.setAttribute("class", "allow-span");
 				status_p.setAttribute("class", "clearfix allow_p");
 				testDiv.setAttribute("id", "test");
-//				img.setAttribute("src", "../../img/icon_warn.png");
-//				img.setAttribute("style", "display:none");
+				//				img.setAttribute("src", "../../img/icon_warn.png");
+				//				img.setAttribute("style", "display:none");
 				img.setAttribute("class", "assets");
 				span.setAttribute("class", "assetss");
 				account_amount_p.setAttribute("class", "clearfix table_amount table-fire");
@@ -402,8 +406,8 @@
 				cash_number_em.innerHTML = getData(value.ord_tm);
 
 				//text_span.innerHTML = "111111111";
-				if(value.ord_no != null && value.ord_no != ""){
-					text_span.innerHTML = "订单:"+value.ord_no;					
+				if(value.ord_no != null && value.ord_no != "") {
+					text_span.innerHTML = "订单:" + value.ord_no;
 				}
 
 				if(value.sts == "U" || value.sts == "T" || value.sts == "P" || value.sts == "X") {
@@ -430,14 +434,14 @@
 					status_em_All.setAttribute("class", "stand_fail");
 					status_em_All.setAttribute("style", "color:#ED1A07");
 				}
-				
+
 				//判断提现状态
-				if(value.sys_cnl!="svr"){
-					h3.innerHTML="手动提现"
-					img.src="../../img/icon_manual@2x.png"
-				}else{
+				if(value.sys_cnl != "svr") {
+					h3.innerHTML = "手动提现"
+					img.src = "../../img/icon_manual@2x.png"
+				} else {
 					h3.innerHTML = "自动提现"
-					img.src="../../img/icon_auto@2x.png"
+					img.src = "../../img/icon_auto@2x.png"
 				}
 
 				li.appendChild(div);
@@ -446,7 +450,7 @@
 				div.appendChild(status_p);
 				div.appendChild(testDiv);
 				testDiv.appendChild(i)
-				div.appendChild(hr);				
+				div.appendChild(hr);
 				status_p.appendChild(text_span);
 				status_p.appendChild(status_em_All);
 				div.appendChild(account_amount_p);
@@ -470,8 +474,6 @@
 			function getData(data) {
 				return data.substring(0, 4) + "-" + data.substring(4, 6) + "-" + data.substring(6, 8) + " " + data.substring(8, 10) + ":" + data.substring(10, 12)
 			}
-			
-			
 		</script>
 	</body>
 

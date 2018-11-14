@@ -177,7 +177,9 @@ body {
                     .yd-cell-right {
                         height: 1.066667rem;
                         min-height: 0px;
-                        input {}
+                        input {
+                            padding-left: 10px;
+                        }
                         .yzmbox {
                             color: #25A2F2;
                             width: 70px;
@@ -202,6 +204,10 @@ body {
                     height: 1rem;
                     margin: 0 auto;
                     margin-top: .3rem;
+                }
+                .close {
+                    width: 15px;
+                    height: 15px;
                 }
             } //修改placeholder颜色
             input::-webkit-input-placeholder {

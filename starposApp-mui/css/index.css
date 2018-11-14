@@ -1,60 +1,4 @@
-.wrap {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: rgba(0,0,0,.4);
-	z-index: 9999;
-	display: none;
-}
 
-.faceId_dialog {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
-	background: #fff;
-	text-align: center;
-	width: 80%;
-	height: 192px;
-	border-radius: 2px;
-	z-index: 20;
-}
-
-.faceId_dialog_tit {
-	margin: 15px 0 9px 0;
-	font-size: 18px;
-	color: rgba(34, 34, 34, 1);
-}
-
-.faceId_dialog p {
-	width: 220px;
-	margin: 0 auto;
-	color: #666666;
-	font-size: 14px;
-	margin-bottom: 24px;
-}
-
-.faceId_dialog_btn {
-	height: 44px;
-	border-top: 1px solid #ddd;
-}
-
-.faceId_dialog_btn div {
-	width: 50%;
-	height: 100%;
-	float: left;
-	line-height: 44px;
-	border: none;
-	margin: 0;
-	padding: 0;
-	outline: none;
-	font-size: 16px;
-	color: #666666;
-}
 
 .agreement_p {
 	font-size: 12px!important;
@@ -155,8 +99,14 @@ withdrawals-index-m2 .icon {
 .mui-toast-container {
 	bottom: 50% !important;
 }
-
+/*iphone x*/
 @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+	.withdrawals-index-m0 {
+		padding-top: 108px;
+	}
+}
+/*iphone xsm*/
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
 	.withdrawals-index-m0 {
 		padding-top: 108px;
 	}

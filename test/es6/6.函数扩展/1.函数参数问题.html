@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//函数的参数可以加默认值,只有不传实参的时候才会走默认值
+		function fn(x="x",y){
+			console.log(x,y)
+		}
+		fn(1,2)
+		
+		function fn2({x=0,y=0}={}){
+			return {x,y}
+		}
+		console.log(fn2({x:1}));//1,0
+		
+		function fn3({x,y}={x:0,y:0}){
+			return {x,y}
+		}
+		console.log(fn3({x:1}));//1,undefined
+		
+		//一般我们都会把默认值放后面
+		function fn4(x,y=1,z){
+			
+		}
+		fn4(1,2,3)
+		
+		//参数集合
+		function fn5(){
+			//arguments.length代表的是一个实参的长度
+			console.log(arguments.length)
+		}
+		fn5(1,2,3,4,5)
+		
+		function fn6(x,y){
+			
+		}
+		fn6();console.log(fn6.length)//2,这里的length表示的是形参的长度
+	</script>
+</html>

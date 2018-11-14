@@ -1,45 +1,60 @@
 <template>
-  <div class="showCode">
+  <div class="jinjianOk">
+    <img src="../../assets/icon_succes.png">
+    <p id="text1">提交成功</p>
+    <p id="text2">请关注推送消息接收审核通知</p>
 
-<img src="../../assets/129446268171591622.jpg">
-<p>提交成功<br />需要T+1人工审核</p>
-<p>请长按上方二维码，关注</p>
-<p>“星POS管家”公众号，接收进件审核通知！</p>
-
-<!--  <yd-button size="large" class="button" @click.native='gostate'>确定</yd-button> -->
+    <div id="buttom_div">
+      <img src="../../assets/129446268171591622.jpg" alt="">
+      <p id="text3">
+        <p>请长按识别二维码关注</p>
+        <p>星POS管家”公众号，接收进件审核通知！</p>
+      </p>
+    </div>
   </div>
 </template>
 <script>
-import $ from 'jquery'
-export default {
-  data() {
-    return {};
-  },
-  created() {
-    document.title = "终端开户";
-  },
-  methods: {
-    gostate() {
-      let _this=this;
-      _this.$router.push({name:"state"});
-    }
-
-  },
-  mounted() {
-    let _this=this;
-    $(document).ready(function(e) {
-      if (window.history && window.history.pushState) {
-        $(window).on("popstate", function() {
-          _this.$router.push({name:'state', params: { out: true }})
+  import $ from 'jquery'
+  export default {
+    data() {
+      return {
+        url: "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIzNDc5NzAzMw==#wechat_redirect"
+      };
+    },
+    created() {
+      document.title = "进件完成";
+    },
+    methods: {
+      gostate() {
+        let _this = this;
+        _this.$router.push({
+          name: "state"
         });
+      },
+      goToFollow() {
+        window.location.href = this.url
       }
-      window.history.pushState("forward", null, "#"); //在IE中必须得有这两行
-      window.history.forward(1);
-    });
-  }
-};
+
+    },
+    mounted() {
+      let _this = this;
+      $(document).ready(function (e) {
+        if (window.history && window.history.pushState) {
+          $(window).on("popstate", function () {
+            _this.$router.push({
+              name: 'state',
+              params: {
+                out: true
+              }
+            })
+          });
+        }
+        window.history.pushState("forward", null, "#"); //在IE中必须得有这两行
+        window.history.forward(1);
+      });
+    }
+  };
 </script>
 <style>
 
 </style>
-

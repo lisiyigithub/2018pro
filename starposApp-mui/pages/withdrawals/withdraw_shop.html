@@ -51,10 +51,10 @@
 				<p style="color:#fff;font-size:13px;opacity:0.7;margin-bottom:21px;float: left;">可提现金额(元)</p>
 				<p style="color:#fff;font-size:12px;text-align:right;margin-bottom:0;">该商户下共<span id="card_length">0</span>张结算卡</p>
 			</div>
-			
+
 			<!--提现区域-->
 			<div class="mui-row" style="text-align:center;background:#fff;font-size:16px;padding:18px 0;margin-top:15px ;">
-				
+
 				<!--<div class="mui-col-xs-6 mui-col-sm-6" style="border-right:1px solid #CBCCCD;" onclick="toWithDrawalsIntro()">
 					<img src="../../img/@2xicon_tixian_shuoming.png" width="18px;" style="vertical-align:sub;">
 					<span style="padding-left:3px;">提现说明</span>
@@ -63,7 +63,7 @@
 					<img src="../../img/@2xicon_tixian_mingxi.png" width="17px;" style="vertical-align:sub;">
 					<span style="padding-left:3px;">提现明细</span>
 				</div>-->
-				
+
 				<div class="mui-col-xs-6 mui-col-sm-6" style="border-left: 0;" onclick="toWithDrawalsIntro()">
 					<img src="../../img/@2xicon_tixian_shuoming.png" width="18px;" style="vertical-align:sub;">
 					<span>提现说明</span>
@@ -72,21 +72,21 @@
 					<img src="../../img/@2xicon_tixian_mingxi.png" width="17px;" style="vertical-align:sub;">
 					<span>提现明细</span>
 				</div>
-				
+
 				<!--自动提现-->
 				<div class="mui-col-xs-6 mui-col-sm-6">
 					<!--开关-->
-					<div id="kaiguan">				
+					<div id="kaiguan">
 						<div>
 							<div>
 								<div id="mySwitch" class="mui-switch mui-switch-mini" style="width: 30px;height: 18px;margin:-3px auto 5px;border-color: #CBCBCB;background: #E6E6E6;">
-								    <div class="mui-switch-handle" style="width: 16px;height: 16px;"></div>
+									<div class="mui-switch-handle" style="width: 16px;height: 16px;"></div>
 								</div>
 							</div>
 						</div>
 						<div>自动提现</div>
 					</div>
-					
+
 					<!--弹出框-->
 					<div id="box">
 						<div class="inner">
@@ -95,16 +95,15 @@
 							<div class="inner_btn">
 								<div type="button" id="abrogate" style="border-right: 1px solid #ddd;">取消</div>
 								<div type="button" id="ascertain" style="color:#25A2F2">确定</div>
-							</div>		
-						</div>					
-					</div>			
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="succ">
-					<img src="../../img/toast_icon_right@2x.png"/>
+					<img src="../../img/toast_icon_right@2x.png" />
 					<span>开通成功</span>
 				</div>
 			</div>
-			
 
 			<div id="withdrawals_qt" style="background: #fff;">
 				<script type="text/template" id="tpl">
@@ -239,19 +238,33 @@
 			</div>
 
 		</div>
-
+		<div class="wrap">
+			<div class="faceId_dialog">
+				<div class="faceId_dialog_tit">
+					提示
+				</div>
+				<p class="p_text">为了您提现安全，请先进行人脸识别认证。</p>
+				<!--<p class="agreement_p">点击去认证即同意<span class="agreement_span" onclick="goToAgreement()">《用户协议》</span></p>-->
+				<div class="faceId_dialog_btn">
+					<div onclick="javascript :history.back(-1);">取消</div>
+					<div style="border-left: 1px solid #ddd;color: #25A2F2;" onclick="goToAgreement()">去认证</div>
+				</div>
+			</div>
+		</div>
 		<script src="../../js/utils.js"></script>
 		<script src="../../js/api.js"></script>
 		<script src="../../js/storage.js"></script>
 		<!-- <script src="../../js/zepto.min.js"></script> -->
-		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script src="../../js/jquery-1.12.4.min.js"></script>
 		<script src="../../js/underscore-min.js"></script>
 		<script src="../../js/bodymovin.js"></script>
 		<script src="../../js/loadingConfig.js"></script>
-		<script src="//at.alicdn.com/t/font_489463_0e4fz16ytlu15rk9.js"></script>
-		<!--<script src=https://cdn.bootcss.com/eruda/1.4.3/eruda.min.js></script>-->
+		<script src="../../js/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script src="../../js/raven.min.js" crossorigin="anonymous"></script>
+		<!--<script type="text/javascript" src="../../js/eruda.min.js" ></script>-->
 		<script type="text/javascript" charset="utf-8">
 			mui.init();
+			Raven.config('http://3afafcc6e47a461eb7644f38e1f72553@sentry.starpos.com.cn:9000/18').install()
 			//eruda.init();
 			var tplRender = _.template($("#tpl").html());
 			mui("#wd_mercnm")[0].innerText = getUrlParams("merc_nm");
@@ -291,6 +304,7 @@
 			var total_wd_all
 			getWithdrawalsInfo2();
 			getEnchashLimit();
+			isOpenFacetoface()
 
 			function isOverTime() {
 				//是否在提现时间内 可提现额度是否为0
@@ -350,6 +364,78 @@
 					mui.alert("开通数据为空，请重新登录");
 				}
 			}
+
+			//是不是开通face++
+			function isOpenFacetoface() {
+				var data = {
+					"contentTyp": "application/json",
+					"characterSet": "GBK",
+					"sys_cnl": "app",
+					"version": user_info.version,
+					"opSys": user_info.opSys,
+					"token_id": user_info.token_id,
+					"usr_no": user_info.usr_no,
+					"usr_typ": user_info.usr_typ,
+					"merc_id": getUrlParams("merc_id")
+				}
+				console.log(data);
+				mui.ajax(API.FACETOFACE, {
+					data: data,
+					dataType: 'json',
+					type: 'post',
+					contentType: "application/json; charset=utf-8",
+					success: function(res) {
+						is_click = false
+						console.log(res);
+						if(res.repCode === "000000") {
+							if(res.auth_sts != "1") {
+								if(res.check_sts == "0") { //默认
+									if(res.verify_count == "5") {
+										mui.alert("今日失败次数过多，请您明日再试！", "", "确定", function() {
+											javascript: history.back(-1);
+										});
+									}else{
+										mui(".wrap")[0].style.display = "block";										
+									}
+								} else if(res.check_sts == "2") { //审核中
+									mui.alert("您的申诉申请正在审核，请您耐心等待，稍后再试。", "", "确定", function() {
+										javascript: history.back(-1);
+									});
+								} else if(res.check_sts == "3") { //驳回
+									if(res.verify_count == "5") {
+										mui.alert("今日失败次数过多，请您明日再试！", "", "确定", function() {
+											javascript: history.back(-1);
+										});
+									}else{
+										mui(".p_text")[0].innerText = "很抱歉，您的申诉请求未通过审核，您可以重新进行人脸识别认证。"
+										mui(".wrap")[0].style.display = "block";									
+									}
+									
+								}
+							}
+						} else if(res.repCode === "STM998") {
+							mui.alert(res.repMsg, "", "确定", function() {
+								callLogOutApp();
+							});
+						} else if(res.repCode === "stm001") {
+							mui.alert(res.repMsg, "", "确定", function() {
+								javascript: history.back(-1);
+							});
+						} else {
+							mui.alert(res.repMsg);
+							// window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+						}
+					},
+					error: function(xhr, type, errorThrown) {
+						console.log(type);
+						console.log(xhr);
+						mui.alert("服务器开小差啦，请稍后再试");
+						// window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+					}
+				});
+
+			}
+
 			//获取银行卡信息
 			function getWithdrawalsInfo2() {
 				var data = {
@@ -533,15 +619,15 @@
 									//最后一位是小数点的话，移除
 									$amountInput.val(($amountInput.val().replace(/\.$/g, "")));
 								});
-								
+
 								//获取auto_D0_flag的值
-								if(res.auto_D0_flag == 1){
+								if(res.auto_D0_flag == 1) {
 									mui(".loading")[0].style.display = "none";
 									$('#mySwitch').addClass('mui-active')
 									mui(".mui-switch-mini")[0].style.background = "green";
-								}else if(res.auto_D0_flag == 2){
+								} else if(res.auto_D0_flag == 2) {
 									mui.alert("D1结算商户暂不支持开通自动提现");
-								}else{
+								} else {
 									mui(".loading")[0].style.display = "none";
 									$('#mySwitch').removeClass('mui-active')
 								}
@@ -560,7 +646,7 @@
 							mui.alert(res.repMsg);
 							// window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
 						}
-												
+
 					},
 					error: function(xhr, type, errorThrown) {
 						mui(".loading")[0].style.display = "none";
@@ -1029,7 +1115,7 @@
 							//								url: 
 							//							});
 							mui.back()
-							sessionSave("isColseToast","1")
+							sessionSave("isColseToast", "1")
 
 						} else if(res.repCode === "STM998") {
 							mui.alert(res.repMsg, "", "确定", function() {
@@ -1152,48 +1238,42 @@
 					}
 				}
 			};
-			
-			
-			
-					
+
 			//自动提现
-			document.getElementById("mySwitch").addEventListener("toggle",function(event){				
+			document.getElementById("mySwitch").addEventListener("toggle", function(event) {
 				//启动
-				if(event.detail.isActive){
-				    console.log("你启动了开关");	   						
-					mui(".mui-switch-mini")[0].style.background = "green";						
+				if(event.detail.isActive) {
+					console.log("你启动了开关");
+					mui(".mui-switch-mini")[0].style.background = "green";
 					$('#box').show()
-					$('.inner').show()					
-				//关闭
-				}else{
-				    console.log("你关闭了开关"); 
-				    update(0)
+					$('.inner').show()
+					//关闭
+				} else {
+					console.log("你关闭了开关");
+					update(0)
 					$('#box').hide()
 					mui(".mui-switch-mini")[0].style.background = "#E6E6E6";
-					
-				}  
+
+				}
 			})
-			
 
 			//点击确定
-			$('#ascertain').click(function(){
+			$('#ascertain').click(function() {
 				$('#box').hide()
 				update(1)
 				$('.succ').show()
-				setTimeout(function(){
+				setTimeout(function() {
 					$('.succ').hide()
-				},2000)
+				}, 2000)
 			})
-			
-			
+
 			//点击取消
-			$('#abrogate').click(function(){
+			$('#abrogate').click(function() {
 				$('#box').hide()
 				mui("#mySwitch").switch().toggle();
-			})				
-			
-			
-			function update(index){
+			})
+
+			function update(index) {
 				var data = {
 					"contentTyp": "application/json",
 					"characterSet": "GBK",
@@ -1204,7 +1284,7 @@
 					"usr_no": user_info.usr_no,
 					"usr_typ": user_info.usr_typ,
 					"merc_id": getUrlParams("merc_id"),
-					"auto_d0_flag":index
+					"auto_d0_flag": index
 				};
 				mui(".loading")[0].style.display = "block";
 				mui.ajax(API.UPDAUTOD, {
@@ -1213,11 +1293,11 @@
 					type: 'post',
 					contentType: "application/json; charset=utf-8",
 					success: function(res) {
-											
-						if(res.repCode === "000000") {
-							mui(".loading")[0].style.display = "none";						
 
-						}  else if(res.repCode === "STM998") {
+						if(res.repCode === "000000") {
+							mui(".loading")[0].style.display = "none";
+
+						} else if(res.repCode === "STM998") {
 							mui(".loading")[0].style.display = "none";
 							mui.alert(res.repMsg, "", "确定", function() {
 								callLogOutApp();
@@ -1239,8 +1319,12 @@
 					}
 				})
 			}
-			
-					
+
+			function goToAgreement() {
+				mui.openWindow({
+					url: '../doc/verification_agreement.html?merc_id=' + getUrlParams("merc_id")
+				});
+			}
 		</script>
 	</body>
 

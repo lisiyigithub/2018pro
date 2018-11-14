@@ -2,7 +2,7 @@
   <div class="state">
     <header>
       <span>已进件商户</span>
-      <span @click='gokaihu()'>终端开户</span>
+      <!-- <span @click='gokaihu()'>终端开户</span> -->
     </header>
     <div class="main">
 
@@ -37,6 +37,7 @@ export default {
       token_id: "", //201710210000013868
       usr_no: "", //000000005028
       usr_typ: "",
+      openid:"",
 
       in_mercTyp: "", //权限 N 没有进件权限，Y 有权限
       list: [
@@ -64,6 +65,7 @@ export default {
     window.localStorage.setItem("reload", true);
     let _this = this;
     var url = location.search;
+     this.openid = util.getUrlParams("openid");
     //alert(url);
     //获取公共参数
     if (util.sesstionData("PublicParams") != false) {
@@ -85,6 +87,7 @@ export default {
       obj.usr_no = this.usr_no;
       obj.usr_typ = this.usr_typ;
       obj.in_mercTyp = this.in_mercTyp;
+      obj.openid = this.openid;
       sessionStorage.setItem("PublicParams", JSON.stringify(obj));
     }
 
@@ -92,13 +95,14 @@ export default {
       token_id: this.token_id,
       opSys: "2",
       usr_no: this.usr_no,
-      usr_typ: this.usr_typ
+      usr_typ: this.usr_typ,
+      openid: this.openid
     };
     console.log(data);
 
     axios({
       method: "post",
-      url: `${api.api}checkmer1.json`,
+      url: `${api.api}MercerListWx.json`,
       data: data
     })
       .then(res => {
@@ -157,7 +161,7 @@ export default {
                   "UpdateParams",
                   JSON.stringify(res.data)
                 );
-                this.$router.push({ name: "saoma" });
+                this.$router.push({ name: "superyanzheng" });
               }
             })
             .catch(err => {

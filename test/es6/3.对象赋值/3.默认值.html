@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		let obj = {y:2};
+		console.log(obj.x)
+		let {x,y} = {y:3};
+		console.log(x,y)//undefined  3
+		
+		let{x1 = 1,y1} = {y1:3};
+		console.log(x1,y1)
+		
+		let {m:n} = {};
+		console.log(n)//undefined
+		
+		let {m1:n1=4} = {}
+		console.log(n1)//4
+		
+		let {a:pp = 22} = {a:12}
+		console.log(pp)//12(pp的默认值被后面的赋值给覆盖了)	
+		//默认值生效的条件是对象的属性值必须是严格等于（===）undefined
+		
+		let {v = 3} = {v:undefined};
+		console.log(v)//3(此时属性值是undefined，所以默认值不会被覆盖)
+		
+		let {v1 = 3} = {v1:null};
+		console.log(v1)//null
+		
+		
+		let {f:{b}} = {b:"aa"};//此时f对应的没有值，结果是undefined,所以不能匹配到b的值
+		console.log(b)//报错： Cannot destructure property `b` of 'undefined' or 'null'
+		//如果解构模式中嵌套的是对象，并且这个子对象所在的父属性不存在，就会报错
+	</script>
+</html>

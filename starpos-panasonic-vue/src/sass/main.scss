@@ -10,6 +10,8 @@
 @import './add/newyanzheng.scss';
 @import './add/tijiao.scss';
 @import './add/saoma.scss';
+@import './add/jinjianOk.scss';
+@import './add/guide.scss';
 //进件状态
 @import './state/state.scss';
 @import './state/showCode.scss';
@@ -52,5 +54,5 @@ html {
 
 //yd-toast
 .yd-toast-none-icon .yd-toast-content {
-    padding: 20px 36px 30px!important;
+    padding: 20px 36px 30px !important;
 }

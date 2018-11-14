@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<ul>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		//{},是一个私有作用域，也就是我们的块级作用域
+		/*function fn(){
+			let a = 10;
+			console.log(a)
+		}
+		fn();
+		//if(){};
+		//for(){};*/
+
+
+		/*let a = 10;
+		if(a){
+			console.log(a)//a is not defined(此时是不进行预解释的，在这里打印时，a还未定义)
+			let a = 2;
+			console.log(a);//2,此时a是私有作用域的a
+		}*/
+		
+		let li = document.getElementsByTagName('li')
+		/*for(var i = 0; i<li.length; i++){
+			li[i].onclick=function(){
+				console.log(i)//4,输出的一直是4，因为绑定事件是异步的
+			}
+		}*/
+		//解决上面的循环问题
+		for(let i = 0; i<li.length; i++){//用let来定义的时候在这个块级作用域下，每循环一次就会生成一个私有的块级作用域
+			li[i].onclick = function(){//这里的i不和外面的共用，属于私有作用域的私有变量
+				console.log(i)
+			}
+		}
+		
+		let a = 10;
+		function fn(){
+			//console.log(a);//报错：a未定义
+			//let a = 0;
+			console.log(a);//10：如果当前作用域下没有的变量，往父级去找
+		}
+		fn()
+		
+		//自执行函数
+		{
+			let a = 4;
+			console.log(a)
+		}
+		
+		let obj = {};
+		//注意：eval将字符串转为对象的时候，一定要加一个（），否则就会识别成自执行函数了
+	</script>
+</html>

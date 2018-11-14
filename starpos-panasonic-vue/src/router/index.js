@@ -9,6 +9,7 @@ const index2 = r => require.ensure([], () => r(require('../page/index2.vue')), '
 //星管家登陆注册
 const login = r => require.ensure([], () => r(require('../page/login/login.vue')), 'login');
 const register = r => require.ensure([], () => r(require('../page/login/register.vue')), 'register');
+
 //台盘进件
 const yanzheng = r => require.ensure([], () => r(require('../page/add/yanzheng.vue')), 'yanzheng');
 const tijiao = r => require.ensure([], () => r(require('../page/add/tijiao.vue')), 'tijiao');
@@ -18,6 +19,8 @@ const yaoqing = r => require.ensure([], () => r(require('../page/add/yaoqing.vue
 const jinjianOk = r => require.ensure([], () => r(require('../page/add/jinjianOk.vue')), 'jinjianOk');
 const newyanzheng = r => require.ensure([], () => r(require('../page/add/newyanzheng.vue')), 'newyanzheng');
 
+
+
 //进件状态
 const state = r => require.ensure([], () => r(require('../page/state/state.vue')), 'state');
 const showCode = r => require.ensure([], () => r(require('../page/state/showCode.vue')), 'showCode');
@@ -25,8 +28,16 @@ const skip = r => require.ensure([], () => r(require('../page/state/skip.vue')),
 
 const text = r => require.ensure([], () => r(require('../components/text.vue')), 'text');
 
+//超级码
+const superLogin = r => require.ensure([], () => r(require('../page/supercode/superLogin.vue')), 'superLogin');
+const superRegister = r => require.ensure([], () => r(require('../page/supercode/superRegister.vue')), 'superRegister');
+const authorization = r => require.ensure([], () => r(require('../page/supercode/authorization.vue')), 'authorization');
+const guide = r => require.ensure([], () => r(require('../page/supercode/guide.vue')), 'guide');
+const superyanzheng = r => require.ensure([], () => r(require('../page/supercode/superyanzheng.vue')), 'superyanzheng');
+
+
 export default new Router({
-    base: '/panasonic',
+    base: '/panasonic/',
     mode: 'history',
     routes: [{
             path: '/',
@@ -102,6 +113,37 @@ export default new Router({
             path: '/add/newyanzheng',
             name: 'newyanzheng',
             component: newyanzheng,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/supercode/superyanzheng',
+            name: 'superyanzheng',
+            component: superyanzheng,
+            meta: {
+                keepAlive: true
+            } // false为不缓存
+        },
+        {
+            path: '/supercode/superRegister',
+            name: 'superRegister',
+            component: superRegister
+        },
+        {
+            path: '/supercode/superLogin',
+            name: 'superLogin',
+            component: superLogin
+        },
+        {
+            path: '/supercode/authorization',
+            name: 'authorization',
+            component: authorization
+        },
+        {
+            path: '/supercode/guide',
+            name: 'guide',
+            component: guide,
             meta: {
                 keepAlive: true
             }

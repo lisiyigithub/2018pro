@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//for of
+		let arr = [1,2,3,4,5]
+		for(let i in arr){//for in遍历出的是当前索引
+			console.log("索引+"+i)
+		}
+		for(let i of arr){//for of遍历出的是当前项
+			console.log("当前项+"+i)
+		}
+		//keys()用于for of中遍历出当前索引
+		for(let i of arr.keys()){
+			console.log("索引+"+i)
+		}
+		
+		//entries()遍历出当前项及对应索引,以数组的形式展示
+		for(let i of arr.entries()){
+			console.log(i)
+		}
+		//entries()遍历出索引及当前项
+		for(let [i,item] of arr.entries()){
+			console.log(i,item)
+		}
+	</script>
+</html>

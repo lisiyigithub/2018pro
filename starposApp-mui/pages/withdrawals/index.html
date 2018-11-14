@@ -24,19 +24,7 @@
 				<p class="loading-p">数据加载中</p>
 			</div>
 		</div>
-		<div class="wrap">
-			<div class="faceId_dialog">
-				<div class="faceId_dialog_tit">
-					提示
-				</div>
-				<p>为了您提现安全，请先进行人脸识别认证</p>
-				<p class="agreement_p">点击去认证即同意<span class="agreement_span" onclick="goToAgreement()">《用户协议》</span></p>
-				<div class="faceId_dialog_btn">
-					<div onclick="callCloseWebview()">取消</div>
-					<div style="border-left: 1px solid #ddd;color: #25A2F2;" onclick="goToidentity()">去认证</div>
-				</div>
-			</div>
-		</div>
+
 		<header class="mui-bar mui-bar-nav mn-head">
 			<span onclick="callCloseWebview()">
             <svg class="icon" aria-hidden="true">
@@ -121,16 +109,21 @@
 		<script src="../../js/underscore-min.js"></script>
 		<script src="../../js/bodymovin.js"></script>
 		<script src="../../js/loadingConfig.js"></script>
-		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script src="../../js/font_489463_a1dgzv2r3pntrzfr.js"></script>
 		<script type="text/javascript" src="../../js/flexible.js"></script>
-		<!--<script src=https://cdn.bootcss.com/eruda/1.4.3/eruda.min.js></script>-->
+		<script src="../../js/raven.min.js" crossorigin="anonymous"></script>
 		<script type="text/javascript" charset="utf-8">
 			mui.init();
-			//eruda.init();
-			var tplRender = _.template($("#tpl").html());
+
+			Raven.config('http://3afafcc6e47a461eb7644f38e1f72553@sentry.starpos.com.cn:9000/18').install()
 			var resAllList, mercIndexInfo = [];
 			var mercUnsettled = 0.00;
 			var is_click = false;
+			var face_flag = sessionFetch("face_flag")
+			if(face_flag == "1") {
+				mui.alert("商户开通成功")
+			}
+			sessionRemove("face_flag")
 			//检查参数
 			if(checkParam(getUrlParams("usr_no")), "usr_no" && checkParam(getUrlParams("usr_typ")), "usr_typ" && checkParam(getUrlParams("token_id")), "token_id" && checkParam(getUrlParams("version")), "version" && checkParam(getUrlParams("opSys")), "opSys") {
 				var user_info = {
@@ -141,11 +134,17 @@
 					"opSys": getUrlParams("opSys")
 				}
 				sessionSave("user_info", user_info);
-				//获取用户余额信息
-				getWithdrawalsInfo();
-				isOpenFacetoface()
+				if(cpr_version(getUrlParams("version"), "2.6.2")) {
+					//获取用户余额信息
+					getWithdrawalsInfo();
+				} else {
+					mui.alert("请升级到最新版本", "", "确定", function() {
+						callCloseWebview()
+					});
+				}
 			}
 			var isColseToast = sessionFetch("isColseToast")
+			var tplRender = _.template($("#tpl").html());
 
 			function getWithdrawalsInfo() {
 				mercUnsettled = 0.00
@@ -267,7 +266,6 @@
 								//排序
 								mercIndexInfo.sort(ArrObjcompare2('flag'));
 								console.log("排序后mercIndexInfo: ", mercIndexInfo);
-
 								$("#withdrawals_qt").append(tplRender(mercIndexInfo));
 							} else {
 								console.log("res.mercList不合法");
@@ -295,54 +293,6 @@
 					}
 				});
 			};
-
-			//是不是开通face++
-			function isOpenFacetoface() {
-				var data = {
-					"contentTyp": "application/json",
-					"characterSet": "GBK",
-					"sys_cnl": "app",
-					"version": user_info.version,
-					"opSys": user_info.opSys,
-					"token_id": user_info.token_id,
-					"usr_no": user_info.usr_no,
-					"usr_typ": user_info.usr_typ
-				}
-				console.log(data);
-				mui.ajax(API.FACETOFACE, {
-					data: data,
-					dataType: 'json',
-					type: 'post',
-					contentType: "application/json; charset=utf-8",
-					success: function(res) {
-						is_click = false
-						console.log(res);
-						if(res.repCode === "000000") {
-							if(res.usr_sts != "1") {
-								mui(".wrap")[0].style.display = "block";
-							}
-						} else if(res.repCode === "STM998") {
-							mui.alert(res.repMsg, "", "确定", function() {
-								callLogOutApp();
-							});
-						} else if(res.repCode === "STM999") {
-							mui(".wrap")[0].style.display = "block";
-						} else if(res.repCode === "stm001") {
-							mui(".wrap")[0].style.display = "block";
-						} else {
-							mui.alert(res.repMsg);
-							// window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
-						}
-					},
-					error: function(xhr, type, errorThrown) {
-						console.log(type);
-						console.log(xhr);
-						mui.alert("服务器开小差啦，请稍后再试");
-						// window.location.href = "../common_pages/error_page.html?error_type=serviceError";
-					}
-				});
-
-			}
 
 			//申请开通
 			function applyOpenWithdraw(num) {
@@ -407,9 +357,58 @@
 									console.log("isSingleOpen", isSingleOpen);
 
 									if(isSingleOpen) {
-										mui.alert("商户开通成功！", " ", "确定", function() {
-											getWithdrawalsInfo();
+										var data = {
+											"contentTyp": "application/json",
+											"characterSet": "GBK",
+											"sys_cnl": "app",
+											"version": user_info.version,
+											"opSys": user_info.opSys,
+											"token_id": user_info.token_id,
+											"usr_no": user_info.usr_no,
+											"usr_typ": user_info.usr_typ,
+											"merc_id": openWithdrawMerc
+										}
+										console.log(data);
+										mui.ajax(API.FACETOFACE, {
+											data: data,
+											dataType: 'json',
+											type: 'post',
+											contentType: "application/json; charset=utf-8",
+											success: function(res) {
+												is_click = false
+												console.log(res);
+												if(res.repCode === "000000") {
+													if(res.auth_sts != "1") {
+														mui.openWindow({
+															url: 'open_success.html?merc_id=' + openWithdrawMerc
+														});
+													} else {
+														mui.alert("商户开通成功！", " ", "确定", function() {
+															getWithdrawalsInfo();
+														});
+													}
+
+												} else if(res.repCode === "STM998") {
+													mui.alert(res.repMsg, "", "确定", function() {
+														callLogOutApp();
+													});
+												} else if(res.repCode === "stm001") {
+													mui.alert(res.repMsg, "", "确定", function() {
+														javascript: history.back(-1);
+													});
+												} else {
+													mui.alert(res.repMsg);
+													// window.location.href = "../common_pages/error_page.html?error_type=resError&error_code=" + res.repCode + "&error_msg=" + res.repMsg;
+												}
+											},
+											error: function(xhr, type, errorThrown) {
+												console.log(type);
+												console.log(xhr);
+												mui.alert("服务器开小差啦，请稍后再试");
+												// window.location.href = "../common_pages/error_page.html?error_type=serviceError";
+											}
 										});
+
 									} else {
 										console.log("失败")
 										mui.openWindow({
@@ -455,17 +454,12 @@
 				}
 
 			};
-			function goToidentity(){
+			/*function goToidentity(){
 				var user_info = sessionFetch("user_info");
 				mui.openWindow({
 					url: 'identity.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version + '&opSys=' + user_info.opSys
 				});
-			}
-			function goToAgreement(){
-				mui.openWindow({
-					url: '../doc/verification_agreement.html'
-				});
-			}
+			}*/
 		</script>
 
 	</body>

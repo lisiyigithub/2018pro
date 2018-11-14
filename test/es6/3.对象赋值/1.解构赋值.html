@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		let obj = {
+			n1:"p1",
+			n2:"p2"
+		}
+		/*let n1 = obj["n1"];
+		let n2 = obj["n2"];*/
+		
+		//变量名 == 属性名
+		/*let {n1,n2} = obj;
+		console.log(n1,n2)*/
+		
+		//变量名不等于属性名
+		let {n1:x1,n2:x2} = {n1:"p1",n2:"p2"};
+		console.log(x1,x2)
+		
+		let {n,m:m1} = {n:"nn",m:"aa"}
+		console.log(n,m1)
+	</script>
+</html>

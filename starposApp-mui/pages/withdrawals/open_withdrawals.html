@@ -59,9 +59,10 @@
 		
 		.checkbox {
 			position: relative;
-			padding-top: 14.5px;
-			padding-bottom: 14.5px;
-			margin-bottom: 12.5px;
+			padding: 14.5px 15px;
+			/*padding-bottom: 14.5px;*/
+			/*margin-bottom: 12.5px;*/
+			text-align: center;
 		}
 		
 		.checkbox_all {
@@ -72,15 +73,15 @@
 		}
 		
 		.checkbox_span {
-			position: absolute;
+			/*position: absolute;*/
 			font-family: PingFangSC-Regular;
 			font-size: 14px;
 			color: #666666;
 			/*top:50%;*/
-			left: 19.3%;
+			left: 42%;
 			/*-webkit-transform:translateY(-50%);
 			transform:translateY(-50%);*/
-			text-align: start;
+			text-align: center;
 		}
 		
 		.checkbox_all_span {
@@ -99,38 +100,42 @@
 			position: relative;
 			float: right;
 			height: 100%;
-			width: 50%;
-			background: #25A2F2;
-			opacity: 0.4;
-			color: white;
+			width: 100%;
+			font-size: 18px;
+			color: #25A2F2;
+			/*opacity: 0.4;*/
 			font-family: PingFangSC-Regular;
 			padding-top: 5%;
 			border-bottom-right-radius: 8px;
 		}
 		
-		input[type="checkbox"] {
+		input[type="radio"] {
 			opacity: 0;
+			display: none;
 		}
 		
 		label {
-			position: absolute;
-			left: 9.6%;
+			/*position: absolute;
+			left: 0;
+			right: 0;
 			top: 50%;
 			margin-top: -7.5px;
-			width: 15px;
-			height: 15px;
-			border-radius: 50%;
-			border: 1px solid #A5A5A5;
+			line-height: 24px;*/
+			margin: auto;
+			font-size: 15px;
+			color: #666666;
+			padding-bottom: 4px;
 		}
 		/*设置选中的input的样式*/
 		/* + 是兄弟选择器,获取选中后的label元素*/
 		
 		input:checked+label {
-			position: absolute;
-			content: url(../../img/@2xicon_pop_sel.png);
-			width: 17px;
-			height: 17px;
-			border: 0px
+			/*position: absolute;*/
+			line-height: 30px;
+			border: 0px;
+			color: #A47615;
+			border-bottom: 2px solid #A47615;
+			/*line-height: 24px;*/
 		}
 		
 		.mui-scrollbar-indicator {
@@ -211,33 +216,47 @@
 			</div>
 		</div>
 		<div id='btn-section'>
-			<button type="button" abled class="mui-btn mui-btn-outlined my-btn open_button" onclick="queryMerchant()">申请开通</button>
+			<button type="button" onclick="queryMerchant()" abled class="mui-btn mui-btn-outlined my-btn open_button">申请开通</button>
 		</div>
 		<div class="screen-mask">
 			<div class="screen-dialog">
 				<p class="screen-title">选择您需要开通的商户</p>
-				<div class="mui-scroll-wrapper" style="width: auto;height: 170px; position: relative; padding-bottom: 30px;">
+				<div class="mui-scroll-wrapper" style="width: auto;min-height:100px;max-height:170px;position: relative; padding-bottom: 30px;">
 					<div class="mui-scroll" id="screen_scroll">
-						<!--<div class="checkbox" onclick="funSelOne()">
-							<input id="item1" type="checkbox" name="item" value="选项一 " checked>
-							<label for="item"></label>
-							<span class="checkbox_span" for="item">选项一</span>
+						<!--<div class="checkbox">
+							<input id="item1" type="radio" name="item" value="选项一 " checked>
+							<label for="item">sadfghdfghj</label>
+							<span name="item" id="item1" for="item" checked>选项一</span>		
+						</div>
+						<div class="checkbox">
+							<input id="item1" type="radio" name="item" value="选项一 " checked>
+							<label for="item">sadfghdfghj</label>
+							<span name="item" id="item1" for="item" checked>选项一</span>		
+						</div>
+						<div class="checkbox">
+							<input id="item1" type="radio" name="item" value="选项一 " checked>
+							<label for="item">sadfghdfghj</label>
+							<span name="item" id="item1" for="item" checked>选项一</span>		
+						</div>
+						<div class="checkbox">
+							<input id="item1" type="radio" name="item" value="选项一 " checked>
+							<label for="item">sadfghdfghj</label>
+							<span name="item" id="item1" for="item" checked>选项一</span>		
 						</div>-->
 					</div>
 				</div>
 
 				<div style="width: 100%;height: 49px; border-top: 1px solid #CBCBCB; ">
-					<div class="checkbox_all" style="float: left;height: 100% ;width: 50%;" onclick="swapCheck()">
+					<!--<div class="checkbox_all" style="float: left;height: 100% ;width: 50%;" onclick="swapCheck()">
 						<input id="all_select" type="checkbox" name="all_select" value="全选 ">
 						<label for="all_select" style="left: 19.4%;"></label>
-						<span class="checkbox_all_span">全选</span>
-					</div>
+					</div>-->
 					<div class="sure_button" id="sure" onclick="closeWdDialog() ">
 						确认
 					</div>
 				</div>
 				<div class="screen-img2">
-					<img src="../../img/btn_cancel@2x.png" onclick="colse()" />
+					<img src="../../img/@2xtankuang_icon_guanbi.png" onclick="colse()" />
 				</div>
 			</div>
 			<div class=" screen-img ">
@@ -253,11 +272,14 @@
 	<script src="../../js/storage.js "></script>
 	<script src="../../js/bodymovin.js"></script>
 	<script src="../../js/loadingConfig.js"></script>
-	<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
-	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+	<script src="../../js/font_489463_a1dgzv2r3pntrzfr.js"></script>
+	<script src="../../js/jquery-1.12.4.min.js"></script>
+	<script src="../../js/raven.min.js" crossorigin="anonymous"></script>
+	<!--<script type="text/javascript" src="../../js/eruda.min.js" ></script>-->
 	<script type="text/javascript ">
 		mui.init()
-
+//		eruda.init();
+		Raven.config('http://3afafcc6e47a461eb7644f38e1f72553@sentry.starpos.com.cn:9000/18').install()
 		mui('.mui-scroll-wrapper').scroll({
 			scrollY: true, //是否竖向滚动
 			scrollX: false, //是否横向滚动
@@ -267,6 +289,14 @@
 			deceleration: 0.0006, //阻尼系数,系数越小滑动越灵敏
 			bounce: true //是否启用回弹
 		});
+
+		/*var checkbox = document.getElementsByClassName('checkbox')	
+		$(function(){
+			if(checkbox.length>2){
+				$('.mui-scroll-wrapper').css("height","170")
+			}
+		})*/
+
 		var stoeList = [];
 		var user_info;
 		var mercList;
@@ -284,8 +314,14 @@
 				"opSys": getUrlParams("opSys")
 			}
 			sessionSave("user_info", user_info);
-			//获取用户余额信息
-			// getWithdrawalsInfo();
+
+		}
+		if(cpr_version(getUrlParams("version"), "2.6.2")) {
+			
+		} else {
+			mui.alert("请升级到最新版本", "", "确定", function() {
+				callCloseWebview()
+			});
 		}
 		//查询商户列表
 		function queryMerchant() {
@@ -327,24 +363,36 @@
 									div = doc.createElement("div");
 									input = doc.createElement("input");
 									label = doc.createElement("label");
-									span = doc.createElement("span");
+									//									span = doc.createElement("span");
 									div.setAttribute("class", "checkbox");
-									div.setAttribute("onclick", "funSelOne()");
-									input.setAttribute("type", "checkbox");
+									//									div.setAttribute("onclick", "funSelOne()");
+									input.setAttribute("type", "radio");
 									input.setAttribute("name", "merc");
 									input.setAttribute("value", value.merc_id + "&" + value.stoe_id);
 									label.setAttribute("for", "merc");
-									span.setAttribute("class", "checkbox_span");
-									span.innerText = value.merc_nm;
+									/*span.setAttribute("class", "checkbox_span");
+									span.setAttribute("type", "radio");*/
+									if(key == 0) {
+										input.setAttribute("checked", "")
+									}
+									label.innerText = value.merc_nm;
 									div.appendChild(input)
 									div.appendChild(label)
-									div.appendChild(span)
+									//									div.appendChild(span)
 									fragment.appendChild(div)
 									oldMerc_id = value.merc_id
+
 								} else {
 									input.setAttribute("value", input.getAttribute("value") + "&" + value.stoe_id);
+									//									span.setAttribute("css",{"color":"#A47615"})
 								}
+
 							});
+							if(res.mercList.length > 2) { //通过判断mercList的长度改变mui-scroll-wrapper的高度
+								$('.mui-scroll-wrapper').css("height", "170")
+							} else if(res.mercList.length = 2) {
+								$('.mui-scroll-wrapper').css("height", "135")
+							}
 							if(fragment.childElementCount != 1) {
 								container.appendChild(fragment);
 								openWdDialog();
@@ -419,6 +467,7 @@
 						mui(".loading ")[0].style.display = "none";
 						console.log(res);
 						if(res.repCode === "000000") {
+							var merc_id = res.mercList[0].merc_id
 							console.log(res.repMsg.mercList);
 							if(res.mercList != null && res.mercList.length != 0) {
 								var old_id;
@@ -452,11 +501,11 @@
 								}
 								if(sts != null && sts == 0) {
 									mui.openWindow({
-										url: 'open_success.html'
+										url: 'open_success.html?merc_id=' + merc_id
 									});
 								} else if(sts != null && sts == 2) {
 									mui.openWindow({
-										url: 'open_success.html?res=' + JSON.stringify(dest)
+										url: 'open_success.html?res=' + JSON.stringify(dest) + "&merc_id=" + merc_id
 									});
 								} else if(sts != null && sts == 1) {
 									mui.openWindow({
@@ -482,6 +531,7 @@
 						console.log(xhr);
 						mui.alert("服务器开小差啦，请稍后再试 ");
 					}
+
 				});
 			}
 
@@ -543,15 +593,13 @@
 
 					}
 				}
-				var all = document.getElementsByName("all_select")[0];
-				all.checked = false;
 				toOpen();
 			} else {
 				mui.toast("请先选择开通商户")
 			}
 
 		};
-		var is_all = false;
+		/*var is_all = false;
 		//全选
 		function swapCheck() {
 			var sureButton = document.getElementById("sure")
@@ -568,9 +616,9 @@
 				is_all = true;
 				sureButton.setAttribute("style", "opacity:1;")
 			}
-		}
+		}*/
 		//当所有的复选框被选中时，全选按钮被选中，当其中任意一个或者多个没被选中时，全选按钮不被选中
-		function funSelOne() {
+		/*function funSelOne() {
 			var one = document.getElementsByName("merc");
 			var all = document.getElementsByName("all_select")[0];
 			var sureButton = document.getElementById("sure")
@@ -595,7 +643,7 @@
 			} else {
 				sureButton.setAttribute("style", "opacity:1;")
 			}
-		}
+		}*/
 	</script>
 
 </html>

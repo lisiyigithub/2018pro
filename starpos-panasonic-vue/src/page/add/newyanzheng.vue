@@ -6,69 +6,69 @@
       <yd-cell-group>
         <yd-cell-item>
           <span slot="left">身份证号
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <yd-input ref="icrp_id_no" slot="right" v-model="icrp_id_no" regex="/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/"
             placeholder="请输入身份证号码" required :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false"></yd-input>
         </yd-cell-item>
         <yd-cell-item arrow class="sfz">
           <span slot="left">身份证有效期
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <yd-datetime :start-date="current" end-date="2099-12-31" v-model="crp_exp_dt_tmp" type="date" slot="right" :init-emit='false'></yd-datetime>
         </yd-cell-item>
         <yd-cell-item>
           <span slot="left">结算账号
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <yd-input ref="stl_oac" slot="right" v-model="stl_oac" regex="/^\d{16,21}$/" placeholder="只支持储蓄卡" required :show-success-icon="false"
             :show-error-icon="false" :show-clear-icon="false"></yd-input>
         </yd-cell-item>
         <yd-cell-item>
           <span slot="left">账户户名
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <yd-input ref="bnk_acnm" slot="right" v-model="bnk_acnm" regex="^(?![0-9]*$)[\u4e00-\u9fa5a-zA-Z0-9_]{2,10}$" placeholder="请输入账户户名"
             required :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false"></yd-input>
         </yd-cell-item>
         <yd-cell-item arrow @click.native="showpick1">
           <span slot="left">开户支行
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <span slot="right">{{lev3}}</span>
           <!-- <span slot="right">{{lev1}}{{lev2}}{{lev3}}</span> -->
         </yd-cell-item>
         <yd-cell-item>
           <span slot="left">商户名称
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <yd-input ref="stoe_nm" slot="right" v-model="stoe_nm" regex="^(?![0-9]*$)[\u4e00-\u9fa5a-zA-Z0-9_]{8,20}$" placeholder="请输入商户名称"
             required :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false"></yd-input>
         </yd-cell-item>
         <yd-cell-item>
           <span slot="left">联系人
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <yd-input ref="stoe_cnt_nm" slot="right" v-model="stoe_cnt_nm" regex="^(?![0-9]*$)[\u4e00-\u9fa5a-zA-Z0-9_]{2,10}$" placeholder="请输入联系人"
             required :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false"></yd-input>
         </yd-cell-item>
         <yd-cell-item>
           <span slot="left">手机号码
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <yd-input ref="stoe_cnt_tel" slot="right" v-model="stoe_cnt_tel" regex="/^(0|86|17951)?1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/"
             placeholder="请输入手机号码" required :show-success-icon="false" :show-error-icon="false" :show-clear-icon="false"></yd-input>
         </yd-cell-item>
         <yd-cell-item arrow @click.native="showpick2">
           <span slot="left">商户类型
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <span slot="right">{{merTypeLev1}}{{merTypeLev2}}{{merTypeLev3}}</span>
         </yd-cell-item>
 
         <yd-cell-item arrow @click.native="showpick3">
           <span slot="left">商户地址
-            <i>*</i>
+            <!-- <i>*</i> -->
           </span>
           <span slot="right">{{merLev1}}{{merLev2}}{{merLev3}}</span>
         </yd-cell-item>
@@ -78,12 +78,12 @@
         </yd-cell-item>
       </yd-cell-group>
       <div class="title">银行卡上传
-         <i>*</i>
+         <!-- <i>*</i> -->
       </div>
       <uploader :srcUrl="imgApi" :max="2" :flg='6' :type='[6,7]' ref="uploader1"></uploader>
 
       <div class="title">证件上传
-         <i>*</i>
+         <!-- <i>*</i> -->
       </div>
       <uploaderTwo :srcUrl="imgApi" :max="2" :flg='5' :type='[5,4]' ref="uploader5"></uploaderTwo>
     </div>
@@ -1770,14 +1770,15 @@
       },
       showpick1() {
         //alert(this.step);
-        this.lbnk_cd_nm = "";
-        this.lev3 = "";
-        this.show_sheet1 = true;
-        this.addressSlots1[0].values = Object.keys(this.aaa);
-        this.addressSlots1[2].values = Object.keys(this.bbb);
-        this.addressSlots1[1].values = {};
-        this.addressSlots1[0].width = "100%";
-        this.addressSlots1[2].width = "100%";
+        let _this = this;
+        _this.lbnk_cd_nm = "";
+        _this.lev3 = "";
+        _this.show_sheet1 = true;
+        _this.addressSlots1[0].values = Object.keys(_this.aaa);
+        _this.addressSlots1[2].values = Object.keys(_this.bbb);
+        _this.addressSlots1[1].values = {};
+        _this.addressSlots1[0].width = "100%";
+        _this.addressSlots1[2].width = "100%";
       },
       showpick2() {
         this.show_sheet2 = true;
@@ -1842,8 +1843,14 @@
     width: 100%;
     background-color: #f9f9f9;
   }
+  .yd-cell-item{
+    padding: 0;
+    margin-left: 12px;
+    border-bottom: 1px solid #F1F1F1;
+  }
 
   .yd-cell-item span i {
     color: #f00;
   }
+  
 </style>

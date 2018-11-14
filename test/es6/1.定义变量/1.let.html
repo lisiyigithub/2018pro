@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>let定义变量</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		/*console.log(a)//undefined 只声明未定义
+		var a = 1;
+		console.log(a)//1*/
+		
+		
+		//1.let定义变量的时候没有变量的提声（没有预解释）
+		/*console.log(a)//报错，a is not defined 说明a没有声明
+		let a = 2;
+		console.log(a)*/
+		
+		function foo(){
+			console.log(b)//b is not defined 说明在私有作用域里也没有变量提声
+			let b = 0;
+			console.log(b)
+		}
+		//foo()
+
+		//2.let定义的变量不能重复定义（不论是函数还是let定义的变量都不可以重复定义）
+		/*var b = 12;
+		var b = 13;
+		function b(){
+			console.log(b)
+		}
+		console.log(b)//13
+		b()//b is not a function 
+		*/
+		let b = 12;
+		//let b = 13;//b已经被生声明过了	
+		//function b(){//报错 ：b已经被声明过了}
+		console.log(b)
+		
+		//3.虽然不进行预解释，但是代码执行前上来也是先将定义的变量先过滤一遍，一旦发现不合法的，就直接报错，其余代码也不会执行了。并不是从上到下依次执行。
+		/*console.log(A)//报错 A未定义（A is not defined）
+		let A = 20;
+		let A = 10;//报错 A已经被声明过*/
+	</script>
+</html>

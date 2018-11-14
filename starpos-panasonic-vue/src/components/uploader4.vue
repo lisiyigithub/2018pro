@@ -31,6 +31,7 @@
         //公共参数
         token_id: "", //201710210000013868
         usr_no: "", //000000005028
+        nonceStr: "ds121221ds", // 必填，生成签名的随机串
         is_show_delete: false,
         status: "ready",
         files: [],
@@ -84,11 +85,13 @@
             sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ["album"], // 可以指定来源是相册还是相机，默认二者都有
             success: function (res) {
+              console.log("uploader4:chooseImage")
               var localId = res.localIds[0];
               //alert(localId);
               wx.getLocalImgData({
                 localId: localId,
                 success: function (res) {
+                  console.log("uploader4:getLocalImgData")
                   var localData = res.localData;
                   // alert(localData)
                   //将base64转成文件流
@@ -404,7 +407,7 @@
 
         let data = {
           // requrl: "http://bystages-test.starpos.com.cn/add/saoma",
-          requrl: encodeURIComponent(location.href.split("#")[0]),
+          requrl: encodeURIComponent(location.href.split("#")[0]), 
           token_id: _this.token_id,
           timestamp: _this.timestamp,
           nonceStr: _this.nonceStr,
@@ -430,13 +433,16 @@
               signature: _this.signature, // 必填，签名，见附录1
               jsApiList: ["chooseImage", "getLocalImgData"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
+            wx.ready(function(){
+              console.log("uploader成功");
+            })
             wx.error(function (res) {
               // window.location.href =
               //   window.location.href.split("#")[0].split("?")[0] +
               //   "?id=" +
               //   10000 * Math.random();
               //window.location.href=window.location.href+"?id="+10000*Math.random();
-              // alert("出错了：" + res.errMsg); //这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
+              console.log("出错了：" + res.errMsg); //这个地方的好处就是wx.config配置错误，会弹出窗口哪里错误，然后根据微信文档查询即可。
             });
             // wx.ready(function() {
             // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
@@ -451,7 +457,7 @@
             // });
           })
           .catch(err => {
-            console.log(err);
+            console.log("12345"+err);
           });
       }
     }

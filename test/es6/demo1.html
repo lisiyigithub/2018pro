@@ -34,68 +34,68 @@
 		
 		
 		//不能使用圆括号的情况
-		//1.变量声明语句不能使用圆括号	
-		/*let [(a)] = [1];
-		let {x:(c)} = {x:2};*/
-		let { o: { p: p } } = { o: { p: 2 } };
-		console.log(p)//2/加（）就会报错
+			//1.变量声明语句不能使用圆括号	
+			/*let [(a)] = [1];
+			let {x:(c)} = {x:2};*/
+			let { o: { p: p } } = { o: { p: 2 } };
+			console.log(p)//2/加（）就会报错
+			
+			//2.函数参数(因为函数参数也属于变量声明，因此也不能带圆括号)
+			/*function f([(z)]){
+				return z;		
+			}
+			console.log(f([(3)]))//不加（）打印出3，加（）就会报错
+			*/
 		
-		//2.函数参数(因为函数参数也属于变量声明，因此也不能带圆括号)
-		/*function f([(z)]){
-			return z;		
-		}
-		console.log(f([(3)]))//不加（）打印出3，加（）就会报错
-		*/
-		
-		//3.赋值语句的模式
-		/*{p:a}={p:42}
-		console.log(a)*/
-		
-		//可以使用圆括号的情况（赋值语句的非模式部分）
-		/*[(b)] = [3];
-		console.log(b)*/
+			//3.赋值语句的模式
+			/*{p:a}={p:42}
+			console.log(a)*/
+			
+			//可以使用圆括号的情况（赋值语句的非模式部分）
+			/*[(b)] = [3];
+			console.log(b)*/
 		
 		//用途
-		//1.交换变量值
-		let x = 1;
-		let y = 3;
-		[x,y] = [y,x];
-		console.log(x,y)
+			//1.交换变量值
+			let x = 1;
+			let y = 3;
+			[x,y] = [y,x];
+			console.log(x,y)
 		
-		//2.从函数返回多个值
-		/*function example() {
-		//	return [1, 2, 3];//返回一个数组
-		  return {//返回一个对象
-		    foo: 1,
-		    bar: 2
-		  };
-		}
-		//	let [a, b, c] = example();
-		let { foo, bar } = example();
-		//	console.log(a,b,c)
-		console.log(foo,bar)*/
+			//2.从函数返回多个值
+			/*function example() {
+			//	return [1, 2, 3];//返回一个数组
+			  return {//返回一个对象
+			    foo: 1,
+			    bar: 2
+			  };
+			}
+			//	let [a, b, c] = example();
+			let { foo, bar } = example();
+			//	console.log(a,b,c)
+			console.log(foo,bar)*/
 		
-		//3.函数参数的定义
-		// 参数是一组有次序的值
-		/*function f([x, y, z]){
-			console.log(x,y,z)
-		}
-		f([1, 2, 3])*/
-		
-		// 参数是一组无次序的值
-		/*function f({x, y, z}) {
-			console.log(x,y,z)
-		}
-		f({z: 4, y: 2, x: 1});*/
-		
-		//4.提取JSON数据
-		/*let jsonData = {
-		  id: 42,
-		  status: "OK",
-		  data: [867, 5309]
-		};
-		let { id, status, data: number } = jsonData;
-		console.log(id, status, number);*/
+			//3.函数参数的定义
+			// 参数是一组有次序的值
+			/*function f([x, y, z]){
+				console.log(x,y,z)
+			}
+			f([1, 2, 3])*/
+				
+			// 参数是一组无次序的值
+			/*function f({x, y, z}) {
+				console.log(x,y,z)
+			}
+			f({z: 4, y: 2, x: 1});*/
+			
+			//4.提取JSON数据
+			/*let jsonData = {
+			  id: 42,
+			  status: "OK",
+			  data: [867, 5309]
+			};
+			let { id, status, data: number } = jsonData;
+			console.log(id, status, number);*/
 		
 		
 		//padStart()/头部补全,padEnd()/尾部补全
@@ -105,6 +105,7 @@
 		//用于提示字符串格式
 		console.log('12'.padStart(10, 'YYYY-MM-DD'),
 '09-12'.padStart(10, 'YYYY-MM-DD'))
+		
 		
 		//模板字符串方法
 		let str = "模板字符串"
@@ -125,6 +126,99 @@
 		//alert`123`
 		//alert(123)
 		
+		console.log(0b111110111 === 503)//true  ES6提供的二进制方法前缀加0b或0B
+		console.log(0o767 === 503)//true  ES6提供的八进制方法前缀加0o或0O
 		
+		
+		//非严格模式
+		/*function foo(){
+			console.log(0o11 === 011)//true
+		}
+		foo();	*/
+		
+		
+		//严格模式
+		/*function far(){
+			'use strict';
+			console.log(0o11 === 011)// Uncaught SyntaxError: Octal literals are not allowed in strict mode.(不能使用0o)
+		}
+		far()*/
+		
+		
+		
+		//ES6在Number对象上新提供了Number.isFinite()和Number.isNaN()两个方法。
+		console.log(Number.isFinite(0.8))//true (用来检查一个数值是否是有限的，如果参数类型不是数值，则一律返回false)
+		console.log(Number.isNaN(15))//false (用来检查一个值是否是NaN,如果参数不是NaN,Number.isNaN一律返回false)
+		
+		
+		//Number.parseInt(), Number.parseFloat()ES6将全局方法parseInt()和parseFloat()，移植到Number对象上面，行为完全保持不变
+			//ES5写法
+			console.log(parseInt('12.34'))//12
+			console.log(parseFloat('124.34%'))
+			//ES6写法:是为了逐步减少全局性方法，使得语言逐步模块化。
+			function fun(){
+				'use strict';
+				console.log(Number.parseInt('12.34'))//12
+				console.log(Number.parseFloat('123.45#'))//123.45
+			}
+			fun()
+		
+		//Number.isInteger()用来判断一个数值是否为整数,如果参数不是数值，返回false
+			console.log(Number.isInteger(12.45))
+		
+		//Number.EPSILON  ES6新增的极小的常量,标识的是1与大于1的最小浮点数之间的差（2的-52次方）
+		console.log(Number.EPSILON === Math.pow(2,-52))//true
+		console.log(0.1+0.2-0.3,0.1+0.2 === 0.3)
+		
+		//对象的新增方法
+			//1.Object.is()同值相等算法的新方法
+			console.log(Object.is('+0','-0'))//false
+			console.log(Object.is({},{}))//false
+			console.log(Object.is('NaN','NaN'))//true
+			console.log(NaN === NaN)//false
+			//2.Object.assign()用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）拷贝
+			/*const target = {a:1,b:1};
+			const source1 = {b:2,c:2};
+			const source2 = {c:3};
+			console.log(Object.assign(target,source1,source2));
+			console.log(target)//如果目标对象与源对象有同名属性，或多个源对象有同名属性，则后面的属性会覆盖前面的属性。
+			const obj = {a:1}
+			console.log(Object.assign(obj) === obj)//true
+			console.log(Object.assign(2))//如果参数不是对象，则会先转成对象*/
+			
+			const v1 = 'abc';
+			const v2 = true;
+			const v3 = 10;		
+			const obj = Object.assign({}, v1, v2, v3);
+			console.log(obj); // { "0": "a", "1": "b", "2": "c" }
+			
+			console.log(Object.assign({b: 'c'}))
+			Object.defineProperty({}, 'invisible', {
+			    enumerable: false,
+			    value: 'hello'
+			})
+			
+			console.log(Object.assign({ a: 'b' }, { [Symbol('c')]: 'd' }))
+			
+			function clone(origin){
+				//return Object.assign({},origin)
+				let val = Object.getPrototypeOf(origin)
+				return Object.assign(Object.create(val),origin)
+			}
+			console.log(clone('love'))
+			
+			//合并多个对象
+			//const merge = (target,...sources)=>Object.assign(target,...sources);
+			const merge = (...sources)=>Object.assign({},...sources)
+			console.log(merge)
+			
+			//Object.setPrototypeOf()（写操作）、Object.getPrototypeOf()（读操作）、Object.create()（生成操作）
+			
+			
+			//Object.keys(),返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历属性的键名/values是键值/entries是遍历对象的属性，它可以将对象转为真正的Map结构
+			
+			
+			//symbol是一种新型的原始数据类型，表示独一无二的值
+			
 	</script>
 </html>

@@ -100,6 +100,9 @@ const API = {
      //是否进行过人脸识别
     "FACETOFACE": url2 + "/facetoface.json",
     
+     //人工审核
+    "FACE_CHECK": url2 + "/face_check.json",
+    
     /**电子发票**/
     //电子发票开通接口
     "OPENSERVICE": url3 + "/merchant/mobile/open",

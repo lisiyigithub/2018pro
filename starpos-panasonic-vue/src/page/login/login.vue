@@ -43,11 +43,13 @@ export default {
       device_id: "", //设备id
       openid: "",//openid
       in_mercTyp:'',//权限 N 没有进件权限，Y 有权限
+      invitation_code:''  //邀请码
     };
   },
   created() {
     document.title = "终端开户";
     this.openid = this.$route.params.openid;
+    this.invitation_code = this.$route.params.invitation_code;
     window.localStorage.setItem("reload", true);
     //alert(`openid为${this.openid}`)
   },
@@ -93,10 +95,10 @@ export default {
                     //跳转列表页面
                     _this.$router.push({ name: "state" });
                     break;
-                  case "1":
-                    //跳转进件页面
-                    _this.$router.push({ name: "saoma" });
-                    break;
+                  // case "1":
+                  //   //跳转进件页面
+                  //   _this.$router.push({ name: "newyangzheng" });
+                  //   break;
                   default:
                     break;
                 }

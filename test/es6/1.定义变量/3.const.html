@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		//const定义的是静态变量，不能修改值，必须要赋值
+		//const a;//报错：没有赋值（Missing initializer in const declaration）
+		//const a = 10;
+		//a = 20;//报错：不可以被修改(Assignment to constant variable)
+		
+		//const也是不可以重复声明的
+		//const a = 20;//报错：a已经被声明了
+		
+		//不管是动态变量还是静态变量都不可以重复声明
+		let a = 3;
+		//const a = 2;
+		{//块级作用域下重复声明不会有影响
+			const a =0;
+		}
+	</script>
+</html>

@@ -201,15 +201,16 @@ function callOpenWebview(url) {
 
 //身份证识别
 
-function idCardVerify(flag) {
+function idCardVerify(flag, merc_id) {
+	console.log(merc_id)
 	var u = navigator.userAgent;
 	var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
 	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 	if(isAndroid) {
-		window.android.idCardVerify(flag);
+		window.android.idCardVerify(flag, merc_id);
 	} else if(isiOS) {
 		console.log("iso-idCardVerify")
-		idCardVerify(flag)
+		idCardVerify(flag, merc_id)
 	}
 
 };
@@ -228,26 +229,19 @@ function idCardVerify(flag) {
 
 //活体识别
 
-function faceIdVerify() {
+function faceIdVerify(merc_id) {
+	console.log(merc_id)
 	var u = navigator.userAgent;
 	var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Adr") > -1; //android终端
 	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 	if(isAndroid) {
-		window.android.faceIdVerify();
+		window.android.faceIdVerify(merc_id);
 	} else if(isiOS) {
 		console.log("iso-faceIdVerify")
-		faceIdVerify()
+		faceIdVerify(merc_id)
 	}
 
 };
-
-//活体识别回调
-function idCardVerifyResult(arg) {
-	var repCode = arg['repCode'];
-	var repMsg = arg['repMsg'];
-	console.log("repCode：" + repCode + "repMsg：" + repMsg)
-	
-}
 
 //安卓支付通知
 function callSendPayResult(status, message) {
@@ -750,10 +744,12 @@ function isTakeEffect(effect_date) {
 	if(strDate >= 0 && strDate <= 9) {
 		strDate = "0" + strDate;
 	}
-	var currentdate = year + month + strDate;
+	var currentdate = year + "" + month + "" + strDate;
 	if(currentdate >= effect_date) {
+		console.log("true")
 		return true;
 	} else {
+		console.log("false")
 		return false;
 	}
 };
@@ -856,4 +852,22 @@ function sha1_to_base64(sha1) {   
 		}   
 	}   
 	return base64_rep;
+}
+
+function cpr_version(ver1,ver2) {
+    var version1pre = parseFloat(ver1);
+    var version2pre = parseFloat(ver2);
+    var version1next =  ver1.replace(version1pre + ".","");
+    var version2next =  ver2.replace(version2pre + ".","");
+    if(version1pre > version2pre){
+        return true;
+    }else if(version1pre < version2pre){
+        return false;
+    }else{
+        if(version1next >= version2next){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

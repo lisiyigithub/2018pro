@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		let obj = {a1:[1,2,3],a2:"123"};
+		//x=obj.a1[0];y=obj.a1[1];
+		let {a2,a1:[x,y]} = obj;
+		console.log(a2,x,y)
+		
+		let obj1 = {s:{n:"1"},n:[1,"2",3,"4"],m:[[1]]};
+		let {m:[x1],s:{n},n:[,...y1]} = obj1;
+		console.log(x1,n,y1)//[1]  "1"  ["2",3,"4"]
+	</script>
+</html>

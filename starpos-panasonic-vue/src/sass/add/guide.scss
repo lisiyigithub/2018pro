@@ -1,0 +1,43 @@
+body {}
+
+.guide {
+    width: 100%;
+    height: auto;
+    background: linear-gradient(180deg, rgba(53, 140, 235, 1) 0%, rgba(3, 179, 236, 1) 100%);
+    vertical-align: middle;
+    text-align: center;
+    .yd-btn-block {
+        border: 2px solid #135887;
+        width: 80%;
+        margin: 0px 10%;
+        height: 1.6rem;
+    }
+    #buttom_div {
+        width: 100%;
+        position: relative;
+        top: -1rem;
+    }
+    #img_frist {
+        height: 7.95rem;
+        width: auto;
+        position: relative;
+        top: -0.8rem;
+    }
+    #img_second {
+        height: 7.12rem;
+        width: auto;
+        position: relative;
+        top: -2.1rem;
+    }
+    #img_third {
+        height: 6.52rem;
+        width: auto;
+        position: relative;
+        top: -1.5rem;
+    }
+    #img_title {
+        height: 5rem;
+        width: auto;
+        position: relative;
+    }
+}

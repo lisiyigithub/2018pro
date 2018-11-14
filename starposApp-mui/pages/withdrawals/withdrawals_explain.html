@@ -13,7 +13,12 @@
 					margin-top: 88px;
 				}
 			}
-			
+			/*iphone xsm*/
+			@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+				.withdrawals_explan {
+					margin-top: 88px;
+				}
+			}
 		</style>
 	</head>
 
@@ -95,16 +100,16 @@
 						service_charge = document.getElementById("service_charge");
 						if(res.repCode === "000000") {
 							if(res.pay_day_max !== null) {
-								max_amoun_cash.innerText = res.pay_day_max+"元";
+								max_amoun_cash.innerText = res.pay_day_max + "元";
 							}
 							if(res.pay_sig_max !== null) {
-								max_amoun.innerText = res.pay_sig_max+"元";
+								max_amoun.innerText = res.pay_sig_max + "元";
 							}
 							if(res.pay_day_min !== null) {
-								min_amoun.innerText = res.pay_day_min+"元";
+								min_amoun.innerText = res.pay_day_min + "元";
 							}
 							if(res.service_fee !== null) {
-								service_charge.innerText = res.service_fee+"%";
+								service_charge.innerText = res.service_fee + "%";
 							}
 						} else {
 							mui.alert(res.repMsg);

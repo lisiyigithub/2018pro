@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		let str = "I am Lisiyi"
+		//传统字符串拼接
+		document.body.innerHTML = '<h3>'+str+
+		'</h3>';
+		//模板字符串
+		let str1 = `<h1>${str}</h1>`;
+		console.log(str1)
+		document.body.innerHTML += str1;
+		
+		//保留换行和空格
+		console.log("sfjafjh\njjfjdfj")
+		let ss = `
+		hsfhkjhd
+		sdhjfjd
+		`;
+		console.log(ss);
+		//\`(保留`符号)
+		console.log(`sss\`1234`);
+		
+		//{可以实现运算}
+		let x = 1;
+		let y = 2;
+		console.log(`${x}+${y} = ${x+y}`);
+		
+		//调用函数包括传参
+		function fn(x){
+			return x;
+		}
+		let s2 = "xxx";
+		console.log(`函数fn输出的结果是${fn(s2)}`);
+		
+		let s3 = 'return' + '`hellow ${wd}`';
+		let fun = new Function('wd',s3);
+		console.log(fun("lisiyi"))//hellow lisiyi
+		
+		
+	</script>
+</html>

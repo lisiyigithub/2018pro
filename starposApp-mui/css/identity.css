@@ -53,23 +53,24 @@ input {
 	border: 0;	
 	line-height: 1,17rem;	
 	font-size: 14px;	
-	color: #666666;	
+	color: black;
+	-webkit-user-select:auto;	
 }
 /*兼容各个浏览器的placeholder字体颜色*/
 input::-webkit-input-placeholder { /* WebKit browsers */ 				
-	color: #A5A5A5; 				
+	/*color: #A5A5A5; 	*/			
 } 
 
 input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
-	color: #A5A5A5; 
+	/*color: #A5A5A5; */
 } 
 
 input::-moz-placeholder { /* Mozilla Firefox 19+ */ 
-	color: #A5A5A5; 
+	/*color: #A5A5A5; */
 } 
 
 input:-ms-input-placeholder { /* Internet Explorer 10+ */ 
-	color: #A5A5A5; 
+	/*color: #A5A5A5; */
 } 
 
 p{
@@ -102,6 +103,17 @@ p{
 /* 适配iphoneX顶部 */
 
 @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+	.identity_out {
+		padding:0 15px;
+		display: flex;
+		flex-direction: inherit;
+		margin-bottom: 10px;
+		margin-top: 88px;
+		background: #fff;
+	}
+}
+/* 适配iphoneXsm顶部 */
+@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
 	.identity_out {
 		padding:0 15px;
 		display: flex;

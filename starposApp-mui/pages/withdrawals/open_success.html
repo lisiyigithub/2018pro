@@ -81,7 +81,7 @@
 			}
 			.inner{
 				width:80%;
-				height: 192px; 
+				height: 155px; 
 				position: absolute;
 				top: 0;
 				bottom: 0;
@@ -154,10 +154,10 @@
 					提示
 				</div>
 				<p>您已符合提现开通资质，请继续完成人脸识别认证。</p>
-				<p class="agreement_p">点击去认证即同意<span class="agreement_span" onclick="goToAgreement()">《用户协议》</span></p>
+				<!--<p class="agreement_p">点击去认证即同意<span class="agreement_span" onclick="goToAgreement()">《用户协议》</span></p>-->
 				<div class="inner_btn">
 					<div onclick="callCloseWebview()">取消</div>
-					<div style="border-left: 1px solid #ddd;color: #25A2F2;" onclick="goToidentity()">去认证</div>
+					<div style="border-left: 1px solid #ddd;color: #25A2F2;" onclick="goToAgreement()">去认证</div>
 				</div>
 			</div>
 		</div>
@@ -166,10 +166,11 @@
 		<script src="../../js/utils.js"></script>
 		<script src="../../js/storage.js"></script>
 		<script type="text/javascript" src="../../js/flexible.js"></script>
-		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
+		<script src="../../js/font_489463_a1dgzv2r3pntrzfr.js" ></script>
 		<script type="text/javascript">
 			mui.init();
 			//mui.plusReady(initSuccess());
+			
 			//前往提现页面
 			function toWithdrawShop() {
 				var user_info = sessionFetch("user_info");
@@ -218,8 +219,10 @@
 				});
 			}
 			function goToAgreement(){
+				var user_info = sessionFetch("user_info");
 				mui.openWindow({
-					url: '../doc/verification_agreement.html'
+					url: '../doc/verification_agreement.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version
+					+ '&opSys=' + user_info.opSys + '&merc_id='+getUrlParams("merc_id")
 				});
 			}
 		</script>

@@ -38,7 +38,7 @@
         //公共参数
         token_id: "", //201710210000013868
         usr_no: "", //000000005028
-
+        nonceStr: "ds121221ds", // 必填，生成签名的随机串
         status: "ready",
         files: [],
         point: {},
@@ -403,8 +403,11 @@
               signature: _this.signature, // 必填，签名，见附录1
               jsApiList: ["chooseImage", "getLocalImgData"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
+            wx.ready(function(){
+              //console.log("成功" + res.errMsg);
+            })
             wx.error(function (res) {
-
+              //console.log("出错了：" + res.errMsg);
             });
 
           })

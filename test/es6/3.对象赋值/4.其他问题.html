@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		'use strict';
+		//赋的值不是一个对象，而是其他数据类型的值，会默认将其他数据类型转为对象
+		//let {x,y,__proto__} = 1;//{_proto_:Number}
+		//console.log(x,y,__proto__)//undefinde  undefined
+		//console.log(Object(1))
+		
+		console.log(Object([1,2,3,4]))
+		let {length,__proto__} = [1,2,3,4];
+		console.log(length,__proto__)
+		
+		
+		let a;
+		//{a} = {a:"a"};
+		//javascript引擎会将{a}理解成一个代码块（块级作用域）
+		//注：为了避免错误，不要将{}写在行首,如果非要这样写，那就用（）把它包起来：({a} = {a:"a"});
+		
+		eval("({s:'ss',d:'d'})");
+		({a} = {a:"a"});
+		console.log(a);
+		
+//		({} = [])
+		
+		//null和undefined是无法转为对象，所以对象解构赋值为一个null和undefined会报错
+		let {f:h} = null;
+		let {p:x} = undefined;//Cannot destructure property `p` of 'undefined' or 'null'.
+		
+	</script>
+</html>

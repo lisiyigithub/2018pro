@@ -3,16 +3,124 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<title>用户协议</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/commonCss.css" rel="stylesheet" />
+		<style type="text/css">
+			.cont {
+				padding-top: 64px;
+				/* background-color: #fff; */
+				color: #000;
+				width: 90%;
+				margin: 0 auto;
+				line-height: 30px;
+				/*font-family: "Microsoft YaHei", "Times New Roman", Georgia, Serif;*/
+				font-family:PingFangSC-Regular;
+				font-weight:400;
+				font-size: 14px;
+				
+			}
+			.cont h3{
+				font-family:PingFangSC-Regular;
+				font-weight: 400;
+				font-size: 17px;
+				color: #333333;
+				padding: 15px 0;
+				border-bottom: 1px solid #ddd;
+			}
+			
+			.cont p{
+				color: #666666;
+			}
+			
+			.cont b{
+				color: #444444;
+				text-decoration: underline;
+			}
+			
+			.cont button{
+				width: 100%;
+				height: 44px;
+				text-align: center;
+				color: #fff;
+				font-size: 18px;
+				border: none;
+				background: #25A2F2;
+				border-radius: 22px;
+				margin: 30px 0;
+				box-shadow:0px 0px 10px 0px rgba(65,155,249,1);
+			}
+			
+			/* 适配iphoneX顶部 */
+			
+			@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+				.cont {
+					padding-top: 64px;
+					/* background-color: #fff; */
+					color: #000;
+					width: 90%;
+					margin: 0 auto;
+					line-height: 30px;
+					/*font-family: "Microsoft YaHei", "Times New Roman", Georgia, Serif;*/
+					font-family:PingFangSC-Regular;
+					font-weight:400;
+					font-size: 14px;
+					margin-top: 23px;
+				}
+			}
+			
+			/* 适配iphoneXsm顶部 */
+			
+			@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
+				.cont {
+					padding-top: 64px;
+					/* background-color: #fff; */
+					color: #000;
+					width: 90%;
+					margin: 0 auto;
+					line-height: 30px;
+					/*font-family: "Microsoft YaHei", "Times New Roman", Georgia, Serif;*/
+					font-family:PingFangSC-Regular;
+					font-weight:400;
+					font-size: 14px;
+					margin-top: 23px;
+				}
+			}
+		</style>
 	</head>
 	
 	<body>
-		<h1>1111111</h1>
+		<header class="mui-bar mui-bar-nav mn-head" id='backBtn'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" id='backBtn' style='padding-top:25px;color:#ffffff;'></a>
+			<h1 class="mui-title">用户协议</h1>
+		</header>
+		<div class="cont">
+			<h3>信息授权协议</h3>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;《信息授权协议》(以下简称“本协议”)是福建国通星驿网络科技有限公司（以下简称“国通星驿”）与用户（以下简称“您”）所订立的有效合约。<b>您通过国通星驿星管家客户端网络页面点击确认或以其他方式选择接受本协议，即表示您与国通星驿已达成协议并同意接受本协议的全部约定内容。</b></p>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>在接受本协议之前，请您仔细阅读本协议的全部内容（特别是以粗体下划线标注的内容）</b>。如您不同意本协议的内容，或无法准确理解本协议任何条款的含义，请不要进行确认及后续操作。如果您对本协议有疑问的，请通过国通星驿客服渠道进行询问，其将向您解释。</p>
+			<p><b>一、您授权国通星驿将您的身份相关信息等提供给北京旷视科技有限公司，用于人脸识别认证。</b>国通星驿会要求该第三方依法使用您的上述信息，并应对您的信息保密。<br/>
+			<b>您同意授权：</b><br/>
+			<b>1. 国通星驿收集您的身份信息，包括姓名、身份证号、照片等为验证服务所需要的相关信息，并将相关信息提供给北京旷视科技有限公司，用于验证服务，包括向国通星驿返回验证结果。</b><br/>
+			<b>2. 为保障您的身份信息在使用验证过程中的安全性，北京旷视科技有限公司将为您在北京旷视科技有限公司设置您本人的MyFaceID账户，用于身份信息的获取、收集、保存并进行与您相关的身份验证业务，以及保存与记录关于您的身份信息验证记录。</b></p>
+			<p>二、本协议中的身份信息，包括但不限于： 您的身份信息，包括但不限于姓名/名称、身份证照片、动态静态人脸画像以及其他身份信息。</p>
+			<p>三、您同意本协议中的授权不可撤回或撤销。</p>
+			<p>四、您同意，因履行本协议发生的纠纷，任何一方应向被告住所地人民法院提起诉讼。</p>
+			<button onclick="goToidentity()">同意协议并继续</button>
+		</div>
 		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/storage.js"></script>
+		<script type="text/javascript" src="../../js/flexible.js"></script>
+		<script src="//at.alicdn.com/t/font_489463_a1dgzv2r3pntrzfr.js"></script>
 		<script type="text/javascript">
 			mui.init()
+			function goToidentity(){
+				var user_info = sessionFetch("user_info");
+				mui.openWindow({
+					url: '../withdrawals/identity.html?usr_no=' + user_info.usr_no + '&usr_typ=' + user_info.usr_typ + '&token_id=' + user_info.token_id + '&version=' + user_info.version + '&opSys=' + user_info.opSys + '&merc_id='+getUrlParams("merc_id")
+				});
+			}
 		</script>
 	</body>
 
