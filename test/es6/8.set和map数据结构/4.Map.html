@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//1.使用构造函数方式创建一个实例
+		//2.参数是一个数组，数组的每一项都是一个数组，这个数组有两项，第一项作为键key,第二项作为值value
+		//3.这里的键key可以是任意数据类型的
+		var map1 = new Map([[1,"a"],[2,"b"],[{name:"lsy"},"cpf"],[/\d+/,"正则"]])
+		console.log(map1)
+		
+		//方法
+		//1.get(key)获取,根据键key获取value
+		console.log(map1.get(1))
+		
+		//2.set(key,value)
+		console.log(map1.set(3,"js"))
+		
+		//3.delete()删除；has()判断有没有；clear()清空
+		let arr = [1,2,3,4,5,6]
+		//将数组变成map
+		//1,[1]
+		//2,[1,2]
+		//3,[1,2,3]
+		//4,[1,2,3,4]...
+		var map = new Map();
+		arr.forEach((item,index)=>{
+			map.set(index+1,arr.slice(0,index+1))
+		})
+		console.log(map);
+		
+		//4.forEach(),key(),value(),entries(全部遍历);遍历
+		map.forEach((val,key,map)=>{
+			//val:值
+			//key:键
+			//map:原Map实例
+		})
+		for(var key of map.keys()){
+			//key:键
+		}
+		for(var val of map.values()){
+			//val:值
+		}
+		for(var [key,val] of map.entries()){
+			//key:键
+			//val:值
+		}
+	</script>
+</html>

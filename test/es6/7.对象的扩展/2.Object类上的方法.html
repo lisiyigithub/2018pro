@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body,html{
+				margin: 0;
+				padding: 0;
+			}		
+			#wrap{
+				margin: auto;
+				margin-top: 100px;
+				width: 100%;
+				height:1800px;
+				background: #0086B3;
+				/*position: relative;*/
+			}		
+			#inner{
+				width: 60%;
+				height:100%;
+				margin: 0 auto;
+				background: #fff;
+				position: relative;
+			}
+			header{
+				background: blue;
+				height: 100px;
+				color: #fff;
+				text-align: center;
+				font-size: 24px;
+			}
+			#box{
+				width: 100px;
+				height: 50px;
+				background: red;
+				color: #fff;
+				text-align: center;
+				line-height: 50px;
+				border-radius: 25px 0 0 25px;
+				position: fixed;
+				right: 20%;
+				top: 200px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">		
+			<div id="inner">
+				<header>头部</header>
+				<div id="box">重置</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//Object.is方法，判断两个值是否相等
+		//===绝对相等
+		console.log(Object.is(NaN,NaN))
+		
+		let ary = [1,2,NaN,NaN,1,2];
+		//console.log(ary.includes(NaN))
+		let arr = []
+		ary.forEach((item)=>{
+			let f = true;
+			for(let i = 0; i<ary.length; i++){
+				if(Object.is(item,arr[i])){//如果用==NaN就去不掉
+					f = false;
+				}
+			}
+			if(f){
+				arr.push(item)
+			}
+		})
+		console.log(arr)
+		
+		//Object.assign(obj1,obj2)
+		//将obj2合并到obj1上,返回obj1
+		let obj1 = {a:"1"},obj2 = {b:1};
+		console.log(Object.assign(obj1,obj2) == obj1)
+		
+		//Object.getOwnPropertyDescriptor()获取一个对象下面对一个属性的描述，只能得到私有属性
+		//可以用来判断可不可以枚举，可不可以修改
+		let str = "124";
+		console.log(Object.getOwnPropertyDescriptor(str,"length"))//不可枚举不可写
+		console.log(Object.getOwnPropertyDescriptor([1,2,3],"length"))//不可枚举可写
+		
+		//属性的遍历
+		//for in
+		//Objetc.keys();//返回的是一个数组，数组还包括对象自身的（私有的属性）所有的可枚举的属性
+		//Object.getOwnPropertyNames();返回的是一个数组，数组还包括对象自身的（私有的属性）所有的包括不可枚举的属性
+	</script>
+</html>

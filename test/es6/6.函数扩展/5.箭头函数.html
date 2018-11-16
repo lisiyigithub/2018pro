@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="box">点击</div>
+	</body>
+	<script type="text/javascript">
+		/*function fn(x){
+			let a = 1;
+			return a;
+		}*/
+		//等价于上面的代码
+		//let fn = (x)=>{}
+		
+		
+		
+		//x => x;相当于以下代码；如果函数体只有一行代码而且是return，可以简写
+		/*function fn(x){
+			return x;
+		}*/
+		
+		
+		//this指向问题
+		//1.自执行函数中this永远指向的是window
+		//2.看前面执行的时候有没有点，如果有点，this是谁就指向谁
+		//3.给元素绑定点击事件的时候，给谁绑的this就是谁
+		
+		//箭头函数中的this问题：
+		//箭头函数是没有this指向的，它里面的this是谁，就看它的上一级作用域中的this(首先要保证上一级作用域不是箭头函数)
+		function fn(){
+			console.log(this)
+		}
+		fn();
+		let obj = {
+			fn:function(){
+				console.log(this)//this指向obj
+				let f = ()=>{
+					console.log(this)//this指向obj
+				}
+				f();
+			},
+			fn1:()=>{
+				console.log(this)//this指向的是window
+			}
+		}
+		obj.fn();//this指向obj
+		obj.fn1();//this指向的是window
+		
+		box.onclick = ()=>{
+			console.log(this)//this指向window
+		}
+	</script>
+</html>

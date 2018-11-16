@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>砍价微信活动页</title>
+		<link rel="stylesheet" type="text/css" href="css/bargain.css"/>
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.css"/>
+	</head>
+	<body>
+		<div id="bargain_active">
+			<div id="banner">
+				<!--<img src="images/图层3（合并）.png"/>-->
+			</div>
+			
+			<div id="main">
+				<div class="m_header">
+					<div class="mh_top">
+						<!--<img src="images/未标题.png"  alt="图片" onerror="this.src='images/logo_s.png'" />-->
+						<div class="mht_info">
+							<h4 style="font-size: 14px;">vbgfnbgvfb</h4>
+							<div class="mht_info_bargain">
+								<span id="box"></span>
+							</div>
+							<div class="mht_info_price">
+								<span style="font-size: 12px;color: #f05050;">￥<b style="font-size: 15px;">40.6</b></span>
+								<span style="margin-left: 8px;font-size: 12px;color: #bbb;">30万人已0元拿到<a href="#" style="color: #bbb;">&gt;</a></span>
+							</div>
+						</div>
+					</div>
+					<div class="mh_center" id="mhpricebar">
+						<div class="container">
+						    <div class="progress">
+								<div class="progress-bar" style="width: 0; background:#f0ad4e; border-radius: 5px;">
+									<span>0%</span>
+								</div>
+						    </div>
+						</div>
+						<div class="mhc_price_button">
+							<div class="mhc_bargain_button" id="btn">
+								立即砍价
+							</div>
+						</div>
+					</div>
+					<div class="mh_center_success" id="mhpriceend" style="display: none;">
+						<div class="mhc_price_button">
+							<div class="mhc_bargain_button">
+								砍价已结束
+							</div>
+						</div>
+					</div>
+					<div class="mh_bottom">
+						<h4>帮忙砍价人员</h4>
+						<div class="mhb_person">
+							<span class="mhb_person_avator">
+								<!--<img style="width: 40%;height: 40%;border-radius: 50%;" src="images/logo.png"/>-->
+								<!--<img style="border-radius: 50%;width: 100%;height: 100%;" src="images/icon.png"/>-->
+								<!--<img style="border-radius: 50%;width: 25px;height: 25px;" src="1.gif" alt="图片" onerror="this.src='images/icon.png'"/>-->
+								<!--<img style="border-radius: 50%;width: 10%;height: 10%;" src="1.gif" alt="图片" onerror="this.src='images/icon.png'"/>-->
+								<span style="font-size: 12px;padding: 0 5px;">昵称</span>
+							</span>
+							<span class="mhb_person_freight" style="font-size: 12px;">砍掉10元</span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="m_center">
+					<h2>砍价规则</h2>
+					<ul class="mc_body">
+						<li>1.{规则规则规则规则规则规则规则规则}</li>
+						<li>2.规则规则规则规则规则规则规则规则</li>
+						<li>3.规则规则规则规则规则规则规则规则</li>
+						<li>4.规则规则规则规则规则规则规则规则</li>
+						<li>5.规则规则规则规则规则规则规则规则</li>
+					</ul>
+				</div>
+
+				<p style="font-size: 12px;text-align: center;color: #bbb;margin: 20% auto 0;">Copyright © 2014-2016 上海澳通信息技术有限公司</p>
+			</div>
+			<div id="toall_bag" style="display: none;">
+				<div class="toall">
+					<div>您已为好友砍价成功</div>
+					<button id="success_btn">确定</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var Box = document.getElementById("mhpricebar");
+		var oEnd = document.getElementById("mhpriceend");
+
+		function djs(){
+			var oDate = new Date();
+			var fDate = new Date("2018-11-16 16:00:45");
+			var ss = (fDate-oDate)/1000;
+			var hour = Math.floor(ss/3600);
+			var minute = Math.floor(ss/60%60);
+			var second = Math.floor(ss%60);
+			if(ss<=0){
+				clearInterval(timer);
+				box.innerHTML = "砍价结束";
+				Box.style.display = "none";
+				oEnd.style.display = "block";
+			} else {
+				box.innerHTML = format(hour)+" : "+format(minute)+" : "+format(second)+" <span>"+" 后砍价过期"+"</span>";
+				Box.style.display = "block";
+				oEnd.style.display = "none";
+			}
+		}
+		function format(num){
+			return num < 10 ? "0"+num : num;
+		}
+		djs();
+		var timer = setInterval(function(){
+			djs();
+		},1000)	
+		
+	var aDiv = document.getElementsByClassName("progress-bar");
+	function progress(obj,num){
+		
+		if(num > 0){
+			var oSpan = obj.children[0];
+			var timer = setInterval(function(){
+				obj.style.width = parseInt(obj.style.width) + 1+ "%";
+				oSpan.innerHTML = obj.style.width;
+				if(parseInt(obj.style.width)==num){
+					clearInterval(timer);
+				}
+			},30);
+		}
+	}
+	progress(aDiv[0],0);
+	</script>
+	<script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="md5.js"></script>
+	<script>
+		$('#btn').click(function(){
+			var dt = hex_md5(1+'!&@#'+2+'!&@#'+Number(new Date()));
+			console.log('jdbdjkfjksdhfh',dt)
+			$.ajax({
+				type:"post",
+				url:"http://www.baidu.com",
+				// data:{cut_pkgid:{$id},uid:{$uid},timestamp:Number(new Date()),signature:hex_md5({$id}+'!&@#'+{$uid}+'!&@#'+Number(new Date()))},
+				data:'',
+				success:function(data){
+					console.log('jdhfudhfuhf',data)
+					if(data.status==1){
+						$('#toall_bag').css('display','block');
+						$('#success_btn').click(function(){
+							$('#toall_bag').css('display','none');
+							location.href = 'http://www.baidu.com';
+							$('#content_back').text('您已为好友砍价成功');
+						})
+					}else if(data.status==-2){
+						$('#toall_bag').css('display','block');
+						$('#success_btn').click(function(){
+							$('#toall_bag').css('display','none');
+							location.href = 'http://www.baidu.com';
+							$('#content_back').text('不可重复砍价');
+						})
+					}else if(data.status==-4){
+						$('#toall_bag').css('display','block');
+						$('#success_btn').click(function(){
+							$('#toall_bag').css('display','none');
+							location.href = 'http://www.baidu.com';
+							$('#content_back').text('砍价已经完成');
+						})
+					}else{
+						$('#toall_bag').css('display','block');
+						$('#success_btn').click(function(){
+							$('#toall_bag').css('display','none');
+							location.href = 'http://www.baidu.com';
+							$('#content_back').text('砍价失败');
+						})
+					}
+				},
+			})
+		})                                                                                                                                                                                                                                                                                                                                                                   
+	</script>
+</html>

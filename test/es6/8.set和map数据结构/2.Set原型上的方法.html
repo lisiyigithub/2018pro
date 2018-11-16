@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		let set = new Set([1,2,3,1,2,3])
+		console.log(set)
+		//size表示的是长度
+		//1.add()增加，之前没有的话才可以加上，返回值是当前实例
+		console.log(set.add(5).add(4))
+		
+		//2.has()判断有没有某一项
+		//返回值是true/false
+		console.log(set.has(1))//true
+		
+		//3.delete()删除，
+		//返回值是true/false
+		console.log(set.delete(1),set)
+		console.log(set.delete(6),set)
+		
+		//4.clear()清空
+		//没有返回值  undefined
+		console.log(set.clear(),set)
+		
+		let arr1 = [1,2,3,4,5,6]
+		let arr2 = [2,4,6,8,10]
+		//并集
+		function bj(arr1,arr2){
+			return [...new Set([...arr1,...arr2])]
+		}
+		console.log(bj(arr1,arr2))
+		
+		//交集
+		function jj(arr1,arr2){
+			return arr1.filter((item)=>{
+				return arr2.includes(item)
+			})
+		}
+		console.log(jj(arr1,arr2))
+		
+		//差集
+		function cj(arr1,arr2){
+			return bj(arr1,arr2).filter((item)=>{
+				return !jj(arr1,arr2).includes(item)
+			})
+		}
+		console.log(cj(arr1,arr2))
+	</script>
+</html>

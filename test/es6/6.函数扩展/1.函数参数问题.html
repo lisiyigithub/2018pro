@@ -36,9 +36,11 @@
 		}
 		fn5(1,2,3,4,5)
 		
-		function fn6(x,y){
+		function fn6(x,y=1,z=1){
 			
 		}
-		fn6();console.log(fn6.length)//2,这里的length表示的是形参的长度
+		fn6();
+		//这里的length如果没有默认值的情况下，表示的是形参的长度，如果有默认值的情况下，length就是当前默认值得位置
+		console.log(fn6.length)//2
 	</script>
 </html>

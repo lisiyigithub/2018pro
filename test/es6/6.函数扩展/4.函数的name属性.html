@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		let fn = function (){
+			console.log(this)//obj
+		};
+		console.log(fn.name)//fn
+		
+		//匿名函数
+		console.log(function(){}.name)//空
+		
+		//bind方法
+		let obj = {}
+		var fn1 = fn.bind(obj);
+		fn1()
+		console.log(fn1.name)//bound fn(通过fn的dound方法得到的)
+		
+		//通过构造函数   new function得到的函数名都是anonymous匿名
+		let f = new Function("n","return n")
+		console.log(f.name)//anonymous匿名
+	</script>
+</html>

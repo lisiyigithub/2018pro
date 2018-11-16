@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#box{
+				width: 100px;
+				height: 200px;
+				background: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			
+		</div>
+		<button id="btn">点击</button>
+	</body>
+	<script type="text/javascript">
+		/*let Btn = document.getElementById('btn')
+		let Box = document.getElementById('box')
+		let flag = 0;
+		Btn.onclick = function(){
+			if(flag = 1){
+				Box.style.display = "none"
+				console.log(flag)
+			}else{
+				flag = 0
+				Box.style.display = "none"
+				console.log(flag)
+			}
+		}*/
+		
+		
+		//...扩展运算符
+		//可以将数组变成非数组，也可以将非数组变成数组
+		
+		let ary = [1,2,3];
+		console.log(...ary)//1 2 3变成了非数组
+		
+		//将字符串变成数组,需要加上[]
+		let str = "12345";
+		console.log([...str])// ["1", "2", "3", "4", "5"]
+		
+		//将类数组变成数组,需要加上[]
+		function fn(){
+			return [...arguments].sort()
+		}
+		fn(1,2,3,6,4,5)
+		console.log(fn(1,2,3,6,4,5))
+		
+		//应用
+		//1.求最大值
+		let ary1 = [1,2,3,34,23,54,676]
+		console.log(eval("Math.max("+ary1+")"))
+		//"Math.max(1,2,3,34,23,54,676)"
+		
+		//apply方法求最大值
+		console.log(Math.max.apply(null,ary1))
+		//...扩展运算方法
+		console.log(Math.max(...ary1))
+		
+		let a1 = [1,2,3],a2 = [4,5,6]
+		console.log(a1.concat(a2))
+		console.log(...a1,...a2)
+	</script>
+</html>

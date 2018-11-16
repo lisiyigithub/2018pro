@@ -1,10 +1,12 @@
 <template>
     <div id="detail">
         <header class="mui-bar mui-bar-nav mn-head">
-			详情
+			子组件
 		</header>
-        <div class="content">
-            
+        <div class="content"> 
+            接收父组件信息------{{name}}<br/>
+            <input type="text" v-model="msg">
+           
         </div>
     </div>
 </template>
@@ -18,12 +20,15 @@ export default {
             imgList: [],
             datas: new FormData(),
             files:0,
-            size:0
-
+            size:0,
+            msg:""
         }
     },   
-    methods:{
-        
+    props:{
+        name:""
+    },
+    mounted(){
+        this.$emit('toparent',this.msg)
     }
 }
 </script>
