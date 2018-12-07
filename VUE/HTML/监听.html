@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>监听</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<input type="text" v-model="ipt"/>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//watch：第一个参数是监听的对象，第二个参数是改变后的返回值;监听不仅可以监听变量，还能监听路由变化
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				ipt:""
+			},
+			watch:{
+				'ipt':function(a,b){//a:更新以后最新得到的值，b:更新以前的旧值
+					console.log(a,b)
+				}
+			}
+		})
+		
+//		vm.$watch('ipt',function(a,b){//a:更新以后最新得到的值，b:更新以前的旧值
+//			console.log(a,b)
+//			
+//		})
+	</script>
+</html>

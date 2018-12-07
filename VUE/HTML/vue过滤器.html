@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h2>过滤器</h2>
+			<input type="text" v-model="ipt"/>
+			
+			<p>过滤器的使用：</p>
+			<h3>{{ipt | mes}}</h3>
+			<hr />
+			
+			<ul>
+				<li v-for="item in arr">{{item.name}}---------{{item.id |mes}}</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//vue2.0版本改为了自定义过滤器，没有内置的过滤器，1.0版本有
+		//过滤器分为：（是全局生成的方法）
+		//内置过滤器：别人封装好的写法
+		//自定义过滤器：
+		
+		//Vue对象里面提供的一些方法，必须要在实例化之前去声明
+		/*Vue.filter('mes',function(val){//mes指的是过滤器的名字，val指的是谁绑定了改过滤器就是谁
+			//return "Hello:"+val
+			if(val == "aaa"){//判断过滤器的值
+				return "Hello:"+val
+			}else{
+				return "Hi:"+val
+			}
+		})*/
+		
+		Vue.filter('mes',function(val){//mes指的是过滤器的名字，val指的是谁绑定了改过滤器就是谁
+			//return "Hello:"+val
+			if(val == 0){//判断过滤器的值
+				return "订单完成"
+			}else if(val == 1){
+				return "待支付"
+			}else if(val == 2){
+				return "待出货"
+			}else if(val == 3){
+				return "已出货"
+			}else{
+				return "待接收"
+			}
+		})
+		
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				ipt:"",
+				arr:[
+					{name:'衣服',id:0},
+					{name:'帽子',id:1},
+					{name:'裤子',id:2},
+					{name:'鞋子',id:3},
+					{name:'袜子',id:4}
+					
+				]
+			}
+		})
+		
+	</script>
+</html>

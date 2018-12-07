@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>		
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.bootcss.com/vue-resource/1.5.1/vue-resource.min.js"></script>
+	</head>
+	<body>
+		<div id="out">
+			<button @click="tap()">点击获取数据</button>
+			<ul>
+				<li v-for="item in arr">{{item}}</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=1&cb=
+		var vm = new Vue({
+			el:"#out",
+			data:{
+				arr:[]
+			},
+			methods:{
+				tap(){
+					//vue1.0版本
+					this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=1',{
+						jsonp:'cb'
+					}).then(function(data){//成功
+						console.log(data.body.s)
+						this.arr = data.body.s
+					},function(){//失败
+						
+					})
+				}
+			}
+		})
+	</script>
+</html>

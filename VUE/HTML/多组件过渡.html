@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../CSS/css/animate.css"/>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<button @click="view='v-a'">组件A动画</button>
+			<button @click="view='v-b'">组件B动画</button>
+			<transition
+				enter-active-class="animated slideInUp"
+				leave-active-class="animated slideOutDown"	
+			>
+				<component :is="view"></component>
+			</transition>		
+		</div>
+		<template id="a">
+			<div>
+				<h1>这是A组件</h1>
+			</div>
+		</template>
+		<template id="b">
+			<div>
+				<h1>这是B组件</h1>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				view:'v-a'
+			},
+			methods:{
+				
+			},
+			components:{
+				'v-a':{
+					template:"#a"
+				},
+				'v-b':{
+					template:"#b"
+				}
+			}
+		})
+	</script>
+</html>

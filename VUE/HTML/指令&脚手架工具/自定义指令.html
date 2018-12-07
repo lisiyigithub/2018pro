@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<p v-color.foo>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ullam consequuntur fugit ab accusamus quibusdam porro sint nihil molestiae beatae nisi non distinctio quo asperiores possimus dignissimos harum omnis consectetur.</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate accusantium error dicta et similique libero laudantium sit illum quidem deleniti facere eius ducimus architecto itaque exercitationem perferendis commodi id accusamus.</p>
+			
+			<hr />
+		</div>
+		
+		<div id="out">
+			<p v-color>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia deserunt fugiat ratione rerum eos quam unde impedit perspiciatis aspernatur itaque qui quis ut. Eius laborum dolore cum asperiores ullam minima.</p>
+			<p v-bac="str" v-color>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus quod adipisci qui quasi eligendi repudiandae nihil doloribus beatae? Aliquam eius voluptatum dignissimos nobis ducimus autem accusantium blanditiis cumque architecto maiores.</p>
+			
+			<hr />
+			
+			<button @click="tap()">更新操作</button>
+			
+			<hr />
+			
+			<input type="text" v-fouc/>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//directive(自定义指令)指令作用：辅助操作dom元素开发
+		//Vue.directive('名字',{inserted(el){//el指的是绑定了该指令的edom元素
+			//这个元素插入父元素的时候执行操作
+			//el.focus()
+		//}})
+		
+		//自定义指令也是要在实例化之前
+		Vue.directive('color',{//属于全局的
+			inserted(a,b){//a是指绑定了该指令的dom元素
+				a.style.color="blue"
+				console.log(b)
+			}
+		})
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				str:"red"
+			},
+			methods:{				
+			}
+		})
+		var vm1 = new Vue({
+			el:"#out",
+			data:{
+				str:"red"
+			},
+			directives:{//私有自定义指令,只能在当前实例化对象内使用
+				'bac':{
+					bind(){//做元素绑定时的初始逻辑
+						console.log('初始指令')
+					},
+					inserted(a,b){//将str当作参数传递，通过b.value获取,当传参发生变化的时候不能及时的进行更新；初始功能的设定
+						console.log(b.value)
+						console.log(b)
+						a.style.backgroundColor= b.value
+					},
+					update(a,b){//绑定的数值发生改变后获取最新的值；更新功能的重定义
+						console.log(b.value)
+						a.style.backgroundColor= b.value
+					},
+					componentUpdate(){
+						console.log('更新完成')
+					}
+				},
+				'fouc':function(a,b){//简写形式
+					a.style.color = "orange"
+				}
+			},
+			methods:{
+				tap(){
+					this.str = "pink"
+//					console.log(this.str)
+				}
+			}
+		})
+	</script>
+</html>

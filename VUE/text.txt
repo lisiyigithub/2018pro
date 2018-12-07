@@ -1,0 +1,26 @@
+1.Vue实现响应的数据绑定和组合的视图组件
+2.MVC（Module数据 View视图 Control）是一种单项循环的模式
+3.MVVM(Module数据 View视图 VM是一个中间件桥梁)
+4.AngularJs不适合做移动端，它是结合bootScript
+5.Vue和React都是Virtual DOM(虚拟DOM)(由JS生成的HTML结构，叫做虚拟DOM)
+6.Angularjs没有虚拟DOM的概念，只有高版本的Angular有虚拟DOM
+7.Angularjs没有组件
+8.Lazyload.js只做懒加载
+9.刚进公司的jquery版本是1.6/1.7的(到目前为止的主要区别是什么？绑定事件不用on,现在绑定事件都用on。)
+10.过滤器---用于变换输出形式(多用于订单列表)
+11.fetch多了一步对数据的处理
+12.XMLHttpRequest -- 原生  axios $ajax底层原理 -- XMLHttpRequest  （xhr小黄人）（所有的数据交互的底层原理都是xhr）
+13.$.ajax jquery
+14.vue fetch axios vue-resource fetchJsonp(5中交互方式)
+15.$.fn:指向jquery本身
+16.$.extend.fn：指向扩展jquery的原型对象
+
+
+//路由
+17.导航路由
+18.编程式路由
+19.但是图容器路由
+20.嵌套路由
+21.命名路由
+22.命名视图容器路由
+23.路由传参：params  query

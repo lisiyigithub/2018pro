@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>params传参</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"></script>
+		<script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
+		<style type="text/css">
+			.router-link-active{
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<!--路由导航标签 = a-->
+			<!--tag是将router-link转换成其他标签-->
+			<router-link to="/home" tag="p">首页</router-link>
+			<router-link to="/about" tag="p">关于</router-link>
+			<router-link to="/other" tag="p">其他</router-link>
+			
+			<!--路由视图容器-->
+			<router-view></router-view>
+		</div>
+		
+		<template id="home">
+			<div>
+				<h1>我是首页</h1>
+				<button @click="tap">跳转到other</button>
+				<hr />
+				<ul>
+					<li v-for="(item,i) in arr"><router-link :to="'/list/'+item.click_count">{{item.query}}</router-link></li>
+				</ul>
+				<hr />
+				
+				<!--嵌套路由-->
+				<router-view></router-view>
+			</div>
+		</template>
+		
+		<template id="about">
+			<div>
+				<h1>我是关于</h1>
+			</div>
+		</template>
+		
+		<template id="other">
+			<div>
+				<h1>我是其他</h1>
+			</div>
+		</template>
+		
+		<template id="list">
+			<div>
+				<h1>商品列表</h1>
+				<p>电影名：{{str.query}}</p>
+				
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		//导航路由
+		
+		//nodejs的路由用来做接口的，在不同的url下写入不同的数据
+		//vue的路由用来做不同url视图展示的(单页面应用)
+		//路由对应视图 通过加载组件，加载到<router-view></router-view>上
+		
+		//1.路由导航标签<router-link>
+		//2.视图容器：存放不同路径下展示的不用视图
+		
+		//router-link在url路径上面通过params传参时，to属性，一定要用绑定属性
+		
+		//定义模板
+		var Home = {
+			template:"#home",
+			data(){
+				return{
+					arr:[]
+				}
+			},
+			methods:{
+				tap(){
+					router.push('/other')//编程式路由
+				}
+			},
+			mounted(){
+				let _this = this;
+				axios({
+					url:'https://search.video.iqiyi.com/m?cb=cb_75jzz7&if=hotQuery&p=global',
+					method:'get',
+					params:{callback:''}
+				}).then(function(data){
+					//如果通过json.parse转换格式没转换，说明这不是一个标准的json格式,那我们就可以用eval转换，但是eval转换json对象比较浪费性能，因为它发生了两次转换，第一次是()，第二次才是转换：eval('('+data.data+')')
+					//字符串转成对象的两种方法：JSON.parse()/eval()
+					console.log(data)
+					let str = (data.data).split("=")//先将data.data以"="分割成数组
+					let obj = JSON.parse(str[1])//将数组索引1转换成标准的JSON格式
+					console.log(obj.data)
+					_this.arr = obj.data
+					console.log(_this.arr)
+				})
+			}
+		}
+		
+		var About = {
+			template:"#about",
+			mounted(){
+				console.log(this.$route.params.id)//获取params传递的参数
+			}
+		}
+		
+		var Other = {
+			template:"#other"
+		}
+		
+		var List = {
+			template:"#list",
+			data(){
+				return{
+					str:""
+				}
+			},
+			watch:{//嵌套路由中监听$route获取params的最新值
+				'$route':function(a,b){
+					console.log(a.params.click_count)
+					let _this = this;
+					axios({
+						url:'https://search.video.iqiyi.com/m?cb=cb_75jzz7&if=hotQuery&p=global',
+						method:'get',
+						params:{
+							click_count:_this.$route.params.click_count,
+							callback:''
+						}
+					}).then(function(data){
+						let str = (data.data).split("=")//先将data.data以"="分割成数组
+						let obj = JSON.parse(str[1])//将数组索引1转换成标准的JSON格式
+						console.log(obj.data)
+						let str1 = ""
+						for(var i=0; i<obj.data.length;i++){//遍历和click_count数据一致的一条数据
+							if(obj.data[i].click_count == _this.$route.params.click_count){
+								this.str1 = obj.data[i]
+	//							console.log(this.str1)
+								_this.str = this.str1
+								console.log(_this.str)
+							}
+						}
+					})
+				}
+			},
+			mounted(){
+				console.log(this.$route.params.click_count)
+				let _this = this;
+				axios({
+					url:'https://search.video.iqiyi.com/m?cb=cb_75jzz7&if=hotQuery&p=global',
+					method:'get',
+					params:{
+						click_count:_this.$route.params.click_count,
+						callback:''
+					}
+				}).then(function(data){
+					let str = (data.data).split("=")//先将data.data以"="分割成数组
+					let obj = JSON.parse(str[1])//将数组索引1转换成标准的JSON格式
+					console.log(obj.data)
+					let str1 = ""
+					for(var i=0; i<obj.data.length;i++){//遍历和click_count数据一致的一条数据
+						if(obj.data[i].click_count == _this.$route.params.click_count){
+							this.str1 = obj.data[i]
+//							console.log(this.str1)
+							_this.str = this.str1
+							console.log(_this.str)
+						}
+					}
+				})
+			}
+		}
+		
+		//路由规则配置
+		var routes = [
+			{
+				path:"/home",
+				component:Home,
+				children:[//用于配置子路由
+					{
+						path:'/list/:click_count',//路由一旦嵌套不能在mounted里面获取动态值
+						component:List
+					}
+				]
+			},
+			{
+				path:"/about",
+//				component:About
+				redirect:'/other'//走到指定路径的重定向
+			},
+			{
+				path:"/other",
+				component:Other
+			},			
+			{
+				path:"*",
+				redirect:"/home"//路由重定向
+			}
+		]
+		
+		//创建(实例化)路由对象——携带路由规则
+		var router = new VueRouter({
+			routes:routes
+		})
+		
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				
+			},
+			router:router
+		})
+		
+		//路由分为单个/多个/嵌套
+		
+		//事件中路由路径跳转---编程式路由
+		
+		//http://127.0.0.1:8020/VUE/HTML/路由/路由.html#/home/12以"/12"传参的方式称为params传参(单个数字或字符串，单个数据，不适合传多个数据)
+		//http://127.0.0.1:8020/VUE/HTML/路由/路由.html#/home?name=aaa----query传参(适合传多个数据)
+	</script>
+</html>

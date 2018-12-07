@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../CSS/toast.css"/>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="../JS/toast.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<button @click="tap()">toast框</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				tap(){
+					toast()
+				}
+			}
+		})
+	</script>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>生命周期</title>
+		<link rel="stylesheet" type="text/css" href="../CSS/css/animate.css"/>
+		<link rel="stylesheet" type="text/css" href="../CSS/css/global.css"/>
+		<link rel="stylesheet" type="text/css" href="../CSS/css/loading.css"/>
+		<script src="../JS/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="../JS/loading1.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>生命周期</h1>
+			<p>{{str}}</p>
+			<button @click="tap()">更新数据</button>
+			<button @click="del()">销毁，解绑</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//生命周期对于很多的实例化对象和组件都是存在的
+		//生命周期的钩子函数中的this都是指向这个实例化本身，因此不能使用es6中的箭头函数
+		//什么是钩子函数：就是一方面有变动，另一方面立刻来处理变动的函数，对组件不同阶段做不同处理
+		//官方api有11个钩子函数，但是我们常用到的就只有8个
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				str:"Hello"
+			},
+			beforeCreate(){//在实例初始化之后，才会执行，所有实例化生命的数据及事件都不会被调用
+				//主要用于做页面的loading展示
+				console.log(this.str)//undefined,数据还没挂载好
+				/*$('body').loading({
+					loadingWidth:240,
+					title:'请稍等!',
+					name:'test',
+					discription:'描述描述描述描述',
+					direction:'column',
+					type:'origin',
+					// originBg:'#71EA71',
+					originDivWidth:40,
+					originDivHeight:40,
+					originWidth:6,
+					originHeight:6,
+					smallLoading:false,
+					loadingMaskBg:'rgba(0,0,0,0.2)'
+				});*/
+			},
+			created(){//这里可以调用，实例创建完成
+				//在这里可以把loading关掉
+				console.log(this.str)//Hello
+				console.log(this.$el)//undefined,实例化对象只是已经创建，还未被挂载
+				//关闭loading
+				/*setTimeout(function(){
+					removeLoading('test');
+				},3000);*/
+			},
+			beforeMount(){//实例挂载之前，实例化容器的变量没有被解析
+				console.log(this.$el)//得到#app容器
+			},
+			mounted(){//实例挂载完成，最新的dom树被得到
+				//最适合做首页数据获取 --- axios/ajax/fetch
+				console.log(this.$el)
+			},
+			beforeUpdate(){//数据更新时触发
+				console.log('更新')
+			},
+			updated(){//数据更新完成时触发，一般用完成时
+				console.log('更新完成')
+			},
+			beforeDestroy(){
+				console.log('销毁')
+			},
+			destroyed(){
+				
+			},
+			methods:{//事件触发的函数
+				tap(){
+					this.str = "你好"
+				},
+				del(){
+					this.$destroy()//销毁
+				}
+			}
+		})
+	</script>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="../JS/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			#inner{
+				width: 200px;
+				height: 200px;
+				border: 1px solid #000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<p>点击checked实现inner的显示与隐藏</p>
+			<input type="checkbox" name="" id="" value="" @click="tap($event)"/>
+			<div id="inner" v-if="show">
+				弹框
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//jquery写法
+//		$('input').click(function(){
+//			if($(this)[0].checked){
+//				console.log('true')
+//			}else{
+//				console.log('false')
+//			}
+//		})
+		
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				show:false
+			},
+			methods:{
+				tap(e){					
+//					console.log(e.target.checked)
+					let _this = this
+					if(e.target.checked == true){
+						_this.show = true
+					}else{
+						_this.show = false
+					}
+				}
+			}
+		})
+	</script>
+</html>

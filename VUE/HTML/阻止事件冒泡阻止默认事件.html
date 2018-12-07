@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div @click="fu">
+				父元素
+				<button @click="zi1($event)">子元素</button>				
+				<button @click.stop="zi()">子元素</button>
+				<p>@click.stop阻止事件冒泡</p>
+			</div>
+			<hr />
+			<input type="text" placeholder="键盘事件" @keyup.enter="tap()"/>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//阻止事件冒泡：cancelBubble()（必须是父子机制绑定了相同的事件）
+		//阻止默认事件：stopPropagation()
+		//jquery里面绑定事件on来进行事件的委托
+		
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				fu(){
+					console.log('fuyuansu')
+				},
+				zi1(e){
+					e.cancelBubble = true;//event对象的cancelbubble阻止事件冒泡
+					console.log("ziyuansu")
+				},
+				zi(){
+					console.log('1111')
+				},
+				tap(){//键盘事件
+					console.log('按下了回车键')
+				}
+			}
+		})
+		
+	</script>
+</html>

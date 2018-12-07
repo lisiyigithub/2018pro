@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>平行组件</h1>
+			<hr />
+			<v-a></v-a>
+			<hr />
+			<v-b></v-b>
+			<hr />
+			<v-c></v-c>
+		</div>
+		<template id="aaa">
+			<div>
+				<h2>组件aaa</h2>
+				<p>{{str}}</p>
+				<button @click="send()">发送数据给ccc</button>
+			</div>
+		</template>
+		<template id="bbb">
+			<div>
+				<h2>组件bbb</h2>
+				<p>{{str}}</p>
+				<button @click="send()">发送数据给ccc</button>
+			</div>
+		</template>
+		<template id="ccc">
+			<div>
+				<h2>组件ccc</h2>
+				<p>接收aaa数据-------{{str}}</p>
+				<p>接收bbb数据-------{{str1}}</p>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		//平行组件传值要用一个全新的空的vue对象，通过$emit(),$on()进行数据推送
+		//平行组件里面不用任何的自定义指令等
+		var vm1 = new Vue({})//空vue对象
+		var vm = new Vue({
+			el:"#app",
+			components:{
+				'v-a':{
+					template:"#aaa",
+					data(){
+						return{
+							str:"this is aaa"
+						}
+					},
+					methods:{
+						send(){
+							vm1.$emit('isa',this.str)
+						}
+					}
+				},
+				'v-b':{
+					template:"#bbb",
+					data(){
+						return{
+							str:"this is bbb"
+						}
+					},
+					methods:{
+						send(){
+							vm1.$emit('isb',this.str)
+						}
+					}
+				},
+				'v-c':{
+					template:"#ccc",
+					data(){
+						return{
+							str:"",
+							str1:""
+						}
+					},
+					mounted(){
+						let _this = this
+						vm1.$on('isa',(data)=>{//this指向vm1本身
+							_this.str = data
+							console.log(data)
+						})
+						vm1.$on('isb',(data)=>{
+							_this.str1 = data
+						})
+					}
+				}
+			}
+		})
+		
+		//平行组件传值：声明一个空的vue对象，通过该对象调用$emit,$on进行数据推送，需要接收数据的组件内部，需要注意this指向
+	</script>
+</html>

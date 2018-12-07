@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="out">
+			<h2>计算属性computed</h2>
+			<input type="text" v-model="ipt"/>
+			<input type="text" v-model="ipt1"/>
+			<div>{{sum}}</div>
+			<hr />
+			<h2>满88包邮</h2>
+			单价：<input type="text" v-model="price"/>
+			数量：<input type="text" v-model="num"/>
+			邮费：{{yf}}
+			总计：{{sum2}}
+			<hr />
+			<h2>过滤效果</h2>
+			<input type="text" v-model="ipt4"/>
+			<ul>
+				<li v-for="item in list">{{item}}</li>
+			</ul>
+		</div>
+		<div id="inner">
+			第二个实例化对象
+		</div>
+	</body>
+	<script type="text/javascript">
+		var vm1 = new Vue({
+			el:"#inner"
+		})
+		
+		var vm = new Vue({
+			el:"#out",
+			data:{
+				ipt:"",
+				ipt1:"",
+				price:10,
+				num:"",
+				yf:10,
+				ipt4:"",
+				arr:["香蕉","橘子","香橙","苹果","香梨","百香果"]				
+			},
+			computed:{//计算属性一定要有返回值
+				sum(){
+					return this.ipt*this.ipt1;
+				},
+				sum2(){
+					if(this.price*this.num>88){
+						this.yf = 0;						
+					}else{
+						this.yf = 10;
+					}
+					return this.yf+this.price*this.num
+				},
+				list(){
+					let arr1 = []					
+					this.arr.map(function(item){//这里this指向arr
+						if(item.indexOf(this.ipt4) != -1){//判断item中是否包含ipt4
+							arr1.push(item)
+						}
+					}.bind(this))//绑定this指向vm
+					
+					return arr1;//arr1是整个list的返回值
+				}
+			}
+		})
+	</script>
+</html>

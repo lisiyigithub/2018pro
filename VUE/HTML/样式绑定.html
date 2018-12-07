@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<style type="text/css">
+			.active{
+				color: pink;
+			}
+			.isc{
+				color:red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="out">	
+			<a href="mailto:li_sy@murongtech.com">跳到</a>
+			<hr />
+			<p>样式</p>
+			<h1 v-bind:style="{color:col,background:bac}">行间样式,对象形式</h1>		
+			<h2 v-bind:style="[styA,styB]">数组样式</h2>
+			<hr />
+			<h2>属性式指令</h2>
+			<p v-bind:class="{'active':act,'isa':isa}">类名绑定,用变量的ture/false来决定类名加不加</p>
+			<p v-bind:class="styleobj">类名绑定222</p>
+			<p v-bind:id="tit">id类名</p>
+			<p :style="styleobject">v-bind和:都是绑定属性标志</p>
+			<hr />
+			
+			<h2>计算属性computed</h2>
+			<input type="text" v-model="ipt"/>
+			<input type="text" v-model="ipt1"/>
+			<div>{{sum}}</div>
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+
+		var vm = new Vue({
+			el:"#out",
+			data:{
+				col:"red",
+				bac:"orange",
+				styA:{color:'blue'},
+				styB:{background:'black'},
+				act:true,
+				isa:true,
+				styleobj:{
+					isc:true,
+					isa:true,
+					isb:true
+				},
+				tit:'wrap',
+				styleobject:{
+					color:"yellow",
+					background:"pink"
+				},
+				ipt:"",
+				ipt1:""
+			},
+			computed:{//计算属性
+				sum(){
+					return this.ipt*this.ipt1
+				}
+			}
+		})
+	</script>
+</html>

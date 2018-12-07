@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>VUE基础</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="out">
+			<h1>{{msg}}</h1>
+			<h2 v-once>{{txt}}</h2>
+			<h3 v-text="txt"></h3>
+			<h3 v-html="htl"></h3>
+			
+			<hr />
+			
+			<h1>{{num>10?'数字大于10':'数字小于10'}}</h1>
+			<h2>{{num*num1}}</h2>
+			
+			<hr />
+			
+			<button v-on:click="fun($event)">点击事件</button>
+			<button @click="tap">事件222</button>
+			
+			<hr />
+			
+			<ul>
+				<li v-for="(item,index) in arr">{{index}}----{{item}}</li>
+			</ul>
+			
+			<hr />
+						
+			<p>绑定数据，只适用于表单元素，相当于它的onchange事件;v-model永远指向的是value值</p>
+			<input type="radio" v-model="ipt" name="sex" value="男"/>		
+			<input type="radio" v-model="ipt" name="sex" value="女"/>
+			<p>{{ipt}}</p>
+			
+			<textarea v-model="tit"></textarea>
+			<p>{{tit}}</p>
+			
+			<select name="" v-model="sel">
+				<option value="apple">苹果</option>
+				<option value="bananer">香蕉</option>
+				<option value="orange">橙子</option>
+			</select>
+			<p>{{sel}}</p>
+			
+			<hr />
+			
+			<p v-if="false">控制节点的显示与隐藏,是直接移除</p>
+			<p v-show="false">控制节点的显示与隐藏,是添加了display:none;属性</p>
+			
+			<hr />
+			
+			<p>v-if、v-else-if、v-else业务逻辑做判断时，要放在一起使用</p>
+			<p v-if="a<10">如果数字小于10显示我</p>
+			<p v-else-if="a>10&&a<20">如果数字大于10小于20显示我</p>
+			<p v-else>如果数字大于20显示我</p>
+			
+			<hr />
+			
+			<p>v-once一次渲染，避免视图的多次渲染，不管后面有几次操作都不会被触发</p>
+			
+			<hr />
+						
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+		//数据帮名包括v-text和v-html、{{}}三种方式;只有v-html可以解析字符串中的标签，{{会把数据提前暴露}}
+		//事件绑定v-on:/@
+		//事件传参是在事件（）里面添加$event
+		var vm = new Vue({//实例化一个vue对象
+			el:"#out",
+			data:{
+				msg:"Hi VUE",
+				txt:"<p>国家航空的飞机更何况</p>",
+				htl:'<p>国家航空的飞机更何况</p>',
+				num:11,
+				num1:10,
+				arr:[1,2,3,4,5,6],
+				ipt:"",
+				tit:"",
+				sel:"",
+				a:30,
+				arr1:[],
+				ipt1:""
+			},
+			methods:{
+				fun(e){
+					console.log(e)
+					console.log("aaa")
+					this.txt = "等级划分几分感慨"
+				},
+				tap(){
+					console.log(this.num)//this指向vm
+					this.txt = "第二次修改"
+					console.log("bbb")
+				},
+				add(){
+					this.arr1.push(this.ipt1)
+					this.ipt1 = ""
+				},
+				del(i){
+					console.log(i)
+					this.arr1.splice(i,0)
+				}
+			}
+		})
+		
+		
+		//angularjs ng-repeat(bug:不能遍历重复数据的数组)需要加上 track by $index才可解决 == v-for在此基础上已经解决了这个bug
+		//ng-model不需要在data里面声明变量,直接用即可
+		
+		//在外部访问原型对象时要用到$
+		//console.log(vm.$data.msg)
+		
+		//ES5的构造函数
+		/*function pro(){
+			this.name = "Hello"
+		}
+		
+		pro.prototype.say = function(){
+			console.log(this.name)
+		}
+		
+		new pro*/
+	</script>
+</html>

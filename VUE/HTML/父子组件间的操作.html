@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1 ref="tit">dom操作</h1>
+			<button @click="tap()">获取dom</button>
+			<hr />
+			<v-parent></v-parent>
+		</div>
+		<template id="parent">
+			<div>
+				<h2>组件parent</h2>
+				<button @click="tap()">操作子组件</button>
+				<hr />
+				<v-child ref="childs"></v-child>
+			</div>
+		</template>
+		<template id="child">
+			<div>
+				<h2>组件child</h2>
+				<button @click="tap()">操作父组件</button>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		//ref属性进行组件操作
+		//父组件操作子组件$refs
+		//子组件操作父组件$parent
+
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				tap(){
+					console.log(this.$refs.tit)
+				}
+			},
+			components:{
+				'v-parent':{
+					template:"#parent",
+					data(){
+						return{
+							str:"父组件数据"
+						}
+					},
+					methods:{
+						tap(){//父组件操作子组件，需要给子组件绑定ref属性
+							console.log(this.$refs.childs.str)
+						}
+					},
+					components:{
+						'v-child':{
+							template:"#child",
+							data(){
+								return{
+									str:"子组件数据"
+								}
+							},
+							methods:{
+								tap(){//子组件操作父组件，不需要给父组件绑定任何属性或事件
+									console.log(this.$parent.str)
+								}
+							}
+						}
+					}
+				},
+				
+			}
+		})
+	</script>
+</html>

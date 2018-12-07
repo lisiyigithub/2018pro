@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>你好</h1>
+			<hr />
+			<v-header></v-header>
+			<hr />
+			<v-footer></v-footer>
+		</div>
+		
+		<!--第一种模板写法-->
+		<script type="x-template" id="header">
+			<div>
+				<p>模板里面也是有且只能有一个根节点</p>
+				<div>
+					---------hello 我是组件模板
+				</div>
+				<p>hello world</p>
+			</div>
+		</script>
+		
+		<!--第二种模板写法---推荐使用-->
+		<template id="footer">
+			<div>
+				<h2 @click="tap()">--------模板类型二--{{str}}</h2>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		Vue.component('v-header',Vue.extend({
+			template:"#header"
+		}))
+		
+		var Footer = {
+			template:"#footer",
+			data(){
+				return{
+					str:"*******模板"
+				}
+			},
+			methods:{
+				tap(){
+					console.log('模板')
+				}
+			},
+			mounted(){
+				console.log('111111111')
+			}
+		}
+		//模板不需要写在实例化里面
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				
+			},
+			components:{
+				'v-footer':Footer
+			}
+		})
+	</script>
+</html>

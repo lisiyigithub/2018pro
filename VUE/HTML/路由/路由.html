@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"></script>
+		<style type="text/css">
+			.router-link-active{
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<!--路由导航标签 = a-->
+			<!--tag是将router-link转换成其他标签-->
+			<router-link to="/home" tag="p">首页</router-link>
+			<router-link to="/about/1" tag="p">关于</router-link>
+			<router-link to="/other" tag="p">其他</router-link>
+			
+			<!--路由视图容器-->
+			<router-view></router-view>
+		</div>
+		
+		<template id="home">
+			<div>
+				<h1>我是首页</h1>
+				<button @click="tap">跳转到other</button>
+			</div>
+		</template>
+		
+		<template id="about">
+			<div>
+				<h1>我是关于</h1>
+			</div>
+		</template>
+		
+		<template id="other">
+			<div>
+				<h1>我是其他</h1>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		//导航路由
+		
+		//nodejs的路由用来做接口的，在不同的url下写入不同的数据
+		//vue的路由用来做不同url视图展示的(单页面应用)
+		//路由对应视图 通过加载组件，加载到<router-view></router-view>上
+		
+		//1.路由导航标签<router-link>
+		//2.视图容器：存放不同路径下展示的不用视图
+		
+		//定义模板
+		var Home = {
+			template:"#home",
+			methods:{
+				tap(){
+					router.push('/other')//编程式路由
+				}
+			}
+		}
+		
+		var About = {
+			template:"#about",
+			mounted(){
+				console.log(this.$route.params.id)//获取params传递的参数
+			}
+		}
+		
+		var Other = {
+			template:"#other"
+		}
+		
+		//路由规则配置
+		var routes = [
+			{
+				path:"/home",
+				component:Home
+			},
+			{
+				path:"/about/:id",
+				component:About
+			},
+			{
+				path:"/other",
+				component:Other
+			},
+			{
+				path:"*",
+				redirect:"/home"//路由重定向
+			}
+		]
+		
+		//创建(实例化)路由对象——携带路由规则
+		var router = new VueRouter({
+			routes:routes
+		})
+		
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				
+			},
+			router:router
+		})
+		
+		//事件中路由路径跳转---编程式路由
+		
+		//http://127.0.0.1:8020/VUE/HTML/路由/路由.html#/home/12以"/12"传参的方式称为params传参(单个数字或字符串，单个数据，不适合传多个数据)
+		//http://127.0.0.1:8020/VUE/HTML/路由/路由.html#/home?name=aaa----query传参(适合传多个数据)
+	</script>
+</html>

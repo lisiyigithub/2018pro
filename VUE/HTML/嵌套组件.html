@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>父传子</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>嵌套组件</h1>
+			<hr />
+			<v-parent></v-parent>
+		</div>
+		
+		<template id="parent">
+			<div>
+				<h1>父到子传值</h1>
+				<h2>父组件</h2>
+				<p>{{str}}</p>
+				<button @click="tap()">事件发送给子组件数据</button>
+				<h4>在组件标签上利用绑定属性将变量数据传递给子组件</h4>
+				<hr />
+				<v-child :name="str1" :msg="tit"></v-child>
+			</div>
+		</template>
+		<template id="child">
+			<div>
+				<h2>子组件</h2>
+				<p>{{str}}</p>
+				<p>接收过来的父组件数据--------{{name}}------------{{msg}}</p>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		//组件间传值：父——>子；子——>父
+		//方法1.绑定属性v-bind
+		//方法2.props进行传值
+		
+		//子到父：借用$emit('事件名'，数据)发送数据（nodejs event的方法，）;利用on接收数据
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				
+			},
+			components:{
+				'v-parent':{
+					template:"#parent",
+					data(){
+						return{
+							str:"我是父组件数据"	,
+							str1:"",
+							tit:"hELLO world"
+						}
+					},
+					methods:{
+						tap(){
+							this.str1 = this.str
+						}
+					},
+					components:{
+						'v-child':{//props接的是属性名,自定义属性，可以接多个
+							props:['name','msg'],
+							template:"#child",
+							data(){
+								return{
+									str:"我是子组件数据"
+								}
+							}
+						}
+					}
+				}
+			}
+		})
+		
+		//父组件——>子组件传值：在子组件 组件标签绑定自定义属性式指令：属性值为父组件需要传递的数据变量，子组件注册组件内部通过props数组形式接收属性名称，然后再子组件模板内部直接使用属性名
+	</script>
+</html>

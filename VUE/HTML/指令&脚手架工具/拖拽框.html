@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#app div{
+				width: 200px;
+				height: 200px;
+				background: red;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div v-move>1</div>
+			<div v-move>2</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				str:"red"
+			},
+			directives:{
+				'move':function(a,b){
+					a.onmousedown = function(e){
+						var _x = e.clientX - a.offsetLeft
+						var _y = e.clientY - a.offsetTop
+						document.onmousemove = function(e){
+							var _X = e.clientX - _x
+							var _Y = e.clientY - _y
+							a.style.left = _X + 'px'
+							a.style.top = _Y + 'px'
+						}
+						document.onmouseup = function(){
+							document.onmousedown = null;
+							document.onmousemove = null;
+						}
+					}
+				}
+			}
+		})	
+	</script>
+</html>

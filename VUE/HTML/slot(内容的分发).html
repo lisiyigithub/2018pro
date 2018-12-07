@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">		
+			<v-demo>
+				<p slot="con">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem cum sint fugit iste qui doloribus nisi ea quo totam unde consequatur mollitia accusantium odit blanditiis praesentium. Sit maxime maiores eveniet.</p>
+				<ul slot="con1">
+					<li>sssss</li>
+					<li>sssss</li>
+					<li>sssss</li>					
+				</ul>
+			</v-demo>
+		</div>
+		<template id="demo">
+			<div>
+				<h1>组件  slot内容分发</h1>
+				<hr />
+				<div>
+					<slot name="con">当组件标签内部没有内容的时候显示我</slot>					
+				</div>
+				<div>
+					<slot name="con1">客户的空间哈代发货</slot>
+				</div>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		//组件标签没有数据的情况下做一个默认数据的展示，如果有数据就把slot内容替换
+		//取代内容时，slot属性对应name属性
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				str:"slot内容分发"
+			},
+			components:{
+				'v-demo':{
+					template:"#demo"
+				}
+			}
+		})
+	</script>
+</html>

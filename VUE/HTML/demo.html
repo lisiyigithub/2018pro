@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../JS/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('body').append(`
+				<div href="" target="myframe" style="display:block;width:101px;height:101px;border-radius:50%;position:fixed;right:0;top: 0;bottom: 0;margin: auto;z-index: 9999;" class="kefu">
+					<img src="https://qn-public.udesk.cn/Fl2-g_MepNvwYi9LQJUdAVb48ORn"/>
+				</div>	
+				<div class="out" style="width:15px;height:15px;text-align:center;font-weight:900;color:#000;position:fixed;right:118px;bottom:463px;z-index:99999;display:none;">X<div>
+			`)
+			$('.kefu').click(function(){
+				$('body').append(`
+					<div id="ifram" style="width:200px;height:200px;border:1px solid #000;">
+						外标签
+					</div>
+				`)
+				$('.out').show()
+				$(this).hide()
+			})
+			$('.out').click(function(){
+				$('body #ifram').remove()
+				$(this).hide()
+				$('.kefu').show()
+			})
+		})
+	</script>
+</html>

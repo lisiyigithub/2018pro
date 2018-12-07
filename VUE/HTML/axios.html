@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.min.js"></script>
+		<script src="https://cdn.bootcss.com/fetch/3.0.0/fetch.min.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>axios</h1>
+			<button @click="tap">获取数据</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#app",
+			methods:{
+				tap(){
+					/*axios.get('/url',{
+						params:{//传参，query传参会在url路径上显示
+							goodsID:2
+						}
+					})
+					.then(function(data){
+						console.log(data.data)
+					})
+					.catch(function(){
+						
+					})*/
+					fetch('/url')//fetch可以无限的then下去
+					.then(function(response){//做数据处理
+						return response.json()
+					}).then(function(json){//结果
+						console.log('parsed json', json)
+					}).catch(function(ex){
+						console.log('parsing failed', ex)
+					})
+				}
+			}
+		})
+	</script>
+</html>

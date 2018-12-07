@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>组件过渡</title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<style type="text/css">
+			.fade-enter-active,.fade-leave-active{
+				transition:opacity 0.5s;
+			}
+			.fade-enter,.fade-leave-active{
+				opacity: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<h1>组件过渡</h1>
+			
+			<button @click="flag=!flag">控制动画</button>
+			<transition name="fade">
+				<p v-if="flag">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi porro error animi odit saepe itaque id atque voluptatibus consectetur explicabo aliquam odio quis natus maxime veniam? Debitis iusto id impedit.</p>
+			</transition>
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+		//transition必须要有事件的触发才能执行动画效果,只有两个关键帧
+		//aniamtion动画不需要任何事件
+		//and链接
+		//not排除
+		//only限定
+		//弹性盒布局：display:flex;display:box;display:flex-box
+		
+		//transition组件一般绑定的是需要用到的过渡指令
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				flag:true
+			},
+			methods:{
+				
+			}
+		})
+	</script>
+</html>

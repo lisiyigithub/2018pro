@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>组件</h1>
+			<hr />
+			<v-child></v-child>
+			<hr />
+			<v-header></v-header>	
+			<hr />
+			<v-footer></v-footer>	
+			<hr />
+			<v-con></v-con>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//全局组件注册:
+		Vue.component('v-child',Vue.extend({//写法一：模板标签要写在一个根节点下
+			template:"<div>我是组件<p>hi</p></div>"
+		}))
+		
+		var con = Vue.component('v-header',{//写法二：自动调用vue的extend扩展构造器；模板标签要写在一个根节点下
+			template:"<div>我是另一个组件<p>hi</p></div>"
+		})
+		console.log(con)//组件原型对象
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			methods:{
+				
+			},
+			components:{
+				'v-footer':{//如果模板中是多个标签，使用模板字符串
+					template:`<div>内部私有组件----{{str}}<button @click='tap()'>内部事件</button></div>`,
+					data(){//组件内部数据是data函数返回数据对象
+						return{
+							str:"我是组件"
+						}
+					},
+					methods:{
+						tap(){
+							console.log('aaaa')
+						}
+					},
+					mounted(){
+						console.log('ssss')
+					}
+				},
+				'v-con':con//内容写在外部
+			}
+		})
+	</script>
+</html>

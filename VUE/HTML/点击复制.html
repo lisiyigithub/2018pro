@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>点击复制效果</title>
+	</head>
+	<body>
+		<ul id="myList" class="nav nav-pills">
+		  <li role="presentation"><a href="#"><img class="imgcon" alt="Sarah@homiebnb.com.au" src="img/management/face.png"/></a></li>
+		  <li role="presentation" onclick="copyToClipboard(content1)"><a href="mailto:li_sy@murongtech.com"><img id="imgc1" class="imgcon" alt="Sarah@homiebnb.com.au" src="img/management/email.png"/></a></li>
+		  <li role="presentation" onclick="copyToClipboard(content2)"><a href="#"><img id="imgc2" class="imgcon" alt="HomieBnb" src="img/management/chat.png"/></a></li>
+		  <li role="presentation"><a href="#"><img src="img/management/in.png"/></a></li>
+		</ul>
+	</body>
+	<script type="text/javascript">
+		//mailto:li_sy@murongtech.com能直接跳转到邮箱的发邮件页面
+		var content1 = document.getElementById("imgc1").alt;
+		var content2 = document.getElementById("imgc2").alt;
+		
+		function copyToClipboard(content) {
+			console.log(content1)
+			// 创建元素用于复制
+			var aux = document.createElement("input");
+	        // 设置元素内容
+	        aux.setAttribute("value", content);
+	
+	        // 将元素插入页面进行调用
+	        document.body.appendChild(aux);
+	
+	        // 复制内容
+	        aux.select();
+	
+	        // 将内容复制到剪贴板
+	        document.execCommand("copy");
+	
+	        // 删除创建元素
+	        document.body.removeChild(aux);
+	
+	        //提示
+	        alert("您已成功复制" + aux.value + "，去新的页面粘贴看看吧");
+		}
+	</script>
+</html>
