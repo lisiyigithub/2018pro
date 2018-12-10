@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//ES5   ES6	
+		
+		//声明变量
+		var----用来声明可修改的常量,如果没有赋值,返回undefined
+		ES6   let-----块级作用域     const----声明不修改的常量
+		public (优先级比较高)
+		
+		数组  map forEach  [...]  
+		函数   function ---- this 指向  谁调用指向谁   没人调用  指向window
+		()=>{} --this 指向它的父级
+		
+		模板字符串 ``
+		
+		function  Person(){
+			
+		}
+		
+		class .. extends .. {
+			
+		}
+		
+		
+		更擅长使用ES6
+		
+		
+		
+		自动化构建工具  gulp  webpack grunt
+		gulp----构建项目,压缩处理  依赖丰富的插件  uglify  sass ;文件gulpfile.js   task任务  dist文件目录的查找     pipe管道   watch  default
+		
+		webpack-cli----构建项目,模块整合,把浏览器不是别的语言babel/es6 转换成浏览器可识别的语言,依赖丰富的加载器loder:sass  babel  css  style  url  file,帮助我们处理相应的文件;webpack.config.js----entry入口 output出口  rules加载器  plugins插件
+		gulp+webpack可同时使用 
+		
+		
+		版本管理工具  git  svn
+		git----分布式
+		svn----集中式
+		
+		
+		模块化开发规范   AMD  CMD  commonjs
+		
+		AMD--- 一步加载规范  由requirejs框架延伸的  核心 提前引入
+		CMD---标准通用规范  由seajs框架延伸的  核心 按需引入
+		commonjs---谷歌提供的规范  核心  模块的接收与暴露(require  module.exports)/import  export  default
+		
+		
+		事件驱动:事务在执行过程中,用以进行决策的一种策略;跟随当前事件点上出现的事务,调用一切可调用的资源,解决该事务,使其不断地出现事务被解决,防止事务堆积;
+		
+		非阻塞I/O  不阻塞  I--input输入  O--output输出  不阻塞浏览器的写入与写出
+		
+		nodejs轻量又高效---单线程/异步/事件驱动
+			特点:快/耗内存
+			作用:解析js代码(无浏览器安全级别限制),提供很多系统级别的api,如:文件读写,进程管理,网络通信
+			辅助前端开发,代替后台开发
+			node-webkit内核	nodeos系统	express框架
+			jade EJS模板	forever PM2实现负载均衡
+			
+			
+			
+		包管理器   npm cnpm yarn
+		
+		cnpm是npm的镜像安装(项目开发不推荐使用cnpm,因为会生成多余的文件依赖)
+		
+		npm Install---每一次依赖安装都需要重新下载,会把安装情况全部打印输出(速度慢)
+					-----//根据package.json进行依赖安装
+		yarn  add---下载过的不会重新下载(速度快) 安装情况会以emojis表情包展示
+		
+		package-lock.json版本锁定文件
+		
+		npm i -g全局(电脑只需要安装一次即可)
+		npm i --save-dev/-D/-S局部项目依赖
+		指定版本安装  npm i webpack@3.6.0 -D(@后跟版本号)
+		
+		测试工具:mocha,karma---代码工具(线下/线上) 黑盒(利用测试代码)/白盒      一轮/二轮/三轮测试
+		调试---打断点/浏览器审查元素
+		联调--前端测试后端接口数据是否正常
+		
+		js --- 开发插件/封装组件库
+		
+		
+		nodejs  vs php
+		1.性能高
+		2.开发效率高
+		3.应用范围广
+		缺点:
+		1.新,会的人少
+		2.中间件少(函数)
+		3.IDE不完善
+		
+		框架选择:
+		Express(sails),koa Hapi
+		Express:完善,稳定,文档全,社区大
+		koa:超前
+		Hapi:复杂(一个简单的helloworld都要做很多堆砌),适合复杂的大型项目
+		
+		LTS(长时间支持版本)
+	</script>
+</html>

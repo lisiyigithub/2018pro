@@ -1,0 +1,7 @@
+1.它属于服务端脚本语言
+2.escape编码   unescape转码
+3.querystring.stringify()
+4.querystring.parse()
+5.event对事件进行处理的方法---require('events')
+	emit推送（往往和播放一起使用）
+6.
