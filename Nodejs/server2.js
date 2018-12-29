@@ -6,9 +6,7 @@ http.createServer((req,res)=>{
 	res.writeHead(200,{'content-type':'text/html;charset=utf-8','Access-Control-Allow-Origin':'*'})
 	if(req.ulr != '/favicon.ico'){
 		//写入数据
-		res.write([
-			'nihao','love','hello'
-		])
+		res.write('love')
 		res.end()
 		
 		//接收数据----data事件

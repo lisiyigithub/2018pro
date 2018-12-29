@@ -8,6 +8,8 @@
 	<body>
 		<div id="app">
 			<input type="text" v-model="ipt"/>
+			<div v-model="con">{{str}}</div>
+			<button @click="tap">点击</button>
 		</div>
 	</body>
 	<script type="text/javascript">
@@ -15,11 +17,21 @@
 		var vm = new Vue({
 			el:"#app",
 			data:{
-				ipt:""
+				ipt:"",
+				str:"爱你",
+				con:""
 			},
 			watch:{
 				'ipt':function(a,b){//a:更新以后最新得到的值，b:更新以前的旧值
 					console.log(a,b)
+				},
+				'con':function(a,b){
+					console.log(a,b)
+				}
+			},
+			methods:{
+				tap(){
+					this.str = "想你"
 				}
 			}
 		})

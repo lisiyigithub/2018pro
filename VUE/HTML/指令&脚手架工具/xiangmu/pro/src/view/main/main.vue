@@ -28,33 +28,33 @@
 	}
 </script>
 
-<style scoped="">
+<style>
 	.main{
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-	}
-	header,footer{
-		height: 50px;
-		line-height: 50px;
-		text-align: center;
-		color:#fff;
-		background:orange;
-		overflow: hidden;
-		font-size: 18px;
-	}
-	section{
-		flex: 1;
-		overflow-y: auto;
-	}
-	
-	footer span{
-		width: 33.3%;
-		float: left;
-		text-align: center;
-	}
-	
-	.router-link-active{
-		color: hotpink;
-	}
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    header,footer{
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color:#fff;
+        background:orange;
+        overflow: hidden;
+        font-size: 18px;
+    }
+    section{
+        flex: 1;
+        overflow-y: auto;
+    }
+    
+    footer span{
+        width: 33.3%;
+        float: left;
+        text-align: center;
+    }
+    
+    .router-link-active{
+        color: hotpink;
+    }
 </style>

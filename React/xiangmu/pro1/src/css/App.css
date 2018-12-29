@@ -1,0 +1,18 @@
+header{
+	color:#fff;
+	background:orange;
+	text-align:center;
+	height:50px;
+	line-height:50px;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+.App{
+	background: #eee;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	font-size: 16px;
+}
+

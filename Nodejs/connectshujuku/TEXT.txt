@@ -1,0 +1,54 @@
+一个数据库系统包含哪些部分？
+基于分布式文件存储的数据库。由c++语言编写，nosql非关系型数据库；（sql关系型数据库）
+特点：高性能、易部署、易使用，存储数据非常方便
+
+优点：
+	1.面向文档存储的数据库（BSON格式存储）；BSON：是由10gen（mongodb）开发的一个数据格式
+	2.具有丰富的查询指令
+	3.支持索引
+	4.具有分片系统
+	5.无模式
+缺点：
+	1.占用空间非常大
+	2.不支持事务
+	3.目前已经不维护32位系统的
+	
+数据库命名规范：
+	通过标识符，一般是utf-8字符串，不能为空，不能用local/admin/config这三个
+
+集合的命名不能是空字符串，也不能出现-，0等，不能以system,$开头
+db.manger.isCapped()判断manger集合是不是定容量
+db.createCollection('collName',{size:20,capped:true,max:100})定容量集合创建方法
+db.collName.drop()删除集合
+
+增：
+	db.collName.insert()多条
+	db.collName.insertMany()多条
+	db.collName.insertOne()一条
+	db.collName.save()一条
+删：
+	db.collName.remove()删除单条数据
+	db.collName.deleteOne()删除单条数据
+	db.collName.deleteMany()删除多条
+
+改：
+	db.collName.update({},{$set:{}},false，false);第一个false指的是就算没有找到，也不会变成添加一条数据；第二个false决定的是是否全部修改，false是只修改匹配到的第一条数据
+	db.collName.update({},{$inc:{}},false，false);$inc是累加的效果
+	db.collName.uptateMany()
+
+查：
+	db.collName.find()查询所有数据
+	db.collName.distinct()根据属性名查找；查找到的是去重后的数据
+	db.collName.find({age:{$gt:24}});查询大于...；$lt小于；$lte小于等于；$gte大于等于；可用来查询某一段数据
+	db.collName.find({name://})；包含//;正则
+	db.collName.find({name:/^/});以什么什么开头
+	db.collName.find({},{name:1,sex:1})查询指定列
+	db.collName.find().sort({age:1})排序：1是升序；-1是降序
+	db.collName.find().limit(4)；查询前4条数据
+	db.collName.find().skip(2)从第二条数据开始往后查询
+	db.collName.find().limit(3).skip(2)限定从第二条数据开始查找，查找3条数据
+	db.collName.find({$or:[{age:24},{age:25}]})只要满足的数据
+	db.collName.find({$or:[{age:24},{age:25}]}).count（）查询条数；类似length
+	db.collName.findOne()从上往下查找到的第一条数据
+	db.collName.find({sex:{$exists:true}}).count()查询某一项的记录条数
+	

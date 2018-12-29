@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/player.css"/>
+	</head>
+	<body>
+		<figure>
+			<figcaption>视频播放器</figcaption>
+			<div class="player">
+				<video src="http://www.w3cschool.cc/try/demo_source/mov_bbb.mp4">
+					您的浏览器不支持video,请使用其他浏览器观看
+				</video>
+				<div class="controls">
+					<!--播放/暂停-->
+					<a href="javascript:;" class="switch fa fa-play"></a>
+					<!--全屏-->
+					<a href="javascript:;" class="expand fa fa-expand"></a>
+					<!--进度条-->
+					<div class="progress">
+						<div class="loaded"></div>
+						<div class="line"></div>
+						<div class="bar"></div>
+					</div>
+					<!--时间-->
+					<div class="timer">
+						<span class="current">00:00:00</span>
+						<span class="total">00:00:00</span>					
+					</div>
+				</div>
+			</div>
+		</figure>
+	</body>
+	<script src="video.js"></script>
+	<script type="text/javascript">
+		console.info("\n __    __   __   ______       __   __   __    ______\n|  |  |  | |  | |   _  \\     |  | |  \\ |  |  /  ____|\n|  |__|  | |  | |  |_)  |    |  | |   \\|  | |  |  __ \n|   __   | |  | |      /     |  | |  . `  | |  | |_ |\n|  |  |  | |  | |  |\\  \\----.|  | |  |\\   | |  |__| |\n|__|  |__| |__| | _| `._____||__| |__| \\__|  \\______|\n")
+		console.info("\n __           ______     ___     ___      _______\n|  |         /  __  \\   \\   \\   /   /    |  _____|\n|  |        |  |  |  | \  \\   \\ /   /     |  |____\n|  |        |  |  |  |    \\       /      |  _____|\n|  |______  |  |__|  |     \\     /       |  |____\n|_________|  \\______/       \\___/        |_______|")
+	</script>
+</html>

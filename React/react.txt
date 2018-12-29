@@ -1,0 +1,82 @@
+1.facebook在构建网站的时候碰到的两个问题：
+	1.数据绑定的时候大量操作真是Dom，浪费性能
+	2.网站的数据流向太混乱，不好控制
+2.react是在2013年5月份开源的
+3.利用JSX语法，把用户界面抽象成一个一个组件
+4.还能用于开发原生移动应用
+5.react的特点：
+	1.声明式的设计（自动dom操作）
+	2.高效--通过对DOM的虚拟（虚拟DOM），最大限度地减少与DOM的交互
+	3.灵活--可以与已知的库或框架很好的配合
+	4.JSX--JSX是JavaScript语法的扩展
+	5.组件--通过react构建组件，使得代码更加容易得到复用，能够很好的应用在大项目的开发中
+	6.单向响应的数据流--react实现了单项响应的数据流，从而减少了重复代码，这也是它为什么比传统数据更简单
+6.react核心---组件
+7.组件的目的：提高代码复用率，降低测试难度，降低代码复杂度
+	1.提高代码复用率：组件将数据和逻辑封装，类似面向对象中的类
+	2.降低测试难度：组件高内聚（专注的只做一件事情）低耦合（组件与组件之间的关联很少），很容易对单个组件进行测试
+	3.降低代码复杂度：直观的语法可以极大提高可读性
+8.react只注重视图层，所以它并不是一个完整的MVC/MVVM框架；
+9.react使用的编程式方式叫做函数式编程，也叫做声明式编程，也属于结构化编程的一种，主要思想是把运算过程尽量写成一系列嵌套的函数调用
+	函数式编程的特点：
+	1.代码简洁，开发快速
+	2.接近自然语言，易于理解
+	3.更方便的代码管理
+	4.易于“并发编程”
+	5.代码的热升级
+10.函数式编程是React的精髓
+11.JSX是将HTML语法直接嵌入到JavaScript代码中，再通过翻译器转换到纯JavaScript后由浏览器执行。遵循的是XML规范，单标签闭合，组件嵌套要规范。
+12.JSX的官方定义是类XML语法的ECMAScript扩展
+13.2017.9.27react进行更新新版本（高版本）；之前的版本称为稳定版
+14.react中如何去写class
+	1.基于class 原生(className)
+	2.基于inner css (facebook 主张的方式) 行间样式(json)
+	3.原型链和全局变量
+15.react组件得特点：
+	1.所有组件都写在一个js文件里面，不好维护，写多个js去引入也无法识别
+16.借助webpack构建工具的好处:
+	1.webpack是facebook为react量身打造得构建工具
+	2.主要作用是实现模块化，代码整合，代码分割
+	3.使用webpack整合以后，也不需要使用browser进行将JSX转成js了
+17.什么是模块？
+	1.指的是一组具有同等属性和功能得集合叫做模块和类得概念相似
+	2.react模块化指的是一个js中存放一个或多个组件，这些组件通过commonjs规范对外提供接口
+	3.在其他组件当中可以调用这些对外提供成接口得组件
+18.如何使用webpack?
+	1.全局安装webpack
+	2.项目中安装依赖 webpack -D
+	3.安装webpack支持react的核心工具jsx-loader
+	4.安装react react-dom 依赖(2017.9.27最新版本 弃用createClass)
+	5.安装 npm install babel-loader babel-core babel-preset-es2015 babel-preset-react --save-dev
+	6.配置文件  打包输出
+
+
+19.属性和状态是react中数据传递的载体
+	组件接收属性值传递：this.props.属性名
+20.属性传递方式：属性一旦声明不提供方法进行二次修改
+	1.key-value形式
+	2.展开式传入
+	3.内部声明getDefaultProps
+	4.es6	使用   组件.defaultProps	
+	5.在构造器中通过this.props.属性名，单个进行声明
+21.状态
+	react把组件看成一个状态机(state machines) 通过与用户的交互，实现不同状态，然后渲染UI，让用户界面和数据保持一致
+	只要更新组件的state,然后根据新的state重新渲染用户界面(render函数的二次渲染)
+	方法：
+		1.getInitialState：定义出事状态  /es6 在constructor 中 通过this.state = {}
+		2.this.state:读取状态
+		3.this.setState():更新组件状态   /es6中  在事件中调用需要在构造器中通过bind绑定this
+		状态修改 组件会发生二次渲染 react 组件中的render方法会重新执行
+	
+
+
+22.数据从父组件流向子组件
+23.子组件数据流向父组件
+24.操作dom
+	ref获取dom元素 ref给dom添加该属性
+	通过this.refs.ref的值获取dom
+	
+25.react-router路由：
+	定义链接的组件，类似于a标签
+	<Link to="/users">users</Link>
+	{this.props.children}===相当于路由视图容器

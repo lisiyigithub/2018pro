@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.bootcss.com/vuex/2.4.1/vuex.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>{{count}}</h1>
+			<button @click="add()">数字+1</button>
+			<button @click="jian()">数字-1</button>
+			<hr />
+			
+			<v-add></v-add>			
+			<hr />
+			
+			<v-jian></v-jian>
+		</div>
+		
+		<template id="add">
+			<div>
+				<h1>组件A----------{{count}}</h1>
+			</div>
+		</template>
+		
+		<template id="jian">
+			<div>
+				<h1>组件B----------{{count}}</h1>
+			</div>
+		</template>
+	</body>
+	<script type="text/javascript">
+		//vuex集中的状态管理器
+		var store = new Vuex.Store({
+			state:{
+				str:0
+			},
+			mutations:{//是整个vuex里面唯一一个可以修改数据的地方
+				add(a){
+					console.log(a)
+					a.str++
+				},
+				jian(a){
+					a.str--
+				}
+			}
+		})
+		
+		
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				
+			},
+			computed:{
+				count(){
+					return store.state.str
+				}
+			},
+			methods:{
+				add(){
+					store.commit('add')
+				},
+				jian(){
+					store.commit('jian')
+				}
+			},
+			components:{
+				"v-add":{
+					template:"#add",
+					computed:{
+						count(){
+							return store.state.str
+						}
+					}
+				},
+				"v-jian":{
+					template:"#jian",
+					computed:{
+						count(){
+							return store.state.str
+						}
+					}
+				}
+			}
+		})
+	</script>
+</html>

@@ -10,6 +10,8 @@ import Detail from '../components/detail'
 import Detail2 from '../components/detail2'
 import Demo from '../components/demo'
 import Phone from '../components/phone'
+import Video from '../components/video'
+import Video1 from '../components/video1'
 import Tan from '../page/tankuang'
 import Map from '../page/map'
 
@@ -63,6 +65,14 @@ export default new Router({
 		{
 			path:'/phone',
 			component:Phone
+		},
+		{
+			path:'/video',
+			component:Video
+		},
+		{
+			path:'/video1',
+			component:Video1
 		}
 	]
 })

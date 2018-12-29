@@ -1,0 +1,14 @@
+首页：http://localhost:3000/home
+
+参数		返回值
+null	json数组对象，{name:xxx,pic:xxx}
+
+关于：http://localhost:3000/about
+
+参数		返回值
+null	json数组对象，{name:xxx,pic:xxx}
+
+其他：http://localhost:3000/other
+
+参数		返回值
+null	json数组对象，{name:xxx,pic:xxx}

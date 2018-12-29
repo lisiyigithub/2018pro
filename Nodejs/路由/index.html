@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="out"></div>
+	</body>
+	<script type="text/javascript">
+		//路由---前端：不同的url(path)展示不同的视图内容
+			//http://www.baidu.com/index
+			
+		//路由---后端：用来声明接口(根据不同的url展示不同的数据)
+			//http://www.baidu.com/index----string  hello
+			
+		$.ajax({
+			type:"get",
+			url:"http://localhost:3000",
+			success:function(data){
+				$('.out').html(data)
+			}
+		});
+	</script>
+</html>

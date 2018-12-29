@@ -1,13 +1,15 @@
 <template>
 	<div class="register">
 		<h1>注册</h1>
-		<div>
-			用户名：<input type="text" v-model="user" />
+		<div class="demo-input-suffix">
+			用户名：
+			<el-input type="text" v-model="user" />
 		</div>
-		<div>
-			密码：<input type="text" v-model="pass" />
+		<div class="demo-input-suffix">
+			密码：
+			<el-input type="text" v-model="pass" />
 		</div>
-		<button @click="register()">注册</button>
+		<el-button type="primary" @click="register()">注册</el-button>
 		<div><router-link to="/login">已有账号直接登陆</router-link></div>
 	</div>
 </template>
@@ -24,9 +26,14 @@
 		methods:{
 			register(){
 				if(this.user&&this.pass != ""){
+					
 					this.$router.push('/login')
 				}else{
-					alert('账号密码不能为空')
+					this.$message({
+			          showClose: true,
+			          message: '账号密码不能为空',
+			          type: 'error'
+			        });
 				}
 			}
 		}

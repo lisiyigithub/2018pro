@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>17年9月份之前的稳定版</title>
+		<link rel="stylesheet" href="lib/bootstrap.min.css" />
+		<script src="lib/react.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="lib/react-dom.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="lib/browser.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.con{
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app"></div>
+	</body>
+	<script type="text/babel">
+		//创建的组件名首字母要大写
+		var sty = {color:'pink'}
+		var str = "love"
+		var str1 = "<p>HTML模板字符串</p>"
+		
+		var tap = function(){
+			console.log('aaa')
+		}
+		
+		function tap1(item){
+			console.log(item)
+		}
+		
+		var Demo = React.createClass({
+			tap3:function(){
+				console.log('hi')
+			},
+			render(){
+				return(//返回的是标签，所以return是（）
+					<div>
+						<h3 className="con">Hello react 组件</h3>
+						<input type="text" />
+						<br/>
+						<button className="btn btn-success" onClick={tap1.bind(this,'aaa')}>按钮</button>
+						<p style={sty}>行间样式,基于json对象的写法,或者利用变量的形式</p>
+						<p style={{color:'blue'}}>变量行间样式</p>
+						
+						{<p>解析外部变量利用</p>}
+						<h1>{str}</h1>
+						<h3 style={this.styb}>原型链样式写法</h3>
+						
+						<button onClick={this.tap2}>私有事件1</button>
+						<button onClick={this.tap3}>私有事件2</button>
+						
+						{<p>解析带有标签的变量</p>}
+						<h3 dangerouslySetInnerHTML={{__html:str1}}></h3>
+						
+						{<p>注释方法{}，{/*多行*/}</p>}
+						{<p>你好</p>}
+						{/*<p>注释</p>*/}
+						
+						
+						//子组件
+						<Child/>
+					</div>
+				)
+			}
+		})
+		
+		var Child = React.createClass({
+			render(){
+				return(
+					<div>
+						<h1>子组件</h1>
+					</div>
+				)
+			}
+		})
+		
+		
+		
+		
+		//原型链样式一定要在组件创建完成之后，渲染之前
+		Demo.prototype.styb = {
+			color:'yellow',
+			background:'blue'
+		}
+		Demo.prototype.tap2 = function(){
+			console.log('hello')
+		}
+		
+		//第一个参数是渲染的组件名，单标签必须闭合；第二个参数是真实DOM的容器
+		ReactDOM.render(<Demo/>,document.getElementById('app'))
+		
+		
+		//步骤
+		//1.引文件
+		//2.写容器
+		//3.script标签类型更改为text/babel
+		//4.组件创建
+		//5.组件渲染
+		
+		
+		//react里面的事件，加()的话成了自执行
+		//如果需要传参的话需要用bind绑定this,然后后面的参数才是传的参数
+	</script>
+</html>

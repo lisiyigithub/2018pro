@@ -6,10 +6,26 @@
 		<script src="../JS/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
-		
+		<p>隐藏电话号码中间4位号码</p>
+		<input type="text" id="phone" value="" />
 	</body>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			//隐藏电话号码中间4位号码
+			$("#phone").focusout(function () {			
+				if($('#phone').val().length<=0){
+					$("#phone").val() = ""
+				}else if($('#phone').val().length == 5){
+					$("#phone").val($("#phone").val().substring(0, 3) + "**")
+				}else if($('#phone').val().length == 6){
+					$("#phone").val($("#phone").val().substring(0, 3) + "***")
+				}else if($('#phone').val().length >= 7 && $('#phone').val().length <= 11){
+					$("#phone").val($("#phone").val().substring(0, 3) + "****" + $("#phone").val().substring(7,11))
+				}else if($('#phone').val().length > 11){
+					$("#phone").val($("#phone").val().substring(0, 6) + "******" + $("#phone").val().substring(12,18))
+				}
+			});
+			
 			$('body').append(`
 				<div href="" target="myframe" style="display:block;width:101px;height:101px;border-radius:50%;position:fixed;right:0;top: 0;bottom: 0;margin: auto;z-index: 9999;" class="kefu">
 					<img src="https://qn-public.udesk.cn/Fl2-g_MepNvwYi9LQJUdAVb48ORn"/>

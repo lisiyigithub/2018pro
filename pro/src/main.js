@@ -10,6 +10,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Mint from 'mint-ui'
 import VueAMap from 'vue-amap';
 
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
+
 Vue.use(ElementUI)
 Vue.use(Mint)
 // Vue.use(YDUI)

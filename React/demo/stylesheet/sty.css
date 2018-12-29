@@ -1,0 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.tit{
+    color:blue;
+    background: yellow;
+}
+.img{
+    width: 500px;
+    height: 350px;
+    background: url(../img/home2.jpg);
+}

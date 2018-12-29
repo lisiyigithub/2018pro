@@ -32,12 +32,7 @@ const req = https.request(options, (res) => {
   })
 });
 
-//请求失败
-req.on('error', (e) => {
-  console.error(e);
-});
-
-
+//搭建服务器
 http.createServer((req,res)=>{
 	res.writeHead(200,{'content-type':'text/html;charset=utf-8','Access-Control-Allow-Origin':'*'})
 	
@@ -46,6 +41,11 @@ http.createServer((req,res)=>{
 		res.end()
 	}
 }).listen(3000)
+
+//请求失败
+req.on('error', (e) => {
+  console.error(e);
+});
 
 //结束请求
 req.end();

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>高版本不向下兼容</title>
+		<script src="react.production.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="react-dom.production.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="browser.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app"></div>
+	</body>
+	<script type="text/babel">
+		//高版本不能使用低版本语法，低版本可以使用高版本语法
+		/*var Demo = React.createClass({
+			render(){
+				return(
+					<div>
+						Hello react zujian
+					</div>
+				)
+			}
+		})*/
+		
+		//高版的组件创建方式改变了
+		//通过ES6class创建一个类
+		class Demo extends React.Component{
+			constructor(props){
+				super(props)
+			}
+			
+			tap(){
+				console.log('tap')
+			}
+			
+			render(){
+				return(//写在一个根容器里
+					<div>
+						<h1>hello</h1>
+						<input type="text" refs="ipt"/>
+						<button onClick={this.tap}>私有事件</button>
+					</div>
+				)
+			}
+		}
+		
+		ReactDOM.render(<Demo/>,document.getElementById('app'))
+		
+		//元素类型
+		//1.小写首字母对应DOM元素
+		//2.大写首字母对应组件元素自然
+	</script>
+</html>

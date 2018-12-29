@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			body{
+				height: 100vh;
+				display:flex ;
+				flex-direction: column;
+			}
+			header,footer{
+				height: 50px;
+				background: orange;
+				text-align: center;
+				line-height: 50px;
+				font-size: 18px;
+			}
+			section{
+				flex: 1;
+				overflow-y: auto;
+			}
+			footer span{
+				width: 33.3%;
+				float: left;
+			}
+			ul{
+				width: 90vw;
+				margin: 10px auto;
+				overflow: hidden;
+			}
+			ul li{
+				width: 40vw;
+				height: 200px;
+				border: 1px solid red;
+				float: left;
+				margin: 0 0 10px 10px;
+				word-wrap:break-word;
+			}
+			.active{
+				color: hotpink;
+			}
+		</style>
+	</head>
+	<body>
+		<header>首页</header>
+		<section>
+			<ul>
+			</ul>
+		</section>
+		<footer>
+			<span class="active" name="home">首页</span>
+			<span name="about">关于</span>
+			<span name="other">其他</span>
+		</footer>
+	</body>
+	<script src="../jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//100vh == 100%可视窗口的高度
+		//100vw == 100%可视窗口的宽度
+		$('span').click(function(){
+			//切换选项卡
+			$(this).addClass('active').siblings().removeClass('active')
+			//更换头部信息
+			$('header').html($(this).html())
+			
+			var path = $(this).attr('name')
+			console.log(path)
+			$('ul').html('')
+			ajax(path,function(data){
+				data.map(function(item){
+					$('ul').append('<li>'+'<p>'+item.name+'</p>'+'<p>'+item.pic+'</p>'+'</li>')
+				})
+			})
+		})
+		
+		function ajax(path,callback){
+			$.ajax({
+				type:'get',
+				url:'http://localhost:3000/'+path,
+				dataType:'json',
+				success:function(data){
+					callback(data)
+				}
+			})
+		}
+		ajax('home',function(data){
+			data.map(function(item){
+				$('ul').append('<li>'+'<p>'+item.name+'</p>'+'<p>'+item.pic+'</p>'+'</li>')
+			})
+		})
+	</script>
+</html>

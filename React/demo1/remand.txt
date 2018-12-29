@@ -1,0 +1,35 @@
+webpack全局安装： webpack webpack-cli webpack-dev-server
+1.npm init项目初始化
+2.安装webpack依赖
+3.新建index.html写入根目录
+4.在components里面新建组件app.js，并暴露
+5.安装react react-dom依赖
+6.在main.js里引入app、react、react-dom并对app进行渲染
+7.安装
+    npm install babel-loader babel-core babel-preset-es2015 babel-preset-react --save-dev依赖（注：这里的babel-loader要安装7版本的）
+8.手动配置webpack.config.js文件
+9.执行webpack进行项目打包
+10.webpack.config.js中options配置中的modules:true是开启一个重置问题，一般不需要；每次webpack修改都需要webpack一次
+
+
+创建项目
+1、npm init
+2、npm i webpack webpack-cli webpack-dev-server -D
+3、创建项目文件目录(入口js、浏览器主页html、配置文件webpack.config.js、组件、样式、图片)
+4、组件代码编写  入口js进行dom渲染(前提--npm i react react-dom -D)(16的版本不能使用createClass)
+5、加载器、转译、官网api、npm i babel-loader@7 babel-core babel-preset-es2015 babel-preset-react -D
+6、其它加载器 css-loader style-loader url-loader file-loader...
+7、配置文件
+	entry---入口文件js
+	output--打包出口文件所在目录， 文件名
+	module-rules---加载器配置--- 官网api
+	devServer--热更新 ----(2)  inline:true
+	plugins---(可有可无)
+8、生产环境--- webpack 打包生成 html引入出口js 浏览器启动
+9、开发环境--- webpack-dev-server  浏览器访问localhost:
+	指令配置  在package.json中  npm scripts 配置
+
+10、react里面用到图片的话怎么办？
+	1.利用src={require('../img/home2.jpg')}
+	2.利用import img from '../img/home2.jpg'/src={img}
+	
