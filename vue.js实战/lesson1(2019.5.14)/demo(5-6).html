@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Vue 示例</title>
+		<style type="text/css">
+			.ul_li{
+				list-style: none;
+				border: 1px solid #000;
+				margin-bottom: 10px;
+			}
+			.active{
+				color: red;
+			}
+			.error{
+				color: green;
+			}
+			[v-cloak]{/*加上这段样式,可以避免vue.js还没加载完成时,屏幕闪动问题*/
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<ul>				
+				<li class="ul_li">	
+					<h1>1、内置指令</h1>
+					<h3>基本指令</h3>
+					<p>1、v-cloak:</p>
+					<span>{{message}}</span>
+					<p>2、v-once：只渲染一次，当数据变化时，不会随数据变化而变化</p>
+					<span v-once>{{message}}</span>
+				</li>
+				<li class="ul_li">
+					<h3>条件渲染指令</h3>
+					<p>1、v-if、v-else-if、v-else</p>
+					<span v-if="status===1">当status等于1时显示</span>
+					<span v-else-if="status===2">当status等于2时显示</span>
+					<span v-else>其他情况显示</span><br/>
+					<h3>在template标签上使用条件指令：</h3>
+					<template v-if="status===0">
+						<p>完善的开发计划艰苦奋斗</p>
+						<p>完善的开发计划艰苦奋斗</p>
+						<p>完善的开发计划艰苦奋斗</p>
+					</template>
+					<h4>组件标签渲染条件指令进行输入框类型切换(input框会被复用)：若想不被复用，需要给input添加key属性，切key值必须是唯一的</h4>
+					<template v-if="type==='name'">
+						<label>用户名：</label>
+						<input type="" name="" id="" value="" placeholder="请输入姓名" key="name-input"/>
+					</template>
+					<template v-else>
+						<label>邮　箱：</label>
+						<input type="" name="" id="" value="" placeholder="请输入邮箱地址" key="mail-input"/>
+					</template>
+					<button @click="tap()">切换输入类型</button> 
+					<p>1、v-show：不能在template上使用</p>
+					<span v-show="status">利用status来判断显示与隐藏</span>
+					<span>v-if更适合条件不经常改变的场景，是真正的条件渲染，v-show只是样式改变，不管真假都会被编译</span>
+				</li>
+				<li class="ul_li">
+					<h3>列表渲染指令v-for</h3>
+					<p>1、基本用法：遍历对象属性</p>
+					<p v-for="value in user">{{value}}</p>
+					<p v-for="(value,key,index) in user">{{index}}——{{key}}:{{value}}</p>
+					<p>2、迭代整数</p>
+					<span v-for="n in 10">{{n}} </span>
+					<p>3、数组更新</p>
+					<ul>
+						<li v-for="book in books">{{book.name}}:{{book.author}}</li>
+					</ul>
+					<p>4、过滤与排序（不改变原数组，想通过数组的副本来实现过滤和排序的话，可以使用计算属性）</p>
+					<ul>
+						计算属性实现过滤
+						<li v-for="book in filterBooks">{{book.name}}——{{book.author}}</li>
+					</ul>
+					<ul>
+						计算属性实现排序
+						<li v-for="book in sortedBooks">{{book.name}}——{{book.author}}</li>
+					</ul>
+					<p>5、方法与事件</p>
+					<p>点击次数：{{count}}</p>
+					<button @click="count++">+1</button>
+					<button @click="handle(10)">+10</button>
+					<button @click="handle()">+3</button>
+					<p>$enent:用于访问原生dom事件</p>
+					<a href="http://www.baidu.com" @click="handleClose('禁止打开',$event)">打开连接</a>
+					<p>6、修饰符</p>
+					<a href="" @click.stop="handleClose">阻止单击事件冒泡</a>
+					<form @submit.prevent="handeleClose">提交事件不再重载页面</form>
+					<a href="" @click.stop.prevent="handleClose">修饰符可以串联</a>
+					<form @submit.prevent>只有修饰符</form>
+					<div @click.capture="handleClose">添加事件侦听器时使用事件捕获模式</div>
+					<div @click.self="handleClose">只当事件在该元素本身(而不是子元素)触发时触发回调</div>
+					<div @click.once="handleClose">只触发一次，组件同样适用</div>
+					<p>在表单元素上监听键盘事件时，还可以使用按键修饰符</p>
+					<input type="" name="" id="" value="" @keyup.13="submit" placeholder="当keyCode为13时调用该方法"/>	
+				</li>
+				<li class="ul_li">
+					<h1>2、表单与v-model</h1>
+					<h3>基本用法</h3>
+					<input type="text" name="" id="" value="" placeholder="输入" @input="handleInput"/>
+					<div style="margin-top: 80px;">@input实现实时更新：{{msg}}</div>
+					<h4>单选框：</h4>
+					<label for="">单选按钮</label>
+					<input type="radio" name="" id="" value="" :checked="picked"/>
+					<br/>
+					<label for="js">v-modle配合value实现互斥效果：(v-model匹配和value值一致的选项)</label>
+					<input type="radio" name="" id="" value="js" v-model="pick"/><br/>
+					<label for="css">v-modle配合value实现互斥效果</label>
+					<input type="radio" name="" id="" value="css" v-model="pick"/><br/>
+					<label for="html">v-modle配合value实现互斥效果</label>
+					<input type="radio" name="" id="" value="html" v-model="pick"/>
+					<div>选择的是：{{pick}}</div>
+					<h4>复选框：</h4>
+					<label for="checked">选择状态：{{checked}}</label>
+					<input type="checkbox" name="" id="" value="" v-model="checked"/>
+					<br/>
+					<label for="js">v-modle配合value实现互斥效果：(v-model匹配和value值一致的选项)</label>
+					<input type="checkbox" name="" id="" value="js" v-model="check"/><br/>
+					<label for="css">v-modle配合value实现互斥效果</label>
+					<input type="checkbox" name="" id="" value="css" v-model="check"/><br/>
+					<label for="html">v-modle配合value实现互斥效果</label>
+					<input type="checkbox" name="" id="" value="html" v-model="check"/>
+					<div>选择的是：{{check}}</div>
+					<h4>下拉选择器：(v-model默认匹配option的text,当option有value属性值时，v-model优先匹配的是value值)</h4>
+					<select v-model="selected">
+						<option>html</option>
+						<option value="css">style</option>
+						<option value="js">javascript</option>
+					</select>
+					<div>选择的是：{{selected}}</div>
+					<p>给select添加multiple就能实现多选——</p>
+					<select v-model="selectt" multiple>
+						<option>html</option>
+						<option value="css">style</option>
+						<option value="js">javascript</option>
+					</select>
+					<div>选择的是：{{selecte}}</div>
+					<select v-model="selecte">
+						<option v-for="option in options" :value="option.value">{{option.text}}</option>
+					</select>
+					<div>选择的是：{{selecte}}</div>					
+				</li>
+				<li class="ul_li">
+					<h4>绑定值：(v-model的值会跟随者绑定的value值发生动态改变)</h4>
+					<p>单选按钮：</p>
+					<label for="">单选按钮</label>
+					<input type="radio" name="" id="" :value="value" v-model="picked"/><br/>
+					<span>{{picked}}</span><br/>
+					<span>{{value}}</span><br/>
+					<p>复选框：</p>
+					<label for="">复选框</label>
+					<input type="checkbox" :true-value="value1" :false-value="value2" v-model="toggle"/><br/>
+					<span>{{toggle}}</span><br/>
+					<span>{{value1}}</span><br/>
+					<span>{{value2}}</span>
+					<p>下拉菜单：(选中时，selected=value)</p>
+					<select v-model="selected">
+						<option :value="{number:123}">123</option>
+					</select>
+					<p>{{selected.number}}</p>
+				</li>
+				<li class="ul_li">
+					<h4>修饰符</h4>
+					<p>利用.lazy可以将input事件的同步输入框的数据，转变为在change事件中同步，此时v-model不是实时改变的，而是在失焦或按下enter键时触发</p>
+					<input type="text" name="" id="" value="" v-model.lazy="msg"/>
+					<div>输入内容是：{{msg}}</div>
+					<p>利用.number可以将input框输入的类型转为Number，在数字输入框时比较有用</p>
+					<input type="number" name="" id="" value="" v-model="msg"/>
+					<div>{{typeof msg}}</div>
+					<input type="number" name="" id="" value="" v-model.number="mess"/>
+					<div>{{typeof mess}}</div>
+					<p>利用.trim可以自动过滤掉收尾的空格</p>
+					<input type="text" name="" id="" value="" v-model.trim="mess1"/>
+					<div>结果：{{mess1}}</div>
+				</li>
+			</ul>	
+		</div>
+	</body>
+	<script src="http://unpkg.com/vue/dist/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+		var app = new Vue({
+			el:"#app",
+			data:{
+				message:"v-cloak指令文本",
+				status:2,
+				type:"name",
+				user:{
+					name:'lisyi',
+					age:24
+				},
+				books:[
+					{
+						id:0,
+						name:"《Vue.js实战》",
+						author:"梁箐"
+					},
+					{
+						id:1 ,
+						name:"《javascript》",
+						author:"张三"
+					},
+					{
+						id:2,
+						name:"《ES6》",
+						author:"麻子"
+					}
+				],
+				count:0,
+				msg:"",
+				picked:true,
+				pick:"js",
+				checked:true,
+				check:['html','js'],
+				selected:"html",
+				selectt:["html","js"],
+				selecte:"html",
+				options:[
+					{
+						value:"html",
+						text:"HTML"
+					},
+					{
+						value:"js",
+						text:"JS"
+					},
+					{
+						value:"css",
+						text:"CSS"
+					}
+				],
+				value:"lisiyi",
+				toggle:false,
+				value1:'a',
+				value2:'b',
+				mess:'',
+				mess1:' 可是会计师电话费即可'
+			},
+			computed:{//计算属性
+				sortedBooks(){//计算属性实现排序
+					return this.books.sort((a,b)=>{
+						return a.id>b.id
+					})
+				},
+				filterBooks(){
+					return this.books.filter((item)=>{//计算属性实现过滤
+						return item.name.match(/Vue/)
+					})
+				}
+				
+			},
+			filters:{//过滤器
+				
+			},
+			//声明周期
+			created(){
+				console.log("created：实例创建完成")
+				console.log(this.books)
+				/*this.books.push({//push()
+					name:"《css揭秘》",
+					author:"LV"
+				})*/
+				
+				/*this.books = this.books.filter((item)=>{//filter()
+					return item.name.match(/javascript/)
+				})*/
+				
+				/*this.$set(this.books,2,{//利用vue的内置set方法，可以实现通过索引直接设置数组中某一选项
+					name:"《Python教程》",
+					author:"陈鹏飞"
+				})*/
+				
+				/*this.books.splice(0,1,{//此方法也能达到$set的目的（第一个参数对应数组的索引，第二个参数是指长度）
+					name:"《jquery教程》",
+					author:"李思逸"
+				})*/
+			},
+			mounted(){
+				console.log("mounted:实例化挂载完成")
+				this.message = "v-once指令文本"
+			},
+			beforeDestroy(){
+				console.log("beforeDestory:实例销毁前")
+				
+			},
+			methods:{
+				tap(){
+					this.type = this.type === 'name' ? 'mail' : 'name'
+				},
+				handle(counter){
+					console.log(counter)
+					counter = counter || 3;//counter为undefined时，默认为3
+					this.count += counter
+				},
+				handleClose(message,event){
+					event.preventDefault()//阻止默认事件
+					window.alert(message)
+				},
+				submit(){
+					window.alert("提交")
+				},
+				handleInput(e){
+					this.msg = e.target.value
+				}
+			}
+		})
+	</script>
+</html>

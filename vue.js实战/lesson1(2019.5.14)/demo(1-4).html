@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Vue 示例</title>
+		<style type="text/css">
+			.ul_li{
+				list-style: none;
+				border: 1px solid #000;
+				margin-bottom: 10px;
+			}
+			.active{
+				color: red;
+			}
+			.error{
+				color: green;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<ul>
+				<li class="ul_li">
+					<h1>1、v-for循环遍历</h1>
+					<ul>
+						<li v-for="book in books">{{book.name}}</li>
+					</ul>
+				</li>
+				<li class="ul_li">
+					<h1>2、v-model双向绑定</h1>
+					<input type="text" placeholder="请输入你的名字" v-model="name" style="width: 80%;height: 36px;line-height: 36px;"/>
+					<h3 style="margin-top: 50px;">Hello！{{name}}</h3>
+				</li>
+				<li class="ul_li">
+					<h1>3、生命周期</h1>
+				</li>
+				<li class="ul_li">
+					<h1>4、{{}}双括号插值法</h1>
+					<p>{{date}}</p>
+				</li>
+				<li class="ul_li">
+					<h1>5、v-html直接输出HTML(此时不会单单输出纯文本，而是带有标签的dom)</h1>
+					<span v-html="link"></span>
+				</li>
+				<li class="ul_li">
+					<h1>6、v-pre直接显示{{}}标签，不会被转义替换</h1>
+					<span v-pre>{{此内容不会被编译}}</span>
+					<h3>{{}}实现简单的javascript运算、三元运算</h3>
+					<div>
+						{{number/10}}<br/>
+						{{isOk?'确定':'取消'}}<br/>
+						{{text.split(',').reverse().join()}}
+					</div>
+				</li>
+				<li class="ul_li">
+					<h1>7、过滤器</h1>
+					<p>{{date|formatDate}}</p>
+					<h3>串联</h3>
+					<p>{{date|formatDate|formatImg}}</p>
+					<h3>接收参数</h3>
+					<p>{{date|formatImg(100,120)}}</p>
+				</li>
+				<li class="ul_li">
+					<h1>8、指令与事件</h1>
+					<ul>
+						<li>
+							<p>1.v-if</p>
+							<p v-if="show">显示这段文字</p>
+						</li>
+						<li>
+							<p>2.v-bind：动态更新HTML元素上的属性</p>
+							<a v-bind:href="url">跳转到百度</a>
+						</li>
+						<li>
+							<p>3.v-on：绑定事件监听器</p>
+							<button v-on:click="tap()">点击控制v-if</button>
+							<button v-on:click="show?show=false:show=true">内联式</button>
+						</li>
+						<li>
+							<p>4.语法糖：</p>
+							<span>v-bind:href(缩写——:href)</span>
+							<span>v-on:tap(缩写——@click)</span>
+						</li>
+					</ul>				
+				</li>
+				<li class="ul_li">
+					<h1>9、计算属性</h1>
+					<ul>
+						<li>
+							<h3>什么是计算属性</h3>
+							<p>改写6、中div里的第三个运算</p>
+							<p>{{reversedText}}</p>
+						</li>
+						<li>
+							<h3>计算属性用法</h3>
+							<p>计算总价:{{prices}}</p>
+							<p>{{fullName}}</p>
+							<p>{{fullName = "Apple Green"}}</p>
+							<p>依赖其他vue实例的数据：</p>
+							<p>{{reversedText2}}</p>
+						</li>
+						<li>
+							<h3>计算属性缓存</h3>
+							<!--methods中的计算函数会自动更新，会重新渲染-->
+							<!--<p>{{now()}}</p>-->
+							<!--computed中的计算函数不会自动更新-->
+							<p>{{now1}}</p>
+						</li>
+					</ul>	
+				</li>
+				<li class="ul_li">
+					<h1>10、v-bind绑定class</h1>
+					<div :class="{'active':isActive}">添加active类名</div>
+					<div class="static" :class="{'active':isActive,'error':isError}">普通类名和绑定类名共存</div>
+					<div :class="classes">计算属性computed做绑定类名</div>
+					<div :class="classess">计算属性类型二</div>
+					<div :class="[activeCls,errorCls]">数组语法</div>
+					<div :class="[isError ? activeCls : '',errorCls]">三元运算类名</div>
+					<h2>组件上使用绑定类名(组件名称不能使用驼峰式)</h2>
+					<my-component :class="{'active':isActive}"></my-component>
+					<h2>v-bind绑定内联样式</h2>
+					<div :style="{'color':color,'fontSize':fontSize+'px'}">内联样式</div>
+					<div :style="styles">内联样式2</div>
+					<div :style="[styles,styleA]">内联样式2</div>
+				</li>
+			</ul>	
+		</div>
+		<div id="app1">			
+		</div>
+	</body>
+	<script src="http://unpkg.com/vue/dist/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var myData = [
+			{name:"《Vue.js实战》"},
+			{name:"《javascript》"},
+			{name:"《Es6》"}
+		]
+		
+		Vue.component('my-component',{
+			template:'<p class="article">组件使用类名</p>'
+		})
+		
+		//在月、日、小时等于小于10时前面补0
+		function padDate(value){
+			return value < 10 ? "0" + value : value
+		}
+		var app1 = new Vue({
+			el:"#app1",
+			data:{
+				text1:"依赖app1的数据"
+			}
+		})
+		var app = new Vue({
+			el:"#app",
+			data:{
+				books:myData,
+				name:"",
+				date:new Date(),
+				link:"<a href='#'>跳转链接</a>",
+				number:100,
+				isOk:false,
+				text:"123,456",
+				show:true,
+				url:"http://ww.baidu.com",
+				package1:[
+					{
+						name:"iphone8p",
+						price:6880,
+						count:2
+					},
+					{
+						name:"iPad",
+						price:5684,
+						count:1
+					}
+				],
+				package2:[
+					{
+						name:"Apple",
+						price:4.8,
+						count:5
+					},
+					{
+						name:"banana",
+						price:2,
+						count:10
+					}
+				],
+				firstName:"Jack",
+				lastName:"Cream",
+				isActive:true,
+				isError:false,
+				error:null,
+				activeCls:'active',
+				errorCls:'error',
+				size:'large',
+				disabled:true,
+				color:'pink',//字体颜色
+				fontSize:'20',//字体大小
+				styles:{
+					color:'blue',
+					fontSize:16 + 'px'
+				},
+				styleA:{
+					background:"pink",
+					margin:20+'px'
+				}
+			},
+			computed:{
+				reversedText(){
+					return this.text.split(',').reverse().join(',')
+				},
+				prices(){//计算总金额
+					var prices = 0;
+					for(var i = 0; i < this.package1.length; i++){
+						prices += this.package1[i].price*this.package1[i].count
+					}
+					for(var j = 0; j < this.package2.length; j++){
+						prices += this.package2[j].price*this.package2[j].count
+					}
+					return prices;
+				},
+				fullName:{
+					get(){
+						return this.firstName+ ' ' + this.lastName
+					},
+					set(newValue){
+						var names = newValue.split(' ')
+						this.firstName = names[0]
+						this.lastName = names[names.length-1]
+					}
+				},
+				reversedText2(){
+					return this.text1 = "计算属性计算结果"
+				},
+				now1(){
+					return Date.now()
+				},
+				classes(){
+					return{
+						active:this.isActive && !this.error,
+						'text-fail':this.isError && this.isError.type != 'fail'
+					}
+				},
+				classess(){
+					return[
+						'btn',
+						{
+							['btn-' + this.size]:this.size !== '',
+							['btn-disabled']:this.disabled
+						}
+					]
+				}
+			},
+			filters:{
+				formatDate(value){
+					var date = new Date(value)
+					var year = date.getFullYear()
+					var month = padDate(date.getMonth()+1)
+					var day = padDate(date.getDate())
+					var hours = padDate(date.getHours())
+					var minutes = padDate(date.getMinutes())
+					var seconds = padDate(date.getSeconds())
+					//将整理好的数据返回出去
+					return year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds
+					
+				},
+				formatImg(value,val2,val3){
+					var date = new Date(value)
+					var year = date.getFullYear()
+					var month = padDate(date.getMonth()+1)
+					var day = padDate(date.getDate())
+					//将整理好的数据返回出去
+					return year + '-' + month + '-' + day
+					
+				}
+			},
+			//声明周期
+			created(){
+				console.log("created：实例创建完成")
+			},
+			mounted(){
+				console.log("mounted:实例化挂载完成")
+				var _this = this//声明一个变量指向vue实例this，保证作用域一致
+				this.timer = setInterval(()=>{
+					_this.date = new Date()
+				},1000)
+				this.init("初始化时调用")
+			},
+			beforeDestroy(){
+				console.log("beforeDestory:实例销毁前")
+				if(this.timer){//实例销毁前清除定时器
+					clearInterval(this.timer)
+				}
+			},
+			methods:{
+				//逻辑判断
+				tap(){//点击控制v-if的显示与隐藏
+					/*if(this.show){
+						this.show = false
+					}else{
+						this.show = true
+					}
+					console.log(this.show)*/
+					this.show = this.show === true ? false : true
+				},
+				init(text){
+//					alert(text)
+					console.log(text)
+				},
+				now(){
+					return Date.now()
+				}
+			}
+		})
+		
+		console.log(app.books)
+		app.name = "lisiyi"
+		console.log(app.name)
+		
+		myData[2].name = "《小说》"
+		console.log(app.books)
+		
+//		app.init("外部调用")
+	</script>
+</html>

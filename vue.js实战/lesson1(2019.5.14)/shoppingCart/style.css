@@ -1,0 +1,27 @@
+[v-cloak]{/*加上这段样式,可以避免vue.js还没加载完成时,屏幕闪动问题*/
+	display: none;
+}
+
+table{
+	border: 1px solid #000000;
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+}
+
+th,td{
+	padding: 8px 16px;
+	border: 1px solid #000000;
+	text-align: center;
+}
+
+th{
+	background: #f7f7f7;
+	color: #5c6b77;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+td{
+	text-align: center;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>数字输入框组件</title>
+	</head>
+	<body>
+		<div id="app">
+			<div style="width: 230px;border: 1px solid #5C6B77;padding: 100px 50px;">
+				<input-number v-model="value" :min="0" :max="10"></input-number>
+			</div>
+		</div>
+	</body>
+	<script src="http://unpkg.com/vue/dist/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<!--数组输入框组件js-->
+	<script src="input-number.js" type="text/javascript" charset="utf-8"></script>
+	<!--根实例-->
+	<script src="index.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+	function f() { 
+		var a = 1; 
+		a = 2; 
+		var b = g();//此时结果与g()的调用位置有关
+		a = 3; 
+		
+		return b; 
+		function g() { 
+			return a;
+		}
+	} 
+	f();
+	console.log(f())
+	
+	function f2() { 
+		var a = 10;
+		return function g2() { 
+			var b = a + 1; 
+			return b; 
+		} 
+	} 
+	var g2 = f2(); 
+	g2();
+	console.log(g2())
+	</script>
+</html>
